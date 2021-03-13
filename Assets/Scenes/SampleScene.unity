@@ -185,6 +185,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1653387953407911298, guid: 4f1cb8558c84cfc44971ff47dc80012d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.83
+      objectReference: {fileID: 0}
     - target: {fileID: 7753951773958580401, guid: 4f1cb8558c84cfc44971ff47dc80012d,
         type: 3}
       propertyPath: m_Name
@@ -260,6 +265,8 @@ GameObject:
   m_Component:
   - component: {fileID: 473589656}
   - component: {fileID: 473589657}
+  - component: {fileID: 473589658}
+  - component: {fileID: 473589659}
   - component: {fileID: 473589655}
   - component: {fileID: 473589654}
   - component: {fileID: 473589653}
@@ -319,7 +326,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 15303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -375,7 +382,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2faf249fdd5c94b4394a3a49f6f5239d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  _rotationSpeed: 1
+  _rotationDirection: {x: 1, y: 0, z: 0}
+--- !u!114 &473589658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 473589651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d32fa892a89c66e47868f46a8a4e8039, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerSpeed: 10
+--- !u!114 &473589659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 473589651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54541c4a74360a64691aeb723b9a2e1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,6 +518,9 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
+  - component: {fileID: 963194230}
+  - component: {fileID: 963194229}
+  - component: {fileID: 963194231}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -524,7 +560,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 85
+  far clip plane: 80
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -557,6 +593,46 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 19, y: 0, z: 0}
+--- !u!114 &963194229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e616337b67b9a9648aa72a9c4d4f9ef7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lineController: {fileID: 473589659}
+  _minimumDistance: 0.015
+  _directionThreshold: 0.7
+--- !u!114 &963194230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42e0609467917e64daeb311446619c1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &963194231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 126953064b032bf49804b4f7890cb007, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _frameRate: 60
 --- !u!1 &1411393813 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7753951773958580401, guid: 4f1cb8558c84cfc44971ff47dc80012d,
