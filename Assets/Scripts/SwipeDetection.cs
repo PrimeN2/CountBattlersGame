@@ -55,13 +55,13 @@ public class SwipeDetection : MonoBehaviour
     {
         Vector2 direction = (_currentPosition - _startPosition).normalized;
 
-        if (Vector2.Dot(Vector2.right, direction) > _directionThreshold)
-        {
-            return LineController.Lines.Right;
-        }
-        else if (Vector2.Dot(Vector2.left, direction) > _directionThreshold)
+        if (Vector2.Dot(Vector2.left, direction) > _directionThreshold)
         {
             return LineController.Lines.Left;
+        }
+        else if (Vector2.Dot(Vector2.right, direction) > _directionThreshold)
+        {
+            return LineController.Lines.Right;
         }
         else
         {

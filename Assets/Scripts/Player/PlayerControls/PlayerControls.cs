@@ -51,7 +51,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""c5822bce-0c86-4956-a005-08c26163d49f"",
                     ""path"": ""<Touchscreen>/primaryTouch/position"",
-                    ""interactions"": ""Press"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""PrimaryPosition"",

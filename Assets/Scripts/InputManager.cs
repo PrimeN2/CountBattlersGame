@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
+[DefaultExecutionOrder(-1)]
 public class InputManager : Singleton<InputManager>
 {
     private PlayerControls _playerControls;
@@ -25,13 +26,15 @@ public class InputManager : Singleton<InputManager>
 
     private void StartTouchPrimary(InputAction.CallbackContext context)
     {
+        Debug.Log(_playerControls.Touch.PrimaryPosition.ReadValue<Vector2>());
         OnTouchStarted?.Invoke(Utils.ScreenToWorld(_mainCamera, _playerControls.Touch.PrimaryPosition.ReadValue<Vector2>()));
     }
     private void EndTouchPrimary(InputAction.CallbackContext context)
     {
+        Debug.Log(_playerControls.Touch.PrimaryPosition.ReadValue<Vector2>());
         OnTouchEnded?.Invoke(Utils.ScreenToWorld(_mainCamera, _playerControls.Touch.PrimaryPosition.ReadValue<Vector2>()));
     }
-    public Vector3 PrimaryPosition()
+    public Vector2 PrimaryPosition()
     {
         return Utils.ScreenToWorld(_mainCamera, _playerControls.Touch.PrimaryPosition.ReadValue<Vector2>());
     }
