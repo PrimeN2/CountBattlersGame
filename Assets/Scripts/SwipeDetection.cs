@@ -5,10 +5,10 @@ public class SwipeDetection : MonoBehaviour
 {
     [SerializeField] private LineController _lineController;
     [SerializeField] private float _minimumDistance = .015f;
+    [SerializeField] private InputManager _inputManager;
     [SerializeField, Range(0f, 1f)]
     private float _directionThreshold = .7f;
 
-    private InputManager _inputManager;
 
     private Vector2 _startPosition;
     private Vector2 _currentPosition;
@@ -16,10 +16,6 @@ public class SwipeDetection : MonoBehaviour
     private LineController.Lines _swipedLine = LineController.Lines.Center;
     private Coroutine _swipeCoroutine;
 
-    private void Awake()
-    {
-        _inputManager = InputManager.Instance;
-    }
     private void SwipeStart(Vector2 position)
     {
         _isSwiped = false;

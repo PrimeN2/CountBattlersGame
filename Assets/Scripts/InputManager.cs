@@ -6,6 +6,7 @@ public class InputManager : Singleton<InputManager>
 {
     private PlayerControls _playerControls;
     private Camera _mainCamera;
+    private bool _isFirstTouch = true;
 
     #region Events
     public delegate void StartTouch(Vector2 position);
@@ -17,21 +18,31 @@ public class InputManager : Singleton<InputManager>
     {
         _playerControls = new PlayerControls();
         _mainCamera = Camera.main;
+        _isFirstTouch = true;
     }
     private void Start()
     {
-        _playerControls.Touch.PrimaryContact.started += ctx => StartTouchPrimary(ctx);
-        _playerControls.Touch.PrimaryContact.canceled += ctx => EndTouchPrimary(ctx);
+        _playerControls.Touch.PrimaryContact.started += ctx => StartTouchPrimary();
+        _playerControls.Touch.PrimaryContact.canceled += ctx => EndTouchPrimary();
+    }
+    private void Update()
+    {
+        if (_playerControls.Touch.PrimaryContact.triggered && _isFirstTouch)
+        {
+            OnTouchStarted?.Invoke(Utils.ScreenToWorld(_mainCamera, _playerControls.Touch.PrimaryPosition.ReadValue<Vector2>()));
+            _isFirstTouch = false;
+        }
     }
 
-    private void StartTouchPrimary(InputAction.CallbackContext context)
+    private void StartTouchPrimary()
     {
-        Debug.Log(_playerControls.Touch.PrimaryPosition.ReadValue<Vector2>());
-        OnTouchStarted?.Invoke(Utils.ScreenToWorld(_mainCamera, _playerControls.Touch.PrimaryPosition.ReadValue<Vector2>()));
+        if (!_isFirstTouch)
+        {
+            OnTouchStarted?.Invoke(Utils.ScreenToWorld(_mainCamera, _playerControls.Touch.PrimaryPosition.ReadValue<Vector2>()));
+        }
     }
-    private void EndTouchPrimary(InputAction.CallbackContext context)
+    private void EndTouchPrimary()
     {
-        Debug.Log(_playerControls.Touch.PrimaryPosition.ReadValue<Vector2>());
         OnTouchEnded?.Invoke(Utils.ScreenToWorld(_mainCamera, _playerControls.Touch.PrimaryPosition.ReadValue<Vector2>()));
     }
     public Vector2 PrimaryPosition()
