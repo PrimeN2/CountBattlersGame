@@ -4,8 +4,8 @@ using UnityEngine;
 public class SwipeDetection : MonoBehaviour
 {
     [SerializeField] private LineController _lineController;
-    [SerializeField] private float _minimumDistance = .015f;
     [SerializeField] private InputManager _inputManager;
+    [SerializeField] private float _minimumDistance = .015f;
     [SerializeField, Range(0f, 1f)]
     private float _directionThreshold = .7f;
 
