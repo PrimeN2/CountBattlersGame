@@ -7,11 +7,11 @@ public class PlayerRotation : MonoBehaviour
     public static Vector3 _rotationDirection = Vector3.right;
 
     [SerializeField] private Rigidbody _rigidbody;
-    [SerializeField] private float _rotationSpeed = 50;
+    [SerializeField] private float _rotationSpeed = 10;
 
     private IEnumerable RotateToTheSide(int direction)
     {
-        _rotationDirection = new Vector3(1, rotation * direction, 0); 
+        _rotationDirection = new Vector3(1, _rotationSpeed * direction, 0); 
 
         yield return new WaitForFixedUpdate();
     }
@@ -19,14 +19,14 @@ public class PlayerRotation : MonoBehaviour
     private void Awake()
     {
         _rotationDirection = Vector3.right;
-        _rotationSpeed = 50;
         _rigidbody = GetComponent<Rigidbody>();
     }
-    private void FixedUpdate()
+    private void Update()
     {
         //transform.rotation = Quaternion.AngleAxis(Mathf.Repeat(_rotationSpeed, 360), _rotationDirection);
         //_rotationSpeed += 4;
-        _rigidbody.AddRelativeTorque(_rotationDirection * _rotationSpeed);
+        //_rigidbody.AddRelativeTorque(_rotationDirection * _rotationSpeed);
+        transform.Rotate(_rotationDirection * _rotationSpeed * Time.deltaTime);
     }
 
     //private void OnEnable()
