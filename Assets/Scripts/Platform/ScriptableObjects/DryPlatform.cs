@@ -3,9 +3,9 @@
 [CreateAssetMenu(menuName = "Platform/DryPlatform", fileName = "new DryPlatform")]
 public class DryPlatform : DefaultPlatform
 {
-    public override void Accept(IPlatformVisiter platformVisiter)
+    public override void Accept(IPlatformVisiter platformVisiter, Transform transform)
     {
-        platformVisiter.Visit(this);
+        platformVisiter.Visit(this, transform);
     }
 
 }

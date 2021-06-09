@@ -24,7 +24,8 @@ public class LayerChangingHandler
 {
     private PlatformsBlockKeeper _platformsBlockKeeper;
     private List<DefaultPlatform> _platformSetting;
-    private List<DefaultPlatform> _platformSettingWithPositivLayerChanging;
+    private List<DefaultPlatform> _platformSettingWithPositiveLayerChanging;
+    private List<DefaultPlatform> _platformSettingWithNegativeLayerChanging;
 
     public LayerChangingHandler(List<DefaultPlatform> platformSetting)
     {
@@ -33,8 +34,10 @@ public class LayerChangingHandler
 
     public void SetRandomPlatforms(PlatformsBlockKeeper platformsBlockKeeper)
     {
-        int countPositivPlatforms = 0;
-        _platformSettingWithPositivLayerChanging = new List<DefaultPlatform>();
+        int countPositivePlatforms = 0;
+        int countNegativePlatforms = 0;
+        _platformSettingWithPositiveLayerChanging = new List<DefaultPlatform>();
+        _platformSettingWithNegativeLayerChanging = new List<DefaultPlatform>();
         _platformsBlockKeeper = platformsBlockKeeper;
 
         for (int i = 0; i < 3; i++)
@@ -43,25 +46,40 @@ public class LayerChangingHandler
                                                                            _platformSetting.Count)]);
             if(GetLayerChanging(i) >= 0)
             {
-                countPositivPlatforms += 1;
+                countPositivePlatforms += 1;
             }
-        }
-        for(int i = 0; i < _platformSetting.Count; i++)
-        {
-            if (_platformSetting[i].ChangingLayer >= 0)
+            else
             {
-                _platformSettingWithPositivLayerChanging.Add(_platformSetting[i]);
+                countNegativePlatforms += 1;
             }
         }
-        if(countPositivPlatforms < 1)
+        for (int i = 0; i < _platformSetting.Count; i++)
+        {
+            if (_platformSetting[i].ChangingScale >= 0)
+            {
+                _platformSettingWithPositiveLayerChanging.Add(_platformSetting[i]);
+            }
+
+            else if (_platformSetting[i].ChangingScale < 0)
+            {
+                _platformSettingWithNegativeLayerChanging.Add(_platformSetting[i]);
+            }
+        }
+        if (countNegativePlatforms < 1)
         {
             _platformsBlockKeeper.PlatformKeepers[
-                Random.Range(0, 3)].Init(_platformSettingWithPositivLayerChanging[Random.Range(0, 
-                _platformSettingWithPositivLayerChanging.Count)]);
+                Random.Range(0, 3)].Init(_platformSettingWithNegativeLayerChanging[Random.Range(0,
+                _platformSettingWithNegativeLayerChanging.Count)]);
+        }
+        if (countPositivePlatforms < 1)
+        {
+            _platformsBlockKeeper.PlatformKeepers[
+                Random.Range(0, 3)].Init(_platformSettingWithPositiveLayerChanging[Random.Range(0, 
+                _platformSettingWithPositiveLayerChanging.Count)]);
         }
     }
     private int GetLayerChanging(int numberPlatform)
     {
-        return _platformsBlockKeeper.PlatformKeepers[numberPlatform].PlatformType.ChangingLayer;
+        return _platformsBlockKeeper.PlatformKeepers[numberPlatform].PlatformType.ChangingScale;
     }
 }

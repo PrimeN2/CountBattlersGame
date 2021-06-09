@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 084ad55b06d9af549acbd7c351a559f0, type: 3}
   m_Name: SnowyPlatform
   m_EditorClassIdentifier: 
-  _material: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  _material: {fileID: 2100000, guid: 049886ac1c9be8d4db643c92eee3880f, type: 2}
   _changingLayer: 1

@@ -3,9 +3,9 @@
 [CreateAssetMenu(menuName = "Platform/SnowyPlatform", fileName = "new SnowyPlatform")]
 public class SnowyPlatform : DefaultPlatform
 {
-    public override void Accept(IPlatformVisiter platformVisiter)
+    public override void Accept(IPlatformVisiter platformVisiter, Transform transform)
     {
-        platformVisiter.Visit(this);
+        platformVisiter.Visit(this, transform);
     }
     
 }
