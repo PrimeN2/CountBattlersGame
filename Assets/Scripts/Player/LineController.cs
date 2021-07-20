@@ -2,17 +2,14 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 public class LineController : MonoBehaviour
 {
     public static Func<int, IEnumerator> OnPlayerMoving;
+    public static Func<int, int, IEnumerator> OnPlayerTurning;
     public Lines CurrentLine { get => _currentLine; }
     private Lines _currentLine;
 
-    [SerializeField] private float _speed = 0.05f;
-    [SerializeField] private Rigidbody _playerRigidbody;
     private bool _isSwitchingLine = false;
-    private Vector3 _targetPosition = new Vector3(0, 0, 0);
 
     public enum Lines
     {
@@ -22,37 +19,32 @@ public class LineController : MonoBehaviour
     }
     private void Awake()
     {
-        _playerRigidbody = GetComponent<Rigidbody>();
         _currentLine = Lines.Center;
 
     }
-    public void ChangeLine(Lines line)
+    public void ChangeLine(Lines direction)
     {
         if (!_isSwitchingLine)
         {
-            int sumLine = (int)_currentLine + (int)line;
-            if (sumLine >= -1 && sumLine <= 1)
+            int sumLine = (int)_currentLine + (int)direction;
+            if (sumLine > -2 && sumLine < 2)
             {
                 _currentLine = (Lines)sumLine;
-                StartCoroutine(SwitchLine(_currentLine, line));
+                StartCoroutine(SwitchLine(_currentLine, direction));
             }
         }
     }
-    private IEnumerator SwitchLine(Lines currentLine, Lines line)
+    private IEnumerator SwitchLine(Lines currentLine, Lines direction)
     {
-        float rotation = 1;
-        _isSwitchingLine = true;
-        _targetPosition = new Vector3(0.83f * (int)currentLine, transform.position.y, transform.position.z);
-        StartCoroutine(OnPlayerMoving?.Invoke((int)line));
+        if (OnPlayerMoving != null && OnPlayerTurning != null)
+        {
+            _isSwitchingLine = true;
 
-        //while (transform.position.x != _targetPosition.x)
-        //{
-        //    _targetPosition = new Vector3(0.83f * (int)currentLine, transform.position.y, transform.position.z);
-        //    //transform.position = Vector3.MoveTowards(transform.position, _targetPosition, _speed);
-        //    // rotation -= _speed; 
-        //    
-        //}
-        yield return new WaitForFixedUpdate();
-        _isSwitchingLine = false;
+            StartCoroutine(OnPlayerTurning.Invoke((int)currentLine, (int)direction));
+            yield return StartCoroutine(OnPlayerMoving.Invoke((int)currentLine));
+
+            _isSwitchingLine = false;
+        }
+
     }
 }

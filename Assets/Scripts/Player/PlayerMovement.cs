@@ -1,26 +1,31 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
     public static float PlayerSpeed { get; set; }
     [SerializeField] private float _playerSpeed = 10f;
-    [SerializeField] private Rigidbody _playerRigidbody;
+
+    private Vector3 _targetPosition = new Vector3(0, 0, 0);
     private void Awake()
     {
         PlayerSpeed = _playerSpeed;
-        _playerRigidbody = GetComponent<Rigidbody>();
     }
 
-    private IEnumerator MovingSnowball(int direction)
+    private IEnumerator MovingSnowball(int currentLine)
     {
-        for (int i = 0; i < 10; ++i)
+        _targetPosition = new Vector3(0.83f * currentLine, transform.position.y, transform.position.z);
+
+        while (transform.position.x != _targetPosition.x)
         {
-            _playerRigidbody.AddForce(Vector3.right * _playerSpeed * -direction);
+            _targetPosition = new Vector3(0.83f * currentLine, transform.position.y, transform.position.z);
+            transform.position = Vector3.MoveTowards(transform.position, _targetPosition, PlayerSpeed * Time.deltaTime);
+
             yield return null;
         }
     }
+
     private void OnEnable()
     {
         LineController.OnPlayerMoving += MovingSnowball;
