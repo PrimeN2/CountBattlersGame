@@ -63,6 +63,7 @@ GameObject:
   - component: {fileID: 703991130733478222}
   - component: {fileID: 3270014408323265223}
   - component: {fileID: 5999265397228873792}
+  - component: {fileID: 1132670506017644461}
   m_Layer: 0
   m_Name: Platform
   m_TagString: Moving
@@ -111,7 +112,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 76fbbcc32b2f47347b9893f6575fa588, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -158,6 +159,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edcdac9fc024e974199397bcbc2aac8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1132670506017644461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 709759008511063963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 446792cdf24864640ae034ffb616fc79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SnowHeightMap: {fileID: 8600000, guid: b88f30e007159d743ab7817421f8d7f6, type: 2}
+  HeightMapUpdate: {fileID: 2100000, guid: fe736c012b6d9cd4caa7c000dda2a0be, type: 2}
+  SecondsToRestore: 100
+  Player: {fileID: 2607619870382197013, guid: 9edb37e9b2bc5a448a350c2ee07a49ba, type: 3}
 --- !u!1 &3373809093122455270
 GameObject:
   m_ObjectHideFlags: 0
@@ -171,6 +188,7 @@ GameObject:
   - component: {fileID: 8208759571596694816}
   - component: {fileID: 9050471715568856984}
   - component: {fileID: 4866504603723801507}
+  - component: {fileID: 1152747676661395881}
   m_Layer: 0
   m_Name: Platform (3)
   m_TagString: Moving
@@ -266,6 +284,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edcdac9fc024e974199397bcbc2aac8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1152747676661395881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3373809093122455270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 446792cdf24864640ae034ffb616fc79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SnowHeightMap: {fileID: 8600000, guid: b88f30e007159d743ab7817421f8d7f6, type: 2}
+  HeightMapUpdate: {fileID: 2100000, guid: fe736c012b6d9cd4caa7c000dda2a0be, type: 2}
+  SecondsToRestore: 100
+  Player: {fileID: 2607619870382197013, guid: 9edb37e9b2bc5a448a350c2ee07a49ba, type: 3}
 --- !u!1 &4989961657741256602
 GameObject:
   m_ObjectHideFlags: 0
@@ -279,6 +313,7 @@ GameObject:
   - component: {fileID: 4689822869535242380}
   - component: {fileID: 4082178517246602956}
   - component: {fileID: 4829785102509139394}
+  - component: {fileID: 1678108842375699264}
   m_Layer: 0
   m_Name: Platform (2)
   m_TagString: Moving
@@ -374,3 +409,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edcdac9fc024e974199397bcbc2aac8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1678108842375699264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4989961657741256602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 446792cdf24864640ae034ffb616fc79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SnowHeightMap: {fileID: 8600000, guid: b88f30e007159d743ab7817421f8d7f6, type: 2}
+  HeightMapUpdate: {fileID: 2100000, guid: fe736c012b6d9cd4caa7c000dda2a0be, type: 2}
+  SecondsToRestore: 100
+  Player: {fileID: 2607619870382197013, guid: 9edb37e9b2bc5a448a350c2ee07a49ba, type: 3}

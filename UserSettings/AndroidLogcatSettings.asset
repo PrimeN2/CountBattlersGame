@@ -3,8 +3,8 @@
     "m_SelectedPackage": {
         "deviceId": "JNV4CQOZ9TNJFIWW",
         "name": "com.DefaultCompany.Main",
-        "processId": 13370,
-        "exited": true
+        "processId": 29716,
+        "exited": false
     },
     "m_SelectedPriority": 0,
     "m_KnownPackagesForSerialization": [
@@ -24,6 +24,12 @@
             "deviceId": "JNV4CQOZ9TNJFIWW",
             "name": "com.oppo.launcher",
             "processId": 2129,
+            "exited": false
+        },
+        {
+            "deviceId": "JNV4CQOZ9TNJFIWW",
+            "name": "com.DefaultCompany.Main",
+            "processId": 29716,
             "exited": false
         }
     ],

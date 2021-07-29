@@ -26,6 +26,14 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void ChangeSpeed(float changeValue)
+    {
+        if(PlayerSpeed < 0)
+            return;
+
+        PlayerSpeed -= changeValue;
+    }
+
     private void OnEnable()
     {
         LineController.OnPlayerMoving += MovingSnowball;

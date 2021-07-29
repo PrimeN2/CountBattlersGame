@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2192713437659651654}
   - component: {fileID: 2192713437659651649}
   - component: {fileID: 2192713437659651648}
+  - component: {fileID: -9193382410322417882}
   m_Layer: 0
   m_Name: Platform
   m_TagString: Moving
@@ -108,4 +109,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edcdac9fc024e974199397bcbc2aac8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _movingSpeed: 10
+--- !u!114 &-9193382410322417882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2192713437659651650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 446792cdf24864640ae034ffb616fc79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SnowHeightMap: {fileID: 8600000, guid: b88f30e007159d743ab7817421f8d7f6, type: 2}
+  HeightMapUpdate: {fileID: 2100000, guid: fe736c012b6d9cd4caa7c000dda2a0be, type: 2}
+  SecondsToRestore: 100
+  Player: {fileID: 2607619870382197013, guid: 9edb37e9b2bc5a448a350c2ee07a49ba, type: 3}

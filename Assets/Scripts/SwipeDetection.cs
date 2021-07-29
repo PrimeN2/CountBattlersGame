@@ -9,6 +9,7 @@ public class SwipeDetection : MonoBehaviour
     [SerializeField, Range(0f, 1f)]
     private float _directionThreshold = .7f;
 
+    [SerializeField] private DebugLogger Logger;
 
     private Vector2 _startPosition;
     private Vector2 _currentPosition;
@@ -18,6 +19,7 @@ public class SwipeDetection : MonoBehaviour
 
     private void SwipeStart(Vector2 position)
     {
+        Logger.Log("SwipeStart");
         _isSwiped = false;
         _startPosition = position;
         _swipeCoroutine = StartCoroutine(SwipeControls());
@@ -53,14 +55,17 @@ public class SwipeDetection : MonoBehaviour
 
         if (Vector2.Dot(Vector2.left, direction) > _directionThreshold)
         {
+            Logger.Log("Left Swipe");
             return LineController.Lines.Left;
         }
         else if (Vector2.Dot(Vector2.right, direction) > _directionThreshold)
         {
+            Logger.Log("Right Swipe");
             return LineController.Lines.Right;
         }
         else
         {
+            Logger.Log("No Direction Swipe");
             return LineController.Lines.Center;
         }
     }

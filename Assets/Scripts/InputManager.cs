@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.InputSystem;
+using System;
 
 [DefaultExecutionOrder(-1)]
 public class InputManager : Singleton<InputManager>
