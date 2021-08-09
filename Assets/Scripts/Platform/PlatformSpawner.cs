@@ -24,7 +24,7 @@ public class PlatformSpawner : MonoBehaviour
         _currentBlocksPlatforms.Add(_startPlatformsBlock);
         _platformsBlocks.Add(_startPlatformsBlock, _startPlatformsBlock.GetComponent<PlatformsBlockKeeper>());
 
-        _platformLength = _startPlatform.GetComponent<BoxCollider>().bounds.size.z;
+        _platformLength = _startPlatform.GetComponent<MeshCollider>().bounds.size.z;
         _platformZPosition = _startPlatform.transform.position.x + _platformLength;
         _platformZPosition = 0;
 

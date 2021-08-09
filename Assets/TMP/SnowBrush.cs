@@ -8,10 +8,6 @@ public class SnowBrush : MonoBehaviour
     public float SecondsToRestore = 100;
 
     public GameObject Player;
-    //public GameObject[] Paws;
-
-    private Camera _mainCamera;
-    private int _tireIndex;
 
     private float _timeToRestoreOneTick;
     
@@ -22,8 +18,7 @@ public class SnowBrush : MonoBehaviour
     private void Start()
     {
         SnowHeightMap.Initialize();
-        Player = GameObject.Find("Player");
-        _mainCamera = Camera.main;
+        Player = FindObjectOfType<PlayerCollisionObstacleHandler>().gameObject;
     }
 
     private void Update()
@@ -60,33 +55,4 @@ public class SnowBrush : MonoBehaviour
             HeightMapUpdate.SetFloat(DrawAngle, angle * Mathf.Deg2Rad);
         }
     }
-
-    //private void DrawWithPaws()
-    //{
-    //    GameObject paw = Paws[tireIndex++ % Paws.Length];
-
-    //    Ray ray = new Ray(paw.transform.position, Vector3.down);
-    //    if (Physics.Raycast(ray, out RaycastHit hit, 0.32f))
-    //    {
-    //        Vector2 hitTextureCoord = hit.textureCoord;
-    //        float angle = 180 + paw.transform.rotation.eulerAngles.y;
-
-    //        HeightMapUpdate.SetVector(DrawPosition, hitTextureCoord);
-    //        HeightMapUpdate.SetFloat(DrawAngle, angle * Mathf.Deg2Rad);
-    //    }
-    //}
-
-    //private void DrawWithMouse(Vector2 worldMousePosition)
-    //{
-    //    Vector2 mousePosition = mainCamera.WorldToScreenPoint(worldMousePosition);
-    //    Ray ray = mainCamera.ScreenPointToRay(mousePosition);
-
-    //    if (Physics.Raycast(ray, out RaycastHit hit))
-    //    {
-    //        Vector2 hitTextureCoord = hit.textureCoord;
-
-    //        HeightMapUpdate.SetVector(DrawPosition, hitTextureCoord);
-    //        HeightMapUpdate.SetFloat(DrawAngle, 45 * Mathf.Deg2Rad);
-    //    }
-    //}
 }
