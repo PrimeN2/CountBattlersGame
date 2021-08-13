@@ -42,11 +42,11 @@ public class PlayerRotation : MonoBehaviour
 
     private void OnEnable()
     {
-        LineController.OnPlayerTurning += RotateToTheSide;
+        LineSwitcher.OnPlayerTurning += RotateToTheSide;
     }
 
     private void OnDisable()
     {
-        LineController.OnPlayerTurning -= RotateToTheSide;
+        LineSwitcher.OnPlayerTurning -= RotateToTheSide;
     }
 }

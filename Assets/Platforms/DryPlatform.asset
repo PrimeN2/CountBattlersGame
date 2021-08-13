@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc4b7d531f2569a418c31a5f6bb74a8d, type: 3}
   m_Name: DryPlatform
   m_EditorClassIdentifier: 
-  _material: {fileID: 2100000, guid: e1dd38fc9b3181a4eb57f36cef29f52f, type: 2}
+  _material: {fileID: 2100000, guid: 771ef0db413b5b24291b37bb67fbdf04, type: 2}
   _changingLayer: -1

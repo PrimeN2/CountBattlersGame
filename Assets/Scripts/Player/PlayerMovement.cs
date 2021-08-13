@@ -36,11 +36,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        LineController.OnPlayerMoving += MovingSnowball;
+        LineSwitcher.OnPlayerMoving += MovingSnowball;
     }
 
     private void OnDisable()
     {
-        LineController.OnPlayerMoving -= MovingSnowball;
+        LineSwitcher.OnPlayerMoving -= MovingSnowball;
     }
 }
