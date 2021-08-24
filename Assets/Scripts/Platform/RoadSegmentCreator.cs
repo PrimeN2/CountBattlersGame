@@ -1,38 +1,38 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class PlatformsBlockCreator
+public class RoadSegmentCreator
 {
     private List<DefaultPlatform> _platformSetting;
-    private PlatformsBlockKeeper _platformsBlockKeeper;
-    private LayerChangingHandler _layerChangingHandler;
+    private RoadSegmentKeeper _platformsBlockKeeper;
+    private PlatformTypeIdentifier _platformTypeIdentifier;
 
-    public PlatformsBlockCreator(List<DefaultPlatform> platformSettings)
+    public RoadSegmentCreator(List<DefaultPlatform> platformSettings)
     {
         _platformSetting = platformSettings;
-        _layerChangingHandler = new LayerChangingHandler(_platformSetting);
+        _platformTypeIdentifier = new PlatformTypeIdentifier(_platformSetting);
     }
 
-    public void DefinePlatformsBlock(PlatformsBlockKeeper platformsBlockScript)
+    public void DefineRoadSegment(RoadSegmentKeeper platformsBlockScript)
     {
         _platformsBlockKeeper = platformsBlockScript;
 
-        _layerChangingHandler.SetRandomPlatforms(_platformsBlockKeeper);
+        _platformTypeIdentifier.SetRandomPlatforms(_platformsBlockKeeper);
     }
 }
-public class LayerChangingHandler
+public class PlatformTypeIdentifier
 {
-    private PlatformsBlockKeeper _platformsBlockKeeper;
+    private RoadSegmentKeeper _platformsBlockKeeper;
     private List<DefaultPlatform> _platformSetting;
     private List<DefaultPlatform> _platformSettingWithPositiveLayerChanging;
     private List<DefaultPlatform> _platformSettingWithNegativeLayerChanging;
 
-    public LayerChangingHandler(List<DefaultPlatform> platformSetting)
+    public PlatformTypeIdentifier(List<DefaultPlatform> platformSetting)
     {
         _platformSetting = platformSetting;
     }
 
-    public void SetRandomPlatforms(PlatformsBlockKeeper platformsBlockKeeper)
+    public void SetRandomPlatforms(RoadSegmentKeeper platformsBlockKeeper)
     {
         int countPositivePlatforms = 0;
         int countNegativePlatforms = 0;

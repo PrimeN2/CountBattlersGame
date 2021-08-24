@@ -5,40 +5,31 @@ public class SwipeDetection : MonoBehaviour
 {
     [SerializeField] private LineSwitcher _lineSwitcher;
     [SerializeField] private ColorSwitcher _colorSwitcher;
-    [SerializeField] private DebugLogger Logger;
     [SerializeField] private InputManager _inputManager;
     [SerializeField] private float _minimumDistance = .015f;
+    [SerializeField] private Material _darkPlayerMaterial;
+    [SerializeField] private Material _lightPlayerMaterial;
     [SerializeField, Range(0f, 1f)]
     private float _directionThreshold = .7f;
 
     private Vector2 _startPosition;
     private Vector2 _currentPosition;
     private bool _isSwiped = false;
-    private LineSwitcher.Lines _newLine = LineSwitcher.Lines.Center;
-    private Color _newColor = Color.white;
+
+    private SwipeDirection _currentSwipeDirection;
     private Coroutine _swipeCoroutine;
 
+    private void Awake()
+    {
+        _currentSwipeDirection = new SwipeDirection();
+    }
     private void SwipeStart(Vector2 position)
     {
-        Logger.Log("SwipeStart");
         _isSwiped = false;
         _startPosition = position;
         _swipeCoroutine = StartCoroutine(SwipeControls());
     }
-    private IEnumerator SwipeControls()
-    {
-        while (true)
-        {
-            _currentPosition = _inputManager.PrimaryPosition();
-            if (CanSwipe())
-            {
-                _lineSwitcher.ChangeLine(_newLine);
-                _colorSwitcher.ChangeColor(_newColor);
-                _isSwiped = true;
-            }
-            yield return null;
-        }
-    }
+
     private void SwipeEnd(Vector2 position)
     {
         StopCoroutine(_swipeCoroutine);
@@ -51,47 +42,55 @@ public class SwipeDetection : MonoBehaviour
         else
             return false;
     }
-    private void SetSwipeDirection()
+
+    private IEnumerator SwipeControls()
+    {
+        while (true)
+        {
+            _currentPosition = _inputManager.PrimaryPosition();
+            if (CanSwipe())
+            {
+                DefineSwipeDirection();
+
+                if (_currentSwipeDirection.IsMaterialChanged)
+                    _colorSwitcher.ChangeColor(_currentSwipeDirection.GetMaterial);
+                else
+                    _lineSwitcher.TryChangeLine(_currentSwipeDirection.GetLineDirection);
+
+                _isSwiped = true;
+            }
+            yield return null;
+        }
+    }
+
+    private void DefineSwipeDirection()
     {
         Vector2 direction = (_currentPosition - _startPosition).normalized;
 
         if (Vector2.Dot(Vector2.left, direction) > _directionThreshold)
         {
-            Logger.Log("Left Swipe");
-            _newLine = LineSwitcher.Lines.Left;
+            _currentSwipeDirection.SetDirection(LineSwitcher.Lines.Left);
         }
 
         else if (Vector2.Dot(Vector2.right, direction) > _directionThreshold)
         {
-            Logger.Log("Right Swipe");
-            _newLine = LineSwitcher.Lines.Right;
+            _currentSwipeDirection.SetDirection(LineSwitcher.Lines.Right);
         }
 
         else if (Vector2.Dot(Vector2.up, direction) > _directionThreshold)
         {
-            Logger.Log("Up Swipe");
-            _newLine = LineSwitcher.Lines.Center;
-            _newColor = Color.black;
+            _currentSwipeDirection.SetDirection(_darkPlayerMaterial);
         }
 
         else if(Vector2.Dot(Vector2.down, direction) > _directionThreshold)
         {
-            Logger.Log("Down Swipe");
-            _newLine = LineSwitcher.Lines.Center;
-            _newColor = Color.white;
-        }
-
-        else
-        {
-            Logger.Log("No Direction Swipe");
-            _newLine = LineSwitcher.Lines.Center;
+            _currentSwipeDirection.SetDirection(_lightPlayerMaterial);
         }
     }
 
     private bool CanSwipe()
     {
-        SetSwipeDirection();
-        return _isSwiped == false && DetectSwipe() && _newLine != LineSwitcher.Lines.Center;
+        return _isSwiped == false && DetectSwipe();
     }
 
     private void OnEnable()
@@ -104,5 +103,38 @@ public class SwipeDetection : MonoBehaviour
     {
         _inputManager.OnTouchStarted -= SwipeStart;
         _inputManager.OnTouchEnded -= SwipeEnd;
+    }
+}
+
+public class SwipeDirection
+{
+    public LineSwitcher.Lines GetLineDirection => _line;
+    public Material GetMaterial => _material;
+    public bool IsMaterialChanged;
+
+    private Material _material;
+    private LineSwitcher.Lines _line;
+
+    public SwipeDirection()
+    {
+        _line = LineSwitcher.Lines.Center;
+        IsMaterialChanged = false;
+    }
+
+    public void SetDirection(LineSwitcher.Lines line)
+    {
+        _line = line;
+        IsMaterialChanged = false;
+    }
+
+    public void SetDirection(Material material)
+    {
+        if (_material != material)
+        {
+            _material = material;
+            IsMaterialChanged = true;
+        }
+        else
+            IsMaterialChanged = false;
     }
 }

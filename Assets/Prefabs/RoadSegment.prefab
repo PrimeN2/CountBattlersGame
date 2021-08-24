@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6299264531437212200}
   - component: {fileID: 8388387699746643090}
+  - component: {fileID: -7866774643979239555}
   m_Layer: 0
-  m_Name: BlockPlatforms
+  m_Name: RoadSegment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,6 +51,18 @@ MonoBehaviour:
   - {fileID: 2050887368664259633}
   - {fileID: 1103557156833004495}
   - {fileID: 3391443261177880291}
+--- !u!114 &-7866774643979239555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5910991507753112415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b61dd851c7d4894f94a55c610de9d23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &145834861698558801
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -22,7 +22,7 @@ public class LineSwitcher : MonoBehaviour
         _currentLine = Lines.Center;
 
     }
-    public void ChangeLine(Lines direction)
+    public void TryChangeLine(Lines direction)
     {
         if (!_isSwitchingLine)
         {

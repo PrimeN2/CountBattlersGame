@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc4b7d531f2569a418c31a5f6bb74a8d, type: 3}
-  m_Name: DryPlatform
+  m_Script: {fileID: 11500000, guid: 084ad55b06d9af549acbd7c351a559f0, type: 3}
+  m_Name: SecondPlatrform
   m_EditorClassIdentifier: 
   _material: {fileID: 2100000, guid: 771ef0db413b5b24291b37bb67fbdf04, type: 2}
   _changingLayer: -1

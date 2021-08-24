@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 084ad55b06d9af549acbd7c351a559f0, type: 3}
-  m_Name: SnowyPlatform
+  m_Name: FirstPlatform
   m_EditorClassIdentifier: 
   _material: {fileID: 2100000, guid: 771ef0db413b5b24291b37bb67fbdf04, type: 2}
   _changingLayer: 1

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(menuName = "Platform/SnowyPlatform", fileName = "new SnowyPlatform")]
-public class SnowyPlatform : DefaultPlatform
+[CreateAssetMenu(menuName = "Platform/Platform", fileName = "new Platform")]
+public class Platform : DefaultPlatform
 {
     public override void Accept(IPlatformVisiter platformVisiter, Transform transform)
     {

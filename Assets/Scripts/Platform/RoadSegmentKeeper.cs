@@ -2,9 +2,9 @@
 using UnityEngine;
 using System;
 
-public class PlatformsBlockKeeper : MonoBehaviour
+public class RoadSegmentKeeper : MonoBehaviour
 {
-    public static Action<GameObject> OnPlatformOverFliew;
+    public static Action<GameObject> OnSegmentOverFliew;
     public List<PlatformKeeper> PlatformKeepers;
 
     private void Update()
@@ -15,7 +15,7 @@ public class PlatformsBlockKeeper : MonoBehaviour
     {
         if (transform.position.z < -7)
         {
-            OnPlatformOverFliew?.Invoke(gameObject);
+            OnSegmentOverFliew?.Invoke(gameObject);
         }
     }
 }
