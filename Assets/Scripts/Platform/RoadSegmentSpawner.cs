@@ -52,8 +52,8 @@ public class RoadSegmentSpawner : MonoBehaviour
     }
     private void ReuseRoadSegment(GameObject roadSegment)
     {
+        _barrierSpawner.InitBarrierOnSegment(roadSegment, true);
         PutRoadSegment(roadSegment);
-        roadSegment.transform.GetChild(3).gameObject.SetActive(true);
         _currentRoadSegments.Remove(roadSegment);
         _currentRoadSegments.Add(roadSegment);
     }

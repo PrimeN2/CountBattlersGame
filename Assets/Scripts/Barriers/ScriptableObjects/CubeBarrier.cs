@@ -3,18 +3,8 @@
 [CreateAssetMenu(menuName = "Barrier/CubeBarrier", fileName = "new CubeBarrier")]
 public class CubeBarrier : DefaultBarrier
 {
-    public override void Accept(IBarrierVisitor obstacleVisitor)
+    public override void Accept(IBarrierVisitor obstacleVisitor, GameObject player, GameObject barrier)
     {
-        obstacleVisitor.Visit(this);
-    }
-
-    public override void Spawn()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void Impacted()
-    {
-        base.Impacted();
+        obstacleVisitor.Visit(this, player, barrier);
     }
 }

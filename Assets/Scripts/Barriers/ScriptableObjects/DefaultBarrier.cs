@@ -3,22 +3,19 @@ using UnityEngine;
 
 public abstract class DefaultBarrier : ScriptableObject
 {
-    public abstract void Accept(IBarrierVisitor obstacleVisitor);
-
-    public virtual void Setup() { }
-
-    public abstract void Spawn();
-
-    public virtual void Impacted()
-    {
-
-    }
-
-    public GameObject BarrierPrefab { get => _barrierPrefab; }
-    [SerializeField] protected GameObject _barrierPrefab;
+    public abstract void Accept(IBarrierVisitor obstacleVisitor, GameObject player, GameObject barrier);
     
-    public Material BarrierMaterial { get => _barrierMaterial; }
-    [SerializeField] protected Material _barrierMaterial;
+    public EmissionMaterial[] BarrierMaterials { get => _barrierMaterials; }
+    [SerializeField] protected EmissionMaterial[] _barrierMaterials;
+
+    public Vector3 BarrierPostion { get => _barrierPosition; }
+    [SerializeField] private Vector3 _barrierPosition;
+
+    public Vector3 BarrierScale { get => _barrierScale; }
+    [SerializeField] private Vector3 _barrierScale;
+
+    public Vector3 BarrierRotation { get => _barrierRotation; }
+    [SerializeField] private Vector3 _barrierRotation;
 
     public LineSwitcher.Lines[] PossibleLines { get => _possibleLines; }
     [SerializeField] protected LineSwitcher.Lines[] _possibleLines;

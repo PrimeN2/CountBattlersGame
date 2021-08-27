@@ -4,23 +4,22 @@ using UnityEngine;
 [RequireComponent(typeof(Renderer))]
 public class ColorSwitcher : MonoBehaviour
 {
+    public EmissionMaterial NewMaterial { get; private set; }
+
     [SerializeField] private Renderer _playerRenderer;
     [SerializeField] private Material _playerMaterial;
-    [SerializeField] private Material _newMaterial;
 
-    [HideInInspector] public Color CurrentColor = Color.white;
     private float duration = 0;
 
     private void Start()
     {
-        CurrentColor = Color.clear;
         _playerRenderer = gameObject.GetComponent<Renderer>();
         _playerRenderer.material = _playerMaterial;
     }
 
-    public void ChangeColor(Material material)
+    public void ChangeColor(EmissionMaterial material)
     {
-        _newMaterial = material;
+        NewMaterial = material;
         StartCoroutine(SwitchMaterial());
     }
 
@@ -33,7 +32,7 @@ public class ColorSwitcher : MonoBehaviour
         {
             duration += Time.deltaTime;
 
-            _playerMaterial.Lerp(_playerMaterial, _newMaterial, duration);
+            _playerMaterial.Lerp(_playerMaterial, NewMaterial.Material, duration);
 
             yield return null;
         }

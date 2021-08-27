@@ -2,5 +2,5 @@
 
 public interface IBarrierVisitor
 {
-    void Visit(DefaultBarrier typeOfObstacle);
+    void Visit(CubeBarrier barrierType, GameObject player, GameObject barrier);
 }

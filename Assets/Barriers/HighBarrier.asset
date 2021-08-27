@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6bfae4f2e13a86b449681840dc7dbf66, type: 3}
-  m_Name: CubeBarrier
+  m_Name: HighBarrier
   m_EditorClassIdentifier: 
   _barrierMaterials:
   - Material: {fileID: 2100000, guid: 95f5f12b16e22fc4e86f430966012ed9, type: 2}
     EmissionColor: {r: 0, g: 0, b: 0, a: 0}
   - Material: {fileID: 2100000, guid: b5fa3ebc0e44a3947b638b94bbd6ec93, type: 2}
     EmissionColor: {r: 1, g: 1, b: 1, a: 0}
-  _barrierPosition: {x: 0.83, y: -0.15, z: 3.15}
-  _barrierScale: {x: 0.7, y: 0.7, z: 0.7}
+  _barrierPosition: {x: 0.83, y: 0.2, z: 3.15}
+  _barrierScale: {x: 0.7, y: 1.4, z: 0.7}
   _barrierRotation: {x: 0, y: 0, z: 0}
   _possibleLines: 0000000001000000ffffffff

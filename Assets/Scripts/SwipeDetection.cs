@@ -7,8 +7,8 @@ public class SwipeDetection : MonoBehaviour
     [SerializeField] private ColorSwitcher _colorSwitcher;
     [SerializeField] private InputManager _inputManager;
     [SerializeField] private float _minimumDistance = .015f;
-    [SerializeField] private Material _darkPlayerMaterial;
-    [SerializeField] private Material _lightPlayerMaterial;
+    [SerializeField] private EmissionMaterial _darkPlayerMaterial;
+    [SerializeField] private EmissionMaterial _lightPlayerMaterial;
     [SerializeField, Range(0f, 1f)]
     private float _directionThreshold = .7f;
 
@@ -109,10 +109,10 @@ public class SwipeDetection : MonoBehaviour
 public class SwipeDirection
 {
     public LineSwitcher.Lines GetLineDirection => _line;
-    public Material GetMaterial => _material;
+    public EmissionMaterial GetMaterial => _material;
     public bool IsMaterialChanged;
 
-    private Material _material;
+    private EmissionMaterial _material = new EmissionMaterial(null, Color.clear);
     private LineSwitcher.Lines _line;
 
     public SwipeDirection()
@@ -127,14 +127,14 @@ public class SwipeDirection
         IsMaterialChanged = false;
     }
 
-    public void SetDirection(Material material)
+    public void SetDirection(EmissionMaterial material)
     {
-        if (_material != material)
+        if (!_material.Equals(material))
         {
             _material = material;
             IsMaterialChanged = true;
+            return;
         }
-        else
-            IsMaterialChanged = false;
+        IsMaterialChanged = false;
     }
 }

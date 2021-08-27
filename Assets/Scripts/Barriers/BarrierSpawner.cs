@@ -6,19 +6,28 @@ public class BarrierSpawner : MonoBehaviour
     [SerializeField] private DefaultBarrier[] _barrierTypes;
     [SerializeField] private GameObject _barrierPrefab;
 
-    private Quaternion _rotation;
-    private Vector3 _position;
-    private List<GameObject> _barriersPool;
+    private BarrierIdentifier _barrierIdentifier;
+    private Dictionary<GameObject, BarrierKeeper> _barrierOnTheSegment = new Dictionary<GameObject, BarrierKeeper>();
 
-    private void Start()
+    private void Awake()
     {
-        _barriersPool = new List<GameObject>();
+        _barrierIdentifier = new BarrierIdentifier(_barrierTypes);
     }
 
     public void SpawnBarrier(GameObject roadSegment, bool isActive)
     {
-        roadSegment.GetComponent<RoadSegment>().GetPointToSpawn(_barrierTypes[0], out _position, out _rotation);
-        GameObject currentBarrier = Instantiate(_barrierPrefab, _position, _rotation, roadSegment.transform);
-        currentBarrier.SetActive(isActive);
+        GameObject currentBarrier = Instantiate(_barrierPrefab, Vector3.zero, Quaternion.identity, roadSegment.transform);
+        BarrierKeeper barrierKeeper = currentBarrier.GetComponent<BarrierKeeper>();
+        _barrierOnTheSegment.Add(roadSegment, barrierKeeper);
+        InitBarrierOnSegment(roadSegment, isActive);
+
+    }
+
+    public void InitBarrierOnSegment(GameObject roadSegment, bool isActive)
+    {
+        _barrierOnTheSegment[roadSegment].Init(
+            _barrierTypes[Random.Range(0, _barrierTypes.Length)], 
+            roadSegment.GetComponent<RoadSegment>());
+        _barrierOnTheSegment[roadSegment].gameObject.SetActive(isActive);
     }
 }
