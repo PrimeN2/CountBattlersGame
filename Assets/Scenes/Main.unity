@@ -792,7 +792,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _playerMaterial
       value: 
-      objectReference: {fileID: 2100000, guid: 2fd75c6526af8a8488d9d19e5f79eefd, type: 2}
+      objectReference: {fileID: 2100000, guid: c72b8b71b7ea22241bcc7a7b7508b958, type: 2}
     - target: {fileID: -8557819164455248984, guid: 9edb37e9b2bc5a448a350c2ee07a49ba,
         type: 3}
       propertyPath: _playerRenderer
@@ -817,7 +817,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 2fd75c6526af8a8488d9d19e5f79eefd, type: 2}
+      objectReference: {fileID: 2100000, guid: c72b8b71b7ea22241bcc7a7b7508b958, type: 2}
     - target: {fileID: 2607619870382197010, guid: 9edb37e9b2bc5a448a350c2ee07a49ba,
         type: 3}
       propertyPath: m_IsKinematic

@@ -19,20 +19,20 @@ public class @PlayerControls : IInputActionCollection, IDisposable
             ""id"": ""bfd3a2b8-672d-4c7b-9674-da6d0476e3dc"",
             ""actions"": [
                 {
+                    ""name"": ""PrimaryPosition"",
+                    ""type"": ""Value"",
+                    ""id"": ""40a71087-d325-4ffc-b529-8034c3bcd3ef"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
                     ""name"": ""PrimaryContact"",
                     ""type"": ""PassThrough"",
                     ""id"": ""96d74485-d5b3-4b85-9d01-2f8d08eb3838"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Press""
-                },
-                {
-                    ""name"": ""PrimaryPosition"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""40a71087-d325-4ffc-b529-8034c3bcd3ef"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press(behavior=2)""
                 }
             ],
             ""bindings"": [
@@ -65,8 +65,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
 }");
         // Touch
         m_Touch = asset.FindActionMap("Touch", throwIfNotFound: true);
-        m_Touch_PrimaryContact = m_Touch.FindAction("PrimaryContact", throwIfNotFound: true);
         m_Touch_PrimaryPosition = m_Touch.FindAction("PrimaryPosition", throwIfNotFound: true);
+        m_Touch_PrimaryContact = m_Touch.FindAction("PrimaryContact", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -116,14 +116,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     // Touch
     private readonly InputActionMap m_Touch;
     private ITouchActions m_TouchActionsCallbackInterface;
-    private readonly InputAction m_Touch_PrimaryContact;
     private readonly InputAction m_Touch_PrimaryPosition;
+    private readonly InputAction m_Touch_PrimaryContact;
     public struct TouchActions
     {
         private @PlayerControls m_Wrapper;
         public TouchActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @PrimaryContact => m_Wrapper.m_Touch_PrimaryContact;
         public InputAction @PrimaryPosition => m_Wrapper.m_Touch_PrimaryPosition;
+        public InputAction @PrimaryContact => m_Wrapper.m_Touch_PrimaryContact;
         public InputActionMap Get() { return m_Wrapper.m_Touch; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -133,29 +133,29 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         {
             if (m_Wrapper.m_TouchActionsCallbackInterface != null)
             {
-                @PrimaryContact.started -= m_Wrapper.m_TouchActionsCallbackInterface.OnPrimaryContact;
-                @PrimaryContact.performed -= m_Wrapper.m_TouchActionsCallbackInterface.OnPrimaryContact;
-                @PrimaryContact.canceled -= m_Wrapper.m_TouchActionsCallbackInterface.OnPrimaryContact;
                 @PrimaryPosition.started -= m_Wrapper.m_TouchActionsCallbackInterface.OnPrimaryPosition;
                 @PrimaryPosition.performed -= m_Wrapper.m_TouchActionsCallbackInterface.OnPrimaryPosition;
                 @PrimaryPosition.canceled -= m_Wrapper.m_TouchActionsCallbackInterface.OnPrimaryPosition;
+                @PrimaryContact.started -= m_Wrapper.m_TouchActionsCallbackInterface.OnPrimaryContact;
+                @PrimaryContact.performed -= m_Wrapper.m_TouchActionsCallbackInterface.OnPrimaryContact;
+                @PrimaryContact.canceled -= m_Wrapper.m_TouchActionsCallbackInterface.OnPrimaryContact;
             }
             m_Wrapper.m_TouchActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @PrimaryContact.started += instance.OnPrimaryContact;
-                @PrimaryContact.performed += instance.OnPrimaryContact;
-                @PrimaryContact.canceled += instance.OnPrimaryContact;
                 @PrimaryPosition.started += instance.OnPrimaryPosition;
                 @PrimaryPosition.performed += instance.OnPrimaryPosition;
                 @PrimaryPosition.canceled += instance.OnPrimaryPosition;
+                @PrimaryContact.started += instance.OnPrimaryContact;
+                @PrimaryContact.performed += instance.OnPrimaryContact;
+                @PrimaryContact.canceled += instance.OnPrimaryContact;
             }
         }
     }
     public TouchActions @Touch => new TouchActions(this);
     public interface ITouchActions
     {
-        void OnPrimaryContact(InputAction.CallbackContext context);
         void OnPrimaryPosition(InputAction.CallbackContext context);
+        void OnPrimaryContact(InputAction.CallbackContext context);
     }
 }

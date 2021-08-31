@@ -112,7 +112,7 @@ public class SwipeDirection
     public EmissionMaterial GetMaterial => _material;
     public bool IsMaterialChanged;
 
-    private EmissionMaterial _material = new EmissionMaterial(null, Color.clear);
+    private EmissionMaterial _material = new EmissionMaterial(null, new Color(0, 0, 0, 1));
     private LineSwitcher.Lines _line;
 
     public SwipeDirection()

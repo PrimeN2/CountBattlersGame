@@ -10,23 +10,34 @@ public class ColorSwitcher : MonoBehaviour
     [SerializeField] private Material _playerMaterial;
 
     private float duration = 0;
+    private bool _isSwitching = false;
+    private Coroutine _currentCoroutine;
 
     private void Start()
     {
         _playerRenderer = gameObject.GetComponent<Renderer>();
         _playerRenderer.material = _playerMaterial;
+        NewMaterial = new EmissionMaterial(_playerMaterial, Color.cyan);
+        _isSwitching = false;
     }
 
     public void ChangeColor(EmissionMaterial material)
     {
         NewMaterial = material;
-        StartCoroutine(SwitchMaterial());
+        if (_isSwitching)
+        {
+            StopCoroutine(_currentCoroutine);
+            _currentCoroutine = StartCoroutine(SwitchMaterial());
+            return;
+        }
+        _currentCoroutine = StartCoroutine(SwitchMaterial());
     }
 
     private IEnumerator SwitchMaterial()
     {
         duration = 0;
         _playerMaterial = _playerRenderer.material;
+        _isSwitching = true;
 
         while (duration < 1)
         {
@@ -36,5 +47,6 @@ public class ColorSwitcher : MonoBehaviour
 
             yield return null;
         }
+        _isSwitching = false;
     } 
 }

@@ -6,20 +6,20 @@
             "id": "bfd3a2b8-672d-4c7b-9674-da6d0476e3dc",
             "actions": [
                 {
+                    "name": "PrimaryPosition",
+                    "type": "Value",
+                    "id": "40a71087-d325-4ffc-b529-8034c3bcd3ef",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
                     "name": "PrimaryContact",
                     "type": "PassThrough",
                     "id": "96d74485-d5b3-4b85-9d01-2f8d08eb3838",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
-                },
-                {
-                    "name": "PrimaryPosition",
-                    "type": "PassThrough",
-                    "id": "40a71087-d325-4ffc-b529-8034c3bcd3ef",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": ""
+                    "interactions": "Press(behavior=2)"
                 }
             ],
             "bindings": [

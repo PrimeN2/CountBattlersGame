@@ -7,11 +7,11 @@ public class BarrierVisitor : IBarrierVisitor
         BarrierKeeper currentBarrier = barrier.GetComponent<BarrierKeeper>();
         if (player.GetComponent<ColorSwitcher>().NewMaterial.Equals(currentBarrier.CurrentMaterial))
         {
-            Debug.Log("Equals!");
+            player.GetComponent<SessionData>().IncreaseScore(1);
         }
         else
         {
-            Debug.Log("Not Equals!");
+            player.GetComponent<SessionData>().DamagePlayer(1);
         }
         currentBarrier.Impacted();
     }
