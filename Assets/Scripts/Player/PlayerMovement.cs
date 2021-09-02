@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     public static float PlayerSpeed { get; set; }
     [SerializeField] private float _playerSpeed = 10f;
+    [SerializeField] private float _maxPlayerSpeed = 100;
 
     private Vector3 _targetPosition = new Vector3(0, 0, 0);
     private void Awake()
@@ -13,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
         PlayerSpeed = _playerSpeed;
     }
 
-    private IEnumerator MovingSnowball(int currentLine)
+    private IEnumerator MovingBall(int currentLine)
     {
         _targetPosition = new Vector3(0.83f * currentLine, transform.position.y, transform.position.z);
 
@@ -26,21 +27,21 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void ChangeSpeed(float changeValue)
+    public void TryChangeSpeed(float changeValue)
     {
-        if(PlayerSpeed < 0)
+        if(PlayerSpeed < 0 || PlayerSpeed + changeValue > _maxPlayerSpeed)
             return;
 
-        PlayerSpeed -= changeValue;
+        PlayerSpeed += changeValue;
     }
 
     private void OnEnable()
     {
-        LineSwitcher.OnPlayerMoving += MovingSnowball;
+        LineSwitcher.OnPlayerMoving += MovingBall;
     }
 
     private void OnDisable()
     {
-        LineSwitcher.OnPlayerMoving -= MovingSnowball;
+        LineSwitcher.OnPlayerMoving -= MovingBall;
     }
 }

@@ -16,14 +16,17 @@ public class InputManager : Singleton<InputManager>
     public event EndTouch OnTouchEnded;
     #endregion
 
-    private void Awake()
-    {
-        _playerControls = new PlayerControls();
-        _mainCamera = Camera.main;
-        _isTouchStarted = false;
-    }
     private void Start()
     {
+        _mainCamera = Camera.main;
+        _isTouchStarted = false;
+        InitInputSystem();
+    }
+
+    public void InitInputSystem()
+    {
+        _playerControls = new PlayerControls();
+        _playerControls.Enable();
         _playerControls.Touch.PrimaryContact.started += ctx => StartTouchPrimary(ctx);
         _playerControls.Touch.PrimaryContact.canceled += ctx => EndTouchPrimary(ctx);
     }
@@ -36,11 +39,9 @@ public class InputManager : Singleton<InputManager>
             StartCoroutine(WaitForCorrectValue());
             return;
         }
-        Debug.Log("StartTouchPrimary");
         OnTouchStarted?.Invoke(Utils.ScreenToWorld(_mainCamera, touchPosition));
         _isTouchStarted = true;
     }
-
 
     private IEnumerator WaitForCorrectValue()
     {
@@ -63,10 +64,12 @@ public class InputManager : Singleton<InputManager>
     }
     private void OnEnable()
     {
-        _playerControls.Enable();
+        if (_playerControls != null)
+            _playerControls.Enable();
     }
     private void OnDisable()
     {
-        _playerControls.Disable();
+        if (_playerControls != null)
+            _playerControls.Disable();
     }
 }

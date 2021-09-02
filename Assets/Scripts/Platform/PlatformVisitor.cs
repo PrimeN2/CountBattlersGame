@@ -16,7 +16,7 @@ public class PlatformVisitor : IPlatformVisiter
 
     private void ChangeSnowBallScale(Transform transform, int sign)
     {
-        transform.gameObject.GetComponent<PlayerMovement>().ChangeSpeed(_speedChange * sign);
+        transform.gameObject.GetComponent<PlayerMovement>().TryChangeSpeed(_speedChange * sign);
         transform.localScale += _scaleChange * sign;
     }
 }

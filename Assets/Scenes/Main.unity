@@ -369,6 +369,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54541c4a74360a64691aeb723b9a2e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &626237543 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2607619870382197020, guid: 9edb37e9b2bc5a448a350c2ee07a49ba,
+    type: 3}
+  m_PrefabInstance: {fileID: 2607619870314720902}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d32fa892a89c66e47868f46a8a4e8039, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -541,6 +553,7 @@ GameObject:
   - component: {fileID: 963194226}
   - component: {fileID: 963194230}
   - component: {fileID: 963194229}
+  - component: {fileID: 963194231}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -686,6 +699,20 @@ MonoBehaviour:
   m_BeforeTransparentBundles: []
   m_BeforeStackBundles: []
   m_AfterStackBundles: []
+--- !u!114 &963194231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6221a58073fb5e244935e64362437dd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerMovement: {fileID: 626237543}
+  _speedChangeValue: 0.5
 --- !u!1 &1106710251 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3391443261177880292, guid: aada765d2f0b81d49a24308f60f0759a,
@@ -832,6 +859,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2607619870382197020, guid: 9edb37e9b2bc5a448a350c2ee07a49ba,
+        type: 3}
+      propertyPath: _maxPlayerSpeed
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 2607619870382197022, guid: 9edb37e9b2bc5a448a350c2ee07a49ba,
         type: 3}
