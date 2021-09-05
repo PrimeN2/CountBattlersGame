@@ -1,21 +1,15 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-public class PlayerData : Singleton<PlayerData>
+[Serializable]
+public class PlayerData
 {
-    public int BestScore { get; private set; }
-    public float BestDistance { get; private set; }
-
-    public void SetBestScore(int newScore)
+    public PlayerData(int score,float distance)
     {
-        if (newScore > BestScore)
-            BestScore = newScore;
+        BestScore = score;
+        BestDistance = distance;
     }
 
-    private void Save()
-    {
-
-    }
+    public int BestScore;
+    public float BestDistance;
 }
+

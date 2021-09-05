@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SessionData : MonoBehaviour
@@ -12,11 +10,22 @@ public class SessionData : MonoBehaviour
     public int PlayerHealth { get; private set; }
     public float PlayerDistance { get; private set; }
 
-    private void Awake()
+
+    private ISaveSystem _saveSystem;
+    private PlayerData _playerData;
+
+    private void Start()
     {
+        SetPlayerData();
         PlayerScore = 0;
         PlayerDistance = 0;
         PlayerHealth = 3;
+    }
+    private void SetPlayerData()
+    {
+        _saveSystem = new BinarySaveSystem();
+        _playerData = _saveSystem.Load();
+        Debug.Log(_playerData.BestScore);
     }
 
     public void DamagePlayer(int damage)
@@ -26,16 +35,29 @@ public class SessionData : MonoBehaviour
             OnPlayerDied?.Invoke();
         }
         PlayerHealth -= damage;
-        Debug.Log($"PlayerHealth equals {PlayerHealth}");
     }
     public void IncreaseScore(int score)
     {
         PlayerScore += score;
-        if (PlayerScore > PlayerData.Instance.BestScore)
+        if (PlayerScore > _playerData.BestScore)
         {
-            PlayerData.Instance.SetBestScore(PlayerScore);
+            _playerData.BestScore = PlayerScore;
             OnRecordAchieved?.Invoke();
         }
-        Debug.Log($"PlayerScore equals {PlayerScore}");
+    }
+
+
+    //TO-DO: Test how it works on mobile platform
+    private void OnApplicationPause(bool pause)
+    {
+        if (pause == true)
+            _saveSystem.Save(_playerData);
+    }
+    private void OnApplicationQuit()
+    {
+        _saveSystem.Save(_playerData);
+#if UNITY_EDITOR
+        _saveSystem.DeleteSaves();
+#endif
     }
 }
