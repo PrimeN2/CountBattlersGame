@@ -4,46 +4,50 @@ using UnityEngine;
 public class SessionData : MonoBehaviour
 {
     public Action OnPlayerDied;
-    public Action OnRecordAchieved;
+    public Action OnPlayerDamaged;
+    public Action OnScoreIncreased;
 
     public int PlayerScore { get; private set; }
     public int PlayerHealth { get; private set; }
     public float PlayerDistance { get; private set; }
+    public int BestScore { get => _playerData.BestScore; }
 
+    [SerializeField] private DebugLogger _debuger;
 
     private ISaveSystem _saveSystem;
     private PlayerData _playerData;
 
-    private void Start()
+    private void Awake()
     {
-        SetPlayerData();
+        SetSaveSystem(new BinarySaveSystem());
+        _playerData = _saveSystem.Load();
         PlayerScore = 0;
         PlayerDistance = 0;
         PlayerHealth = 3;
     }
-    private void SetPlayerData()
+
+    public void SetSaveSystem(ISaveSystem saveSystem)
     {
-        _saveSystem = new BinarySaveSystem();
-        _playerData = _saveSystem.Load();
-        Debug.Log(_playerData.BestScore);
+        _saveSystem = saveSystem;
     }
 
     public void DamagePlayer(int damage)
     {
         if (damage >= PlayerHealth)
         {
-            OnPlayerDied?.Invoke();
+            OnPlayerDamaged?.Invoke();
         }
         PlayerHealth -= damage;
-    }
+        OnPlayerDamaged?.Invoke();
+}
     public void IncreaseScore(int score)
     {
         PlayerScore += score;
         if (PlayerScore > _playerData.BestScore)
         {
             _playerData.BestScore = PlayerScore;
-            OnRecordAchieved?.Invoke();
         }
+        OnScoreIncreased?.Invoke();
     }
 
 
@@ -51,7 +55,12 @@ public class SessionData : MonoBehaviour
     private void OnApplicationPause(bool pause)
     {
         if (pause == true)
+        {
+            Debug.Log("Application paused");
             _saveSystem.Save(_playerData);
+            _debuger.Log("Application paused");
+        }
+
     }
     private void OnApplicationQuit()
     {

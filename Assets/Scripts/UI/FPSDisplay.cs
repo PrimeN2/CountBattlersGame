@@ -1,10 +1,10 @@
-﻿using UnityEngine.UI;
-using UnityEngine;
+﻿using UnityEngine;
+using TMPro;
 
 [RequireComponent(typeof(FPSCounter))]
 public class FPSDisplay : MonoBehaviour
 {
-    [SerializeField] private Text _FPSLabel;
+    [SerializeField] private TMP_Text _FPSLabel;
 
     private string[] _stringsFrom00To99 = {
         "00", "01", "02", "03", "04", "05", "06", "07", "08", "09",

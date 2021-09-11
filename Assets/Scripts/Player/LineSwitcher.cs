@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class LineSwitcher : MonoBehaviour
 {
-    public static Func<int, IEnumerator> OnPlayerMoving;
-    public static Func<int, int, IEnumerator> OnPlayerTurning;
+    public Func<int, IEnumerator> OnPlayerMoving;
+    public Func<int, int, IEnumerator> OnPlayerTurning;
     public Lines CurrentLine { get => _currentLine; }
     private Lines _currentLine;
 

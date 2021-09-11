@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 [DefaultExecutionOrder(-1)]
 public class InputManager : Singleton<InputManager>
 {
+    [SerializeField] private UILoader _menuLoader;
+
     private PlayerControls _playerControls;
     private Camera _mainCamera;
     private bool _isTouchStarted = false;
@@ -20,16 +22,22 @@ public class InputManager : Singleton<InputManager>
     {
         _mainCamera = Camera.main;
         _isTouchStarted = false;
-        InitInputSystem();
     }
 
-    public void InitInputSystem()
+    private void InitInputSystem()
     {
         _playerControls = new PlayerControls();
         _playerControls.Enable();
         _playerControls.Touch.PrimaryContact.started += ctx => StartTouchPrimary(ctx);
         _playerControls.Touch.PrimaryContact.canceled += ctx => EndTouchPrimary(ctx);
     }
+
+    private void DeinitInputSystem()
+    {
+        _playerControls?.Disable();
+        _playerControls = null;
+    }
+
 
     private void StartTouchPrimary(InputAction.CallbackContext context)
     {
@@ -64,11 +72,17 @@ public class InputManager : Singleton<InputManager>
     }
     private void OnEnable()
     {
+        _menuLoader.OnMenuHided += InitInputSystem;
+        _menuLoader.OnMenuLoaded += DeinitInputSystem;
+
         if (_playerControls != null)
             _playerControls.Enable();
     }
     private void OnDisable()
     {
+        _menuLoader.OnMenuHided -= InitInputSystem;
+        _menuLoader.OnMenuLoaded -= DeinitInputSystem;
+
         if (_playerControls != null)
             _playerControls.Disable();
     }

@@ -7,16 +7,18 @@ public class PlatformVisitor : IPlatformVisiter
 
     public void Visit(Platform typePlatform, Transform transform)
     {
-        if (transform.localScale.x <= 1.6f && PlayerMovement.PlayerSpeed > 0f)
+        PlayerMovement playerMovement = transform.gameObject.GetComponent<PlayerMovement>();
+
+        if (transform.localScale.x <= 1.6f && playerMovement.PlayerSpeed > 0f)
         {
             //Шайтанские техники
-            //ChangeSnowBallScale(transform, typePlatform.ChangingScale);
+            //ChangeSnowBallScale(transform, playerMovement, typePlatform.ChangingScale);
         }
     }
 
-    private void ChangeSnowBallScale(Transform transform, int sign)
+    private void ChangeSnowBallScale(Transform transform, PlayerMovement playerMovement, int sign)
     {
-        transform.gameObject.GetComponent<PlayerMovement>().TryChangeSpeed(_speedChange * sign);
+        playerMovement.TryChangeSpeed(_speedChange * sign);
         transform.localScale += _scaleChange * sign;
     }
 }

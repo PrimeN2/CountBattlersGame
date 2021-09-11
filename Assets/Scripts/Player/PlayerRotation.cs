@@ -1,8 +1,12 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(LineSwitcher))]
 public class PlayerRotation : MonoBehaviour
 {
+    [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private LineSwitcher _lineSwitcher;
+
     [SerializeField] private float _rotationSpeed = 10;
 
     private Vector3 _rotationDirection = Vector3.right;
@@ -32,21 +36,22 @@ public class PlayerRotation : MonoBehaviour
 
     private void Awake()
     {
+        _lineSwitcher = GetComponent<LineSwitcher>();
         _rotationDirection = new Vector3(1, 0, 0);
     }
 
     private void Update()
     {
-        transform.Rotate(_rotationDirection * _rotationSpeed * PlayerMovement.PlayerSpeed * Time.deltaTime, Space.World);
+        transform.Rotate(_rotationDirection * _rotationSpeed * playerMovement.PlayerSpeed * Time.deltaTime, Space.World);
     }
 
     private void OnEnable()
     {
-        LineSwitcher.OnPlayerTurning += RotateToTheSide;
+        _lineSwitcher.OnPlayerTurning += RotateToTheSide;
     }
 
     private void OnDisable()
     {
-        LineSwitcher.OnPlayerTurning -= RotateToTheSide;
+        _lineSwitcher.OnPlayerTurning -= RotateToTheSide;
     }
 }

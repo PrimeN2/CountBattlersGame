@@ -8,12 +8,12 @@ public class RoadSegmentSpawner : MonoBehaviour
     [SerializeField] private GameObject _startRoadSegment;
     [SerializeField] private GameObject _startPlatform;
     [SerializeField] private BarrierSpawner _barrierSpawner;
-    [SerializeField] private int _platformsCount;
+    [SerializeField] private PlayerMovement _playerMovement;
+    [SerializeField] private int _segmentsCount;
 
     private Dictionary<GameObject, RoadSegmentKeeper> _roadSegments;
     private RoadSegmentCreator _roadSegmentCreator;
     private List<GameObject> _currentRoadSegments;
-    private float _platformZPosition = 0;
     private float _platformLength;
 
     private void Awake()
@@ -26,11 +26,9 @@ public class RoadSegmentSpawner : MonoBehaviour
         _roadSegments.Add(_startRoadSegment, _startRoadSegment.GetComponent<RoadSegmentKeeper>());
 
         _platformLength = _startPlatform.GetComponent<MeshCollider>().bounds.size.z;
-        _platformZPosition = _startPlatform.transform.position.x + _platformLength;
-        _platformZPosition = 0;
 
         _barrierSpawner.SpawnBarrier(_currentRoadSegments[0], false);
-        for (int i = 0; i < _platformsCount; ++i)
+        for (int i = 0; i < _segmentsCount; ++i)
         {
             SpawnRoadSegment();
 
@@ -43,10 +41,11 @@ public class RoadSegmentSpawner : MonoBehaviour
 
     private void SpawnRoadSegment()
     {
+        //It is better not to change the sequence
         GameObject roadSegment = Instantiate(_roadSegmentPrefab);
-        roadSegment.transform.SetParent(transform);
-        roadSegment.transform.position = new Vector3(0, 0, _platformZPosition);
-        _roadSegments.Add(roadSegment, roadSegment.GetComponent<RoadSegmentKeeper>());
+        RoadSegmentKeeper roadSegmentKeeper = roadSegment.GetComponent<RoadSegmentKeeper>();
+        roadSegmentKeeper.Init(transform, _playerMovement);
+        _roadSegments.Add(roadSegment, roadSegmentKeeper);
         PutRoadSegment(roadSegment);
         _currentRoadSegments.Add(roadSegment);
     }
