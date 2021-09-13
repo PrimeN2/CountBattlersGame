@@ -12,7 +12,7 @@ public class SessionData : MonoBehaviour
     public float PlayerDistance { get; private set; }
     public int BestScore { get => _playerData.BestScore; }
 
-    [SerializeField] private DebugLogger _debuger;
+    [SerializeField] private UILoader _UILoader; 
 
     private ISaveSystem _saveSystem;
     private PlayerData _playerData;
@@ -50,15 +50,12 @@ public class SessionData : MonoBehaviour
         OnScoreIncreased?.Invoke();
     }
 
-
-    //TO-DO: Test how it works on mobile platform
     private void OnApplicationPause(bool pause)
     {
         if (pause == true)
         {
-            Debug.Log("Application paused");
+            _UILoader.HideMenu();
             _saveSystem.Save(_playerData);
-            _debuger.Log("Application paused");
         }
 
     }

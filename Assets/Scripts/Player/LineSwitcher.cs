@@ -9,7 +9,9 @@ public class LineSwitcher : MonoBehaviour
     public Lines CurrentLine { get => _currentLine; }
     private Lines _currentLine;
 
-    private bool _isSwitchingLine = false;
+    private Coroutine _currentSwitchCoutine;
+    private bool _isLineSwitching = false;
+    private bool _hasPreviousSwitchingEnded = true;
 
     public enum Lines
     {
@@ -24,13 +26,19 @@ public class LineSwitcher : MonoBehaviour
     }
     public void TryChangeLine(Lines direction)
     {
-        if (!_isSwitchingLine)
+        if (_isLineSwitching && _hasPreviousSwitchingEnded)
+        {
+            StartCoroutine(WaitForEndOfSwitch(direction));
+            return;
+        }
+
+        if (!_isLineSwitching)
         {
             int sumLine = (int)_currentLine + (int)direction;
             if (sumLine > -2 && sumLine < 2)
             {
                 _currentLine = (Lines)sumLine;
-                StartCoroutine(SwitchLine(_currentLine, direction));
+                _currentSwitchCoutine = StartCoroutine(SwitchLine(_currentLine, direction));
             }
         }
     }
@@ -38,13 +46,22 @@ public class LineSwitcher : MonoBehaviour
     {
         if (OnPlayerMoving != null && OnPlayerTurning != null)
         {
-            _isSwitchingLine = true;
+            _isLineSwitching = true;
 
             StartCoroutine(OnPlayerTurning.Invoke((int)currentLine, (int)direction));
             yield return StartCoroutine(OnPlayerMoving.Invoke((int)currentLine));
 
-            _isSwitchingLine = false;
+            _isLineSwitching = false;
         }
+    }
 
+    private IEnumerator WaitForEndOfSwitch(Lines direction)
+    {
+        _hasPreviousSwitchingEnded = false;
+
+        yield return _currentSwitchCoutine;
+
+        _hasPreviousSwitchingEnded = true;
+        TryChangeLine(direction);
     }
 }

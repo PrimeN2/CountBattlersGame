@@ -21,7 +21,7 @@ public class SwipeDetection : MonoBehaviour
 
     private void Awake()
     {
-        _currentSwipeDirection = new SwipeDirection();
+        _currentSwipeDirection = new SwipeDirection(_darkPlayerMaterial, _lightPlayerMaterial);
     }
     private void SwipeStart(Vector2 position)
     {
@@ -50,41 +50,16 @@ public class SwipeDetection : MonoBehaviour
             _currentPosition = _inputManager.PrimaryPosition();
             if (CanSwipe())
             {
-                DefineSwipeDirection();
+                _currentSwipeDirection.Define(_currentPosition, _startPosition, _directionThreshold);
 
                 if (_currentSwipeDirection.IsMaterialChanged)
-                    _colorSwitcher.ChangeColor(_currentSwipeDirection.GetMaterial);
+                    _colorSwitcher.TryChangeColor(_currentSwipeDirection.GetMaterial);
                 else
                     _lineSwitcher.TryChangeLine(_currentSwipeDirection.GetLineDirection);
 
                 _isSwiped = true;
             }
             yield return null;
-        }
-    }
-
-    private void DefineSwipeDirection()
-    {
-        Vector2 direction = (_currentPosition - _startPosition).normalized;
-
-        if (Vector2.Dot(Vector2.left, direction) > _directionThreshold)
-        {
-            _currentSwipeDirection.SetDirection(LineSwitcher.Lines.Left);
-        }
-
-        else if (Vector2.Dot(Vector2.right, direction) > _directionThreshold)
-        {
-            _currentSwipeDirection.SetDirection(LineSwitcher.Lines.Right);
-        }
-
-        else if (Vector2.Dot(Vector2.up, direction) > _directionThreshold)
-        {
-            _currentSwipeDirection.SetDirection(_darkPlayerMaterial);
-        }
-
-        else if(Vector2.Dot(Vector2.down, direction) > _directionThreshold)
-        {
-            _currentSwipeDirection.SetDirection(_lightPlayerMaterial);
         }
     }
 
@@ -112,29 +87,54 @@ public class SwipeDirection
     public EmissionMaterial GetMaterial => _material;
     public bool IsMaterialChanged;
 
-    private EmissionMaterial _material = new EmissionMaterial(null, new Color(0, 0, 0, 1));
+    private EmissionMaterial _darkPlayerMaterial;
+    private EmissionMaterial _lightPlayerMaterial;
+    private EmissionMaterial _material;
     private LineSwitcher.Lines _line;
 
-    public SwipeDirection()
+    public SwipeDirection(EmissionMaterial darkPlayerMaterial, EmissionMaterial lightPlayerMaterial)
     {
         _line = LineSwitcher.Lines.Center;
+        _material = new EmissionMaterial(null, new Color(0, 0, 0, 1));
         IsMaterialChanged = false;
+        _lightPlayerMaterial = lightPlayerMaterial;
+        _darkPlayerMaterial = darkPlayerMaterial;
     }
 
-    public void SetDirection(LineSwitcher.Lines line)
+    public void Define(Vector2 currentPosition, Vector2 startPosition, float directionThreshold)
+    {
+        Vector2 direction = (currentPosition - startPosition).normalized;
+
+        if (Vector2.Dot(Vector2.left, direction) > directionThreshold)
+        {
+            SetDirection(LineSwitcher.Lines.Left);
+        }
+
+        else if (Vector2.Dot(Vector2.right, direction) > directionThreshold)
+        {
+            SetDirection(LineSwitcher.Lines.Right);
+        }
+
+        else if (Vector2.Dot(Vector2.up, direction) > directionThreshold)
+        {
+            SetDirection(_darkPlayerMaterial);
+        }
+
+        else if (Vector2.Dot(Vector2.down, direction) > directionThreshold)
+        {
+            SetDirection(_lightPlayerMaterial);
+        }
+    }
+
+    private void SetDirection(LineSwitcher.Lines line)
     {
         _line = line;
         IsMaterialChanged = false;
     }
 
-    public void SetDirection(EmissionMaterial material)
+    private void SetDirection(EmissionMaterial material)
     {
-        if (!_material.Equals(material))
-        {
-            _material = material;
-            IsMaterialChanged = true;
-            return;
-        }
-        IsMaterialChanged = false;
+        _material = material;
+        IsMaterialChanged = true;
     }
 }

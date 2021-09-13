@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(LineSwitcher))]
 public class PlayerMovement : MonoBehaviour
 {
-    public float PlayerSpeed { get; private set; }
+    public float PlayerSpeed { get => _playerSpeed; }
     [SerializeField] private float _playerSpeed = 10f;
 
     [SerializeField] private float _maxPlayerSpeed = 100;
@@ -21,10 +21,9 @@ public class PlayerMovement : MonoBehaviour
         _lineSwitcher = GetComponent<LineSwitcher>();
         _isStoped = false;
         _previousPlayerSpeed = 0;
-        PlayerSpeed = _playerSpeed;
     }
 
-    private IEnumerator MovingBall(int currentLine)
+    private IEnumerator MoveBall(int currentLine)
     {
         _targetPosition = new Vector3(0.83f * currentLine, transform.position.y, transform.position.z);
 
@@ -42,34 +41,34 @@ public class PlayerMovement : MonoBehaviour
         if(PlayerSpeed < 0 || PlayerSpeed + changeValue > _maxPlayerSpeed && !_isStoped)
             return;
 
-        PlayerSpeed += changeValue;
+        _playerSpeed += changeValue;
     }
 
     public void StopMoving()
     {
         _previousPlayerSpeed = PlayerSpeed;
         _isStoped = true;
-        PlayerSpeed = 0;
+        _playerSpeed = 0;
     }
 
     public void ContinueMoving()
     {
         if (!_isStoped)
             return;
-        PlayerSpeed = _previousPlayerSpeed;
+        _playerSpeed = _previousPlayerSpeed;
         _isStoped = false;
     }
 
     private void OnEnable()
     {
-        _lineSwitcher.OnPlayerMoving += MovingBall;
+        _lineSwitcher.OnPlayerMoving += MoveBall;
         _menuLoader.OnMenuLoaded += StopMoving;
         _menuLoader.OnMenuHided += ContinueMoving;
     }
 
     private void OnDisable()
     {
-        _lineSwitcher.OnPlayerMoving -= MovingBall;
+        _lineSwitcher.OnPlayerMoving -= MoveBall;
         _menuLoader.OnMenuLoaded -= StopMoving;
         _menuLoader.OnMenuHided -= ContinueMoving;
     }
