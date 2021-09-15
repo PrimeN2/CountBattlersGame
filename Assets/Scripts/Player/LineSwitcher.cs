@@ -10,8 +10,10 @@ public class LineSwitcher : MonoBehaviour
     private Lines _currentLine;
 
     private Coroutine _currentSwitchCoutine;
+    private Coroutine _movingCoroutine;
+    private Coroutine _turningCoroutine;
+
     private bool _isLineSwitching = false;
-    private bool _hasPreviousSwitchingEnded = true;
 
     public enum Lines
     {
@@ -26,20 +28,15 @@ public class LineSwitcher : MonoBehaviour
     }
     public void TryChangeLine(Lines direction)
     {
-        if (_isLineSwitching && _hasPreviousSwitchingEnded)
-        {
-            StartCoroutine(WaitForEndOfSwitch(direction));
-            return;
-        }
+        int sumLine = (int)_currentLine + (int)direction;
 
-        if (!_isLineSwitching)
+        if (_isLineSwitching)
+            StopSwitch();
+
+        if (sumLine > -2 && sumLine < 2)
         {
-            int sumLine = (int)_currentLine + (int)direction;
-            if (sumLine > -2 && sumLine < 2)
-            {
-                _currentLine = (Lines)sumLine;
-                _currentSwitchCoutine = StartCoroutine(SwitchLine(_currentLine, direction));
-            }
+            _currentLine = (Lines)sumLine;
+            _currentSwitchCoutine = StartCoroutine(SwitchLine(_currentLine, direction));
         }
     }
     private IEnumerator SwitchLine(Lines currentLine, Lines direction)
@@ -48,20 +45,17 @@ public class LineSwitcher : MonoBehaviour
         {
             _isLineSwitching = true;
 
-            StartCoroutine(OnPlayerTurning.Invoke((int)currentLine, (int)direction));
-            yield return StartCoroutine(OnPlayerMoving.Invoke((int)currentLine));
+            _turningCoroutine = StartCoroutine(OnPlayerTurning.Invoke((int)currentLine, (int)direction));
+            _movingCoroutine = StartCoroutine(OnPlayerMoving.Invoke((int)currentLine));
+            yield return _movingCoroutine;
 
             _isLineSwitching = false;
         }
     }
-
-    private IEnumerator WaitForEndOfSwitch(Lines direction)
+    private void StopSwitch()
     {
-        _hasPreviousSwitchingEnded = false;
-
-        yield return _currentSwitchCoutine;
-
-        _hasPreviousSwitchingEnded = true;
-        TryChangeLine(direction);
+        StopCoroutine(_turningCoroutine);
+        StopCoroutine(_movingCoroutine);
+        StopCoroutine(_currentSwitchCoutine);
     }
 }

@@ -12,7 +12,6 @@ public class ColorSwitcher : MonoBehaviour
 
     private float duration = 0;
     private bool _isColorSwitching = false;
-    private bool _hasPreviousSwitchingEnded = true;
 
     private EmissionMaterial _newMaterial;
     private Coroutine _currentCoroutine;
@@ -32,17 +31,11 @@ public class ColorSwitcher : MonoBehaviour
         if (_newMaterial.Equals(material))
             return;
 
-        if (_hasPreviousSwitchingEnded && _isColorSwitching)
-        {
-            StartCoroutine(WaitForEndOfSwitch(material));
-            return;
-        }
+        _newMaterial = material;
 
-        if (!_isColorSwitching)
-        {
-            _newMaterial = material;
-            _currentCoroutine = StartCoroutine(SwitchMaterial());
-        }
+        if (_isColorSwitching)
+            StopCoroutine(_currentCoroutine);
+        _currentCoroutine = StartCoroutine(SwitchMaterial());
     }
 
     private IEnumerator SwitchMaterial()
@@ -53,23 +46,16 @@ public class ColorSwitcher : MonoBehaviour
 
         while (duration < 1)
         {
-            duration += Time.deltaTime;
+            duration += Time.deltaTime * _playerMovement.PlayerSpeed / 8;
 
-            _playerMaterial.Lerp(_playerMaterial, _newMaterial.Material, duration * _playerMovement.PlayerSpeed / 8);
+            _playerMaterial.Lerp(_playerMaterial, _newMaterial.Material, duration);
+
+            if (duration > .4f)
+                CurrentMaterial = _newMaterial;
+
 
             yield return null;
         }
-        CurrentMaterial = _newMaterial;
         _isColorSwitching = false;
-    }
-
-    private IEnumerator WaitForEndOfSwitch(EmissionMaterial material)
-    {
-        _hasPreviousSwitchingEnded = false;
-
-        yield return _currentCoroutine;
-
-        TryChangeColor(material);
-        _hasPreviousSwitchingEnded = true;
     }
 }
