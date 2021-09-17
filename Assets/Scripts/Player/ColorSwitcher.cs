@@ -10,7 +10,8 @@ public class ColorSwitcher : MonoBehaviour
     [SerializeField] private Renderer _playerRenderer;
     [SerializeField] private Material _playerMaterial;
 
-    private float duration = 0;
+    private float duration = 0f;
+
     private bool _isColorSwitching = false;
 
     private EmissionMaterial _newMaterial;
@@ -40,22 +41,18 @@ public class ColorSwitcher : MonoBehaviour
 
     private IEnumerator SwitchMaterial()
     {
-        duration = 0;
         _playerMaterial = _playerRenderer.material;
         _isColorSwitching = true;
+        duration = 0;
 
         while (duration < 1)
         {
-            duration += Time.deltaTime * _playerMovement.PlayerSpeed / 8;
-
-            _playerMaterial.Lerp(_playerMaterial, _newMaterial.Material, duration);
-
-            if (duration > .4f)
-                CurrentMaterial = _newMaterial;
-
+            duration += Time.deltaTime * _playerMovement.PlayerSpeed;
+            _playerMaterial.Lerp(CurrentMaterial.Material, _newMaterial.Material, duration);
 
             yield return null;
         }
         _isColorSwitching = false;
+        CurrentMaterial = _newMaterial;
     }
 }
