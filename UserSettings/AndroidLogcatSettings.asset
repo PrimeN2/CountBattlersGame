@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "JNV4CQOZ9TNJFIWW",
         "name": "com.DefaultCompany.Main",
-        "processId": 23372,
+        "processId": 28214,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -138,6 +138,18 @@
             "deviceId": "JNV4CQOZ9TNJFIWW",
             "name": "com.DefaultCompany.Main",
             "processId": 23372,
+            "exited": false
+        },
+        {
+            "deviceId": "JNV4CQOZ9TNJFIWW",
+            "name": "com.DefaultCompany.Main",
+            "processId": 17547,
+            "exited": false
+        },
+        {
+            "deviceId": "JNV4CQOZ9TNJFIWW",
+            "name": "com.DefaultCompany.Main",
+            "processId": 28214,
             "exited": false
         }
     ],
