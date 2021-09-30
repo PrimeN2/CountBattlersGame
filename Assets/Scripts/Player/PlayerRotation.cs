@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(LineSwitcher))]
 public class PlayerRotation : MonoBehaviour
 {
-    [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private PlayerMovement _playerMovement;
     [SerializeField] private LineSwitcher _lineSwitcher;
 
     [SerializeField] private float _rotationSpeed = 10;
@@ -15,12 +15,12 @@ public class PlayerRotation : MonoBehaviour
     private IEnumerator RotateToTheSide(int currentLine, int direction)
     {
         _targetPosition = 0.83f * currentLine;
-        float startingPosition = transform.position.x;
-        float distance = Mathf.Abs(startingPosition - _targetPosition);
+        float startPosition = transform.position.x;
+        float distance = Mathf.Abs(startPosition - _targetPosition);
 
         while (transform.position.x != _targetPosition)
         {
-            if (Mathf.Abs(startingPosition - transform.position.x) < distance / 2)
+            if (Mathf.Abs(startPosition - transform.position.x) < distance / 2)
             {
                 _rotationDirection.z -= 10 * direction * Time.deltaTime;
             }
@@ -42,7 +42,7 @@ public class PlayerRotation : MonoBehaviour
 
     private void Update()
     {
-        transform.Rotate(_rotationDirection * _rotationSpeed * playerMovement.PlayerSpeed * Time.deltaTime, Space.World);
+        transform.Rotate(_rotationDirection * _rotationSpeed * _playerMovement.PlayerSpeed * Time.deltaTime, Space.World);
     }
 
     private void OnEnable()

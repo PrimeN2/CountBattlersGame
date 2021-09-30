@@ -27,7 +27,7 @@ public class BarrierSpawner : MonoBehaviour
     {
         _barrierOnTheSegment[roadSegment].Init(
             _barrierTypes[Random.Range(0, _barrierTypes.Length)], 
-            roadSegment.GetComponent<RoadSegment>());
+            roadSegment.GetComponent<RoadSegmentKeeper>());
         _barrierOnTheSegment[roadSegment].gameObject.SetActive(isActive);
     }
 }

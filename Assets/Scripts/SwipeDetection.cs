@@ -53,9 +53,14 @@ public class SwipeDetection : MonoBehaviour
                 _currentSwipeDirection.Define(_currentPosition, _startPosition, _directionThreshold);
 
                 if (_currentSwipeDirection.IsMaterialChanged)
+                {
                     _colorSwitcher.TryChangeColor(_currentSwipeDirection.GetMaterial);
+                }
+
                 else
+                {
                     _lineSwitcher.TryChangeLine(_currentSwipeDirection.GetLineDirection);
+                }
 
                 _isSwiped = true;
             }

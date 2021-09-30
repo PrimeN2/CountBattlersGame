@@ -12,7 +12,7 @@ public class SessionData : MonoBehaviour
     public float PlayerDistance { get; private set; }
     public int BestScore { get => _playerData.BestScore; }
 
-    [SerializeField] private UILoader _UILoader; 
+    [SerializeField] private UILoader _UILoader;
 
     private ISaveSystem _saveSystem;
     private PlayerData _playerData;
@@ -54,7 +54,7 @@ public class SessionData : MonoBehaviour
     {
         if (pause == true)
         {
-            _UILoader.HideMenu();
+            _UILoader.LoadMenu();
             _saveSystem.Save(_playerData);
         }
 

@@ -2,27 +2,25 @@
 
 public class BarrierKeeper : MonoBehaviour
 {
-    public DefaultBarrier BarrierType { get => _barrierType; }
-    private DefaultBarrier _barrierType;
+    public DefaultBarrier BarrierType { get; private set; }
 
-    public EmissionMaterial CurrentMaterial { get => _currentMaterial; }
-    private EmissionMaterial _currentMaterial;
+    public EmissionMaterial CurrentMaterial { get; private set; }
 
-    public void Init(DefaultBarrier barrierType, RoadSegment roadSegment)
+    public void Init(DefaultBarrier barrierType, RoadSegmentKeeper roadSegment)
     {
-        _barrierType = barrierType;
+        BarrierType = barrierType;
 
-        _currentMaterial = _barrierType.BarrierMaterials[
-            Random.Range(0, _barrierType.BarrierMaterials.Length)];
-        gameObject.GetComponent<Renderer>().material = _currentMaterial.Material;
+        CurrentMaterial = BarrierType.BarrierMaterials[
+            Random.Range(0, BarrierType.BarrierMaterials.Length)];
+        gameObject.GetComponent<Renderer>().material = CurrentMaterial.Material;
 
         gameObject.transform.position = roadSegment.GetPointToSpawn(
             barrierType.PossibleLines[Random.Range(0, barrierType.PossibleLines.Length)],
             barrierType.BarrierPostion);
 
-        gameObject.transform.localScale = _barrierType.BarrierScale;
+        gameObject.transform.localScale = BarrierType.BarrierScale;
 
-        gameObject.transform.rotation = Quaternion.Euler(_barrierType.BarrierRotation);
+        gameObject.transform.rotation = Quaternion.Euler(BarrierType.BarrierRotation);
 
     }
 
