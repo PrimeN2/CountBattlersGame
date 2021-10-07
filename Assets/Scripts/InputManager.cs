@@ -7,7 +7,6 @@ public class InputManager : Singleton<InputManager>
 {
     [SerializeField] private UILoader _menuLoader;
 
-    private PlayerControls _playerControls;
     private Camera _mainCamera;
     private bool _isTouchStarted = false;
 
@@ -24,66 +23,79 @@ public class InputManager : Singleton<InputManager>
         _isTouchStarted = false;
     }
 
-    private void InitInputSystem()
+    private void Update()
     {
-        _playerControls = new PlayerControls();
-        _playerControls.Enable();
-        _playerControls.Touch.PrimaryContact.started += ctx => StartTouchPrimary(ctx);
-        _playerControls.Touch.PrimaryContact.canceled += ctx => EndTouchPrimary(ctx);
-    }
-
-    private void DeinitInputSystem()
-    {
-        _playerControls?.Disable();
-        _playerControls = null;
-    }
-
-
-    private void StartTouchPrimary(InputAction.CallbackContext context)
-    {
-        Vector2 touchPosition = _playerControls.Touch.PrimaryPosition.ReadValue<Vector2>();
-        if (touchPosition == Vector2.zero)
+        if (Input.touchCount != 0)
         {
-            StartCoroutine(WaitForCorrectValue());
-            return;
+            if (Input.GetTouch(0).phase == UnityEngine.TouchPhase.Began)
+                StartTouchPrimary();
+            else if (Input.GetTouch(0).phase == UnityEngine.TouchPhase.Ended)
+                EndTouchPrimary();
         }
-        OnTouchStarted?.Invoke(Utils.ScreenToWorld(_mainCamera, touchPosition));
-        _isTouchStarted = true;
     }
 
-    private IEnumerator WaitForCorrectValue()
-    {
-        yield return new WaitForEndOfFrame();
+    //private void InitInputSystem()
+    //{
+    //    _playerControls = new PlayerControls();
+    //    _playerControls.Enable();
+    //    _playerControls.Touch.PrimaryContact.started += ctx => StartTouchPrimary(ctx);
+    //    _playerControls.Touch.PrimaryContact.canceled += ctx => EndTouchPrimary(ctx);
+    //}
 
-        OnTouchStarted?.Invoke(Utils.ScreenToWorld(_mainCamera, _playerControls.Touch.PrimaryPosition.ReadValue<Vector2>()));
+    //private void DeinitInputSystem()
+    //{
+    //    _playerControls?.Disable();
+    //    _playerControls = null;
+    //}
+
+
+    private void StartTouchPrimary()
+    {
+        //Vector2 touchPosition = _playerControls.Touch.PrimaryPosition.ReadValue<Vector2>();
+        //if (touchPosition == Vector2.zero)
+        //{
+        //    StartCoroutine(WaitForCorrectValue());
+        //    return;
+        //}
+        //OnTouchStarted?.Invoke(Utils.ScreenToWorld(_mainCamera, touchPosition));
+        //_isTouchStarted = true;
+        OnTouchStarted.Invoke(Utils.ScreenToWorld(_mainCamera, Input.GetTouch(0).position));
     }
 
-    private void EndTouchPrimary(InputAction.CallbackContext context)
+    //private IEnumerator WaitForCorrectValue()
+    //{
+    //    yield return new WaitForEndOfFrame();
+
+    //    OnTouchStarted?.Invoke(Utils.ScreenToWorld(_mainCamera, _playerControls.Touch.PrimaryPosition.ReadValue<Vector2>()));
+    //}
+
+    private void EndTouchPrimary()
     {
-        if (!_isTouchStarted)
-            return;
-        OnTouchEnded?.Invoke(Utils.ScreenToWorld(_mainCamera, _playerControls.Touch.PrimaryPosition.ReadValue<Vector2>()));
-        _isTouchStarted = false;
+        //if (!_isTouchStarted)
+        //    return;
+        //OnTouchEnded?.Invoke(Utils.ScreenToWorld(_mainCamera, _playerControls.Touch.PrimaryPosition.ReadValue<Vector2>()));
+        //_isTouchStarted = false;
+        OnTouchEnded.Invoke(Utils.ScreenToWorld(_mainCamera, Input.GetTouch(0).position));
 
     }
     public Vector2 PrimaryPosition()
     {
-        return Utils.ScreenToWorld(_mainCamera, _playerControls.Touch.PrimaryPosition.ReadValue<Vector2>());
+        return Utils.ScreenToWorld(_mainCamera, Input.GetTouch(0).position);
     }
-    private void OnEnable()
-    {
-        _menuLoader.OnMenuHided += InitInputSystem;
-        _menuLoader.OnMenuLoaded += DeinitInputSystem;
+    //private void OnEnable()
+    //{
+    //    _menuLoader.OnMenuHided += InitInputSystem;
+    //    _menuLoader.OnMenuLoaded += DeinitInputSystem;
 
-        if (_playerControls != null)
-            _playerControls.Enable();
-    }
-    private void OnDisable()
-    {
-        _menuLoader.OnMenuHided -= InitInputSystem;
-        _menuLoader.OnMenuLoaded -= DeinitInputSystem;
+    //    if (_playerControls != null)
+    //        _playerControls.Enable();
+    //}
+    //private void OnDisable()
+    //{
+    //    _menuLoader.OnMenuHided -= InitInputSystem;
+    //    _menuLoader.OnMenuLoaded -= DeinitInputSystem;
 
-        if (_playerControls != null)
-            _playerControls.Disable();
-    }
+    //    if (_playerControls != null)
+    //        _playerControls.Disable();
+    //}
 }
