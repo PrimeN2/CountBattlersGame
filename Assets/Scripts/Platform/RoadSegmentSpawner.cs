@@ -3,29 +3,32 @@ using UnityEngine;
 
 public class RoadSegmentSpawner : MonoBehaviour
 {
+    public IEnumerable<RoadSegmentKeeper> RoadSegmentKeepers => _roadSegmentKeepers;
+
     [SerializeField] private List<DefaultPlatform> _platformSetting;
     [SerializeField] private GameObject _roadSegmentPrefab;
     [SerializeField] private GameObject _startRoadSegment;
     [SerializeField] private GameObject _startPlatform;
     [SerializeField] private BarrierSpawner _barrierSpawner;
-    [SerializeField] private PlayerMovement _playerMovement;
     [SerializeField] private int _segmentsCount;
 
     private Dictionary<GameObject, RoadSegmentKeeper> _roadSegments;
     private RoadSegmentCreator _roadSegmentCreator;
     private List<GameObject> _currentRoadSegments;
+    private List<RoadSegmentKeeper> _roadSegmentKeepers;
     private float _platformLength;
 
     private void Awake()
     {
         _roadSegmentCreator = new RoadSegmentCreator(_platformSetting);
         _currentRoadSegments = new List<GameObject>();
+        _roadSegmentKeepers = new List<RoadSegmentKeeper>();
         _roadSegments = new Dictionary<GameObject, RoadSegmentKeeper>();
 
         _currentRoadSegments.Add(_startRoadSegment);
         _roadSegments.Add(_startRoadSegment, _startRoadSegment.GetComponent<RoadSegmentKeeper>());
 
-        _platformLength = _startPlatform.GetComponent<MeshCollider>().bounds.size.z;
+        _platformLength = _startPlatform.GetComponent<Collider>().bounds.size.z;
 
         _barrierSpawner.SpawnBarrier(_currentRoadSegments[0], false);
         for (int i = 0; i < _segmentsCount; ++i)
@@ -41,13 +44,14 @@ public class RoadSegmentSpawner : MonoBehaviour
 
     private void SpawnRoadSegment()
     {
-        //It is better not to change the sequence
+        //It is better not to change the order
         GameObject roadSegment = Instantiate(_roadSegmentPrefab);
         RoadSegmentKeeper roadSegmentKeeper = roadSegment.GetComponent<RoadSegmentKeeper>();
-        roadSegmentKeeper.Init(transform, _playerMovement);
+        roadSegmentKeeper.Init(transform);
         _roadSegments.Add(roadSegment, roadSegmentKeeper);
         PutRoadSegment(roadSegment);
         _currentRoadSegments.Add(roadSegment);
+        _roadSegmentKeepers.Add(roadSegmentKeeper);
     }
     private void ReuseRoadSegment(GameObject roadSegment)
     {

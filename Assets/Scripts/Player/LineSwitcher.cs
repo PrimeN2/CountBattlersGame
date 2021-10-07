@@ -2,12 +2,12 @@
 using System.Collections;
 using UnityEngine;
 
-public class LineSwitcher : MonoBehaviour
+public class LineSwitcher : MonoBehaviour, ISwitcher
 {
     public Func<int, IEnumerator> OnPlayerMoving;
     public Func<int, int, IEnumerator> OnPlayerTurning;
-    public Lines CurrentLine { get => _currentLine; }
-    private Lines _currentLine;
+    public Line CurrentLine { get => _currentLine; }
+    private Line _currentLine;
 
     private Coroutine _currentSwitchCoutine;
     private Coroutine _movingCoroutine;
@@ -15,7 +15,7 @@ public class LineSwitcher : MonoBehaviour
 
     private bool _isLineSwitching = false;
 
-    public enum Lines
+    public enum Line
     {
         Center = 0,
         Right = 1,
@@ -23,23 +23,26 @@ public class LineSwitcher : MonoBehaviour
     }
     private void Awake()
     {
-        _currentLine = Lines.Center;
+        _currentLine = Line.Center;
 
     }
-    public void TryChangeLine(Lines direction)
+    public bool TrySwitch(ColorSwitcher.VerticalDirection verticalDirection, Line horizontalDirection)
     {
-        int sumLine = (int)_currentLine + (int)direction;
+        int sumLine = (int)_currentLine + (int)horizontalDirection;
 
         if (_isLineSwitching)
             StopSwitch();
 
         if (sumLine > -2 && sumLine < 2)
         {
-            _currentLine = (Lines)sumLine;
-            _currentSwitchCoutine = StartCoroutine(SwitchLine(_currentLine, direction));
+            _currentLine = (Line)sumLine;
+            _currentSwitchCoutine = StartCoroutine(SwitchLine(_currentLine, horizontalDirection));
+            return true;
         }
+
+        return false;
     }
-    private IEnumerator SwitchLine(Lines currentLine, Lines direction)
+    private IEnumerator SwitchLine(Line currentLine, Line direction)
     {
         if (OnPlayerMoving != null && OnPlayerTurning != null)
         {

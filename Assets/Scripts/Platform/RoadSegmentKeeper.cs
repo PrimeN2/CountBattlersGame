@@ -2,28 +2,25 @@
 using UnityEngine;
 using System;
 
-public class RoadSegmentKeeper : MonoBehaviour
+public class RoadSegmentKeeper : MonoBehaviour, IMovable
 {
     public static Action<GameObject> OnSegmentOverFliew;
     public List<PlatformKeeper> PlatformKeepers;
 
-    [SerializeField] private PlayerMovement _playerMovement;
-
-    public void Init(Transform parent, PlayerMovement playerMovement)
+    public void Init(Transform parent)
     {
         transform.SetParent(parent);
-        _playerMovement = playerMovement;
     }
 
-    public Vector3 GetPointToSpawn(LineSwitcher.Lines line, Vector3 offset)
+    public Vector3 GetPointToSpawn(LineSwitcher.Line line, Vector3 offset)
     {
         Vector3 position = new Vector3(offset.x * (int)line, offset.y, offset.z) + transform.position;
         return position;
     }
 
-    private void Update()
+    public void Move(Vector3 direction, float speed)
     {
-        transform.position -= Vector3.forward * _playerMovement.PlayerSpeed * Time.deltaTime;
+        transform.Translate(direction * speed);
     }
 
     private void LateUpdate()
@@ -33,4 +30,6 @@ public class RoadSegmentKeeper : MonoBehaviour
             OnSegmentOverFliew?.Invoke(gameObject);
         }
     }
+
+
 }

@@ -2,8 +2,15 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Renderer), typeof(PlayerMovement))]
-public class ColorSwitcher : MonoBehaviour
+public class ColorSwitcher : MonoBehaviour, ISwitcher
 {
+    public enum VerticalDirection
+    {
+        Up = 1,
+        Down = -1,
+        Center = 0
+    }
+
     public EmissionMaterial CurrentMaterial { get; private set; }
     [SerializeField] private EmissionMaterial _lightPlayerMaterial;
     [SerializeField] private EmissionMaterial _darkPlayerMaterial;
@@ -29,16 +36,20 @@ public class ColorSwitcher : MonoBehaviour
         _isColorSwitching = false;
     }
 
-    public void TryChangeColor(EmissionMaterial material)
+    public bool TrySwitch(VerticalDirection direction, LineSwitcher.Line line)
     {
+        EmissionMaterial material = DefineMaterial(direction);
+
         if (_newMaterial.Equals(material))
-            return;
+            return false;
 
         _newMaterial = material;
 
         if (_isColorSwitching)
             StopCoroutine(_currentCoroutine);
         _currentCoroutine = StartCoroutine(SwitchMaterial());
+
+        return true;
     }
 
     private IEnumerator SwitchMaterial()
@@ -56,5 +67,21 @@ public class ColorSwitcher : MonoBehaviour
         }
         _isColorSwitching = false;
         CurrentMaterial = _newMaterial;
+    }
+
+    private EmissionMaterial DefineMaterial(VerticalDirection direction)
+    {
+        if (direction is VerticalDirection.Up)
+        {
+            return _darkPlayerMaterial;
+        }
+        else if (direction is VerticalDirection.Down)
+        {
+            return _lightPlayerMaterial;
+        }
+        else
+        {
+            return CurrentMaterial;
+        }
     }
 }

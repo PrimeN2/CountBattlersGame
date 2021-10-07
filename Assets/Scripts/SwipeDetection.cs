@@ -7,8 +7,6 @@ public class SwipeDetection : MonoBehaviour
     [SerializeField] private ColorSwitcher _colorSwitcher;
     [SerializeField] private InputManager _inputManager;
     [SerializeField] private float _minimumDistance = .015f;
-    [SerializeField] private EmissionMaterial _darkPlayerMaterial;
-    [SerializeField] private EmissionMaterial _lightPlayerMaterial;
     [SerializeField, Range(0f, 1f)]
     private float _directionThreshold = .7f;
 
@@ -21,7 +19,7 @@ public class SwipeDetection : MonoBehaviour
 
     private void Awake()
     {
-        _currentSwipeDirection = new SwipeDirection(_darkPlayerMaterial, _lightPlayerMaterial);
+        _currentSwipeDirection = new SwipeDirection(_lineSwitcher, _colorSwitcher);
     }
     private void SwipeStart(Vector2 position)
     {
@@ -35,7 +33,7 @@ public class SwipeDetection : MonoBehaviour
         StopCoroutine(_swipeCoroutine);
     }
 
-    private bool DetectSwipe()
+    private bool TryDetectSwipe()
     {
         if (Vector3.Distance(_startPosition, _currentPosition) >= _minimumDistance)
             return true;
@@ -52,16 +50,7 @@ public class SwipeDetection : MonoBehaviour
             {
                 _currentSwipeDirection.Define(_currentPosition, _startPosition, _directionThreshold);
 
-                if (_currentSwipeDirection.IsMaterialChanged)
-                {
-                    _colorSwitcher.TryChangeColor(_currentSwipeDirection.GetMaterial);
-                }
-
-                else
-                {
-                    _lineSwitcher.TryChangeLine(_currentSwipeDirection.GetLineDirection);
-                }
-
+                _currentSwipeDirection.Switcher.TrySwitch(_currentSwipeDirection.VerticalDirection, _currentSwipeDirection.Line);
                 _isSwiped = true;
             }
             yield return null;
@@ -70,7 +59,7 @@ public class SwipeDetection : MonoBehaviour
 
     private bool CanSwipe()
     {
-        return _isSwiped == false && DetectSwipe();
+        return _isSwiped == false && TryDetectSwipe();
     }
 
     private void OnEnable()
@@ -88,22 +77,17 @@ public class SwipeDetection : MonoBehaviour
 
 public class SwipeDirection
 {
-    public LineSwitcher.Lines GetLineDirection => _line;
-    public EmissionMaterial GetMaterial => _material;
-    public bool IsMaterialChanged;
+    public ISwitcher Switcher { get; private set; }
+    public LineSwitcher.Line Line { get; private set; }
+    public ColorSwitcher.VerticalDirection VerticalDirection { get; private set; }
 
-    private EmissionMaterial _darkPlayerMaterial;
-    private EmissionMaterial _lightPlayerMaterial;
-    private EmissionMaterial _material;
-    private LineSwitcher.Lines _line;
+    private LineSwitcher _lineSwitcher;
+    private ColorSwitcher _colorSwitcher;
 
-    public SwipeDirection(EmissionMaterial darkPlayerMaterial, EmissionMaterial lightPlayerMaterial)
+    public SwipeDirection(LineSwitcher lineSwitcher, ColorSwitcher colorSwitcher)
     {
-        _line = LineSwitcher.Lines.Center;
-        _material = new EmissionMaterial(null, new Color(0, 0, 0, 1));
-        IsMaterialChanged = false;
-        _lightPlayerMaterial = lightPlayerMaterial;
-        _darkPlayerMaterial = darkPlayerMaterial;
+        _lineSwitcher = lineSwitcher;
+        _colorSwitcher = colorSwitcher;
     }
 
     public void Define(Vector2 currentPosition, Vector2 startPosition, float directionThreshold)
@@ -112,34 +96,34 @@ public class SwipeDirection
 
         if (Vector2.Dot(Vector2.left, direction) > directionThreshold)
         {
-            SetDirection(LineSwitcher.Lines.Left);
+            SetDirection(LineSwitcher.Line.Left);
         }
 
         else if (Vector2.Dot(Vector2.right, direction) > directionThreshold)
         {
-            SetDirection(LineSwitcher.Lines.Right);
+            SetDirection(LineSwitcher.Line.Right);
         }
 
         else if (Vector2.Dot(Vector2.up, direction) > directionThreshold)
         {
-            SetDirection(_darkPlayerMaterial);
+            SetDirection(ColorSwitcher.VerticalDirection.Up);
         }
 
         else if (Vector2.Dot(Vector2.down, direction) > directionThreshold)
         {
-            SetDirection(_lightPlayerMaterial);
+            SetDirection(ColorSwitcher.VerticalDirection.Down);
         }
     }
 
-    private void SetDirection(LineSwitcher.Lines line)
+    private void SetDirection(LineSwitcher.Line line)
     {
-        _line = line;
-        IsMaterialChanged = false;
+        Line = line;
+        Switcher = _lineSwitcher;
     }
 
-    private void SetDirection(EmissionMaterial material)
+    private void SetDirection(ColorSwitcher.VerticalDirection direction)
     {
-        _material = material;
-        IsMaterialChanged = true;
+        VerticalDirection = direction;
+        Switcher = _colorSwitcher;
     }
 }
