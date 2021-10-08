@@ -1,101 +1,56 @@
-﻿using System.Collections;
+﻿using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
-[DefaultExecutionOrder(-1)]
-public class InputManager : Singleton<InputManager>
+public class InputManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
-    [SerializeField] private UILoader _menuLoader;
+    public event Action<Vector2> OnTouchStarted;
+    public event Action<Vector2> OnTouchEnded;
+
+    [SerializeField] private UILoader _UILoader;
 
     private Camera _mainCamera;
-    private bool _isTouchStarted = false;
+    private bool _isPaused = true;
 
-    #region Events
-    public delegate void StartTouch(Vector2 position);
-    public event StartTouch OnTouchStarted;
-    public delegate void EndTouch(Vector2 position);
-    public event EndTouch OnTouchEnded;
-    #endregion
-
-    private void Start()
+    public void OnPointerDown(PointerEventData eventData)
     {
-        _mainCamera = Camera.main;
-        _isTouchStarted = false;
+        if (_isPaused)
+            return;
+        OnTouchStarted?.Invoke(Utils.ScreenToWorld(_mainCamera, eventData.position));
     }
 
-    private void Update()
+    public void OnPointerUp(PointerEventData eventData)
     {
-        if (Input.touchCount != 0)
-        {
-            if (Input.GetTouch(0).phase == UnityEngine.TouchPhase.Began)
-                StartTouchPrimary();
-            else if (Input.GetTouch(0).phase == UnityEngine.TouchPhase.Ended)
-                EndTouchPrimary();
-        }
+        if (_isPaused)
+            return;
+        OnTouchEnded?.Invoke(Utils.ScreenToWorld(_mainCamera, eventData.position));
     }
 
-    //private void InitInputSystem()
-    //{
-    //    _playerControls = new PlayerControls();
-    //    _playerControls.Enable();
-    //    _playerControls.Touch.PrimaryContact.started += ctx => StartTouchPrimary(ctx);
-    //    _playerControls.Touch.PrimaryContact.canceled += ctx => EndTouchPrimary(ctx);
-    //}
-
-    //private void DeinitInputSystem()
-    //{
-    //    _playerControls?.Disable();
-    //    _playerControls = null;
-    //}
-
-
-    private void StartTouchPrimary()
-    {
-        //Vector2 touchPosition = _playerControls.Touch.PrimaryPosition.ReadValue<Vector2>();
-        //if (touchPosition == Vector2.zero)
-        //{
-        //    StartCoroutine(WaitForCorrectValue());
-        //    return;
-        //}
-        //OnTouchStarted?.Invoke(Utils.ScreenToWorld(_mainCamera, touchPosition));
-        //_isTouchStarted = true;
-        OnTouchStarted.Invoke(Utils.ScreenToWorld(_mainCamera, Input.GetTouch(0).position));
-    }
-
-    //private IEnumerator WaitForCorrectValue()
-    //{
-    //    yield return new WaitForEndOfFrame();
-
-    //    OnTouchStarted?.Invoke(Utils.ScreenToWorld(_mainCamera, _playerControls.Touch.PrimaryPosition.ReadValue<Vector2>()));
-    //}
-
-    private void EndTouchPrimary()
-    {
-        //if (!_isTouchStarted)
-        //    return;
-        //OnTouchEnded?.Invoke(Utils.ScreenToWorld(_mainCamera, _playerControls.Touch.PrimaryPosition.ReadValue<Vector2>()));
-        //_isTouchStarted = false;
-        OnTouchEnded.Invoke(Utils.ScreenToWorld(_mainCamera, Input.GetTouch(0).position));
-
-    }
     public Vector2 PrimaryPosition()
     {
-        return Utils.ScreenToWorld(_mainCamera, Input.GetTouch(0).position);
+        return Utils.ScreenToWorld(_mainCamera, Input.mousePosition);
     }
-    //private void OnEnable()
-    //{
-    //    _menuLoader.OnMenuHided += InitInputSystem;
-    //    _menuLoader.OnMenuLoaded += DeinitInputSystem;
 
-    //    if (_playerControls != null)
-    //        _playerControls.Enable();
-    //}
-    //private void OnDisable()
-    //{
-    //    _menuLoader.OnMenuHided -= InitInputSystem;
-    //    _menuLoader.OnMenuLoaded -= DeinitInputSystem;
+    private void InitInputHandle()
+    {
+        _mainCamera = Camera.main;
+        _isPaused = false;
+    }
 
-    //    if (_playerControls != null)
-    //        _playerControls.Disable();
-    //}
+    private void DeInitInputHandle()
+    {
+        _isPaused = true;
+    }
+
+    private void OnEnable()
+    {
+        _UILoader.OnMenuLoaded += DeInitInputHandle;
+        _UILoader.OnMenuHided += InitInputHandle;
+    }
+
+    private void OnDisable()
+    {
+        _UILoader.OnMenuLoaded -= DeInitInputHandle;
+        _UILoader.OnMenuHided -= InitInputHandle;
+    }
 }

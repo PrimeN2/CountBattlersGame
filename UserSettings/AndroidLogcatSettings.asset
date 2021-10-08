@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "JNV4CQOZ9TNJFIWW",
         "name": "com.DefaultCompany.Main",
-        "processId": 4698,
+        "processId": 6525,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -66,6 +66,12 @@
             "deviceId": "JNV4CQOZ9TNJFIWW",
             "name": "com.DefaultCompany.Main",
             "processId": 4698,
+            "exited": false
+        },
+        {
+            "deviceId": "JNV4CQOZ9TNJFIWW",
+            "name": "com.DefaultCompany.Main",
+            "processId": 6525,
             "exited": false
         }
     ],
