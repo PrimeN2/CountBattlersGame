@@ -49,6 +49,7 @@ public class PlayerMovement : MonoBehaviour
         _previousPlayerSpeed = PlayerSpeed;
         _isStoped = true;
         _playerSpeed = 0;
+        Time.timeScale = 0;
     }
 
     public void ContinueMoving()
@@ -57,6 +58,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         _playerSpeed = _previousPlayerSpeed;
         _isStoped = false;
+        Time.timeScale = 1;
     }
 
     private void OnEnable()

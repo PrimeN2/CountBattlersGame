@@ -50,7 +50,6 @@ MonoBehaviour:
   - {fileID: 8241135724025667664}
   - {fileID: 2507655679878139806}
   - {fileID: 3773091882702454902}
-  _playerMovement: {fileID: 0}
 --- !u!1001 &3303695662421316188
 PrefabInstance:
   m_ObjectHideFlags: 0
