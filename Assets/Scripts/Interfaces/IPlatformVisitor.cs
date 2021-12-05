@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public interface IPlatformVisiter
+public interface IPlatformVisitor
 {
     void Visit(Platform typePlatform, Transform transform);
 }

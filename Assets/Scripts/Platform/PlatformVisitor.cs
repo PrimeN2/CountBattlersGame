@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlatformVisitor : IPlatformVisiter
+public class PlatformVisitor : IPlatformVisitor
 {
     private Vector3 _scaleChange = Vector3.one * .01f;
     private float _speedChange = .1f;

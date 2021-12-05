@@ -4,7 +4,7 @@ public class FrameRate : MonoBehaviour
 {
     [SerializeField] private int _frameRate = 60;
 
-    void Start()
+    private void Update()
     {
         QualitySettings.vSyncCount = 0;
 
@@ -12,5 +12,4 @@ public class FrameRate : MonoBehaviour
             Application.targetFrameRate = _frameRate;
     }
 }
-
 
