@@ -3,12 +3,9 @@ using UnityEngine;
 
 public class SessionData : MonoBehaviour
 {
-    public Action OnPlayerDied;
-    public Action OnPlayerDamaged;
     public Action OnScoreIncreased;
 
     public int PlayerScore { get; private set; }
-    public int PlayerHealth { get; private set; }
     public float PlayerDistance { get; private set; }
     public int BestScore { get => _playerData.BestScore; }
 
@@ -23,7 +20,6 @@ public class SessionData : MonoBehaviour
         _playerData = _saveSystem.Load();
         PlayerScore = 0;
         PlayerDistance = 0;
-        PlayerHealth = 3;
     }
 
     public void SetSaveSystem(ISaveSystem saveSystem)
@@ -31,15 +27,6 @@ public class SessionData : MonoBehaviour
         _saveSystem = saveSystem;
     }
 
-    public void DamagePlayer(int damage)
-    {
-        if (damage >= PlayerHealth)
-        {
-            OnPlayerDamaged?.Invoke();
-        }
-        PlayerHealth -= damage;
-        OnPlayerDamaged?.Invoke();
-}
     public void IncreaseScore(int score)
     {
         PlayerScore += score;

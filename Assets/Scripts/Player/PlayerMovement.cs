@@ -4,23 +4,27 @@ using UnityEngine;
 [RequireComponent(typeof(LineSwitcher))]
 public class PlayerMovement : MonoBehaviour
 {
-    public float PlayerSpeed { get => _playerSpeed; }
+    public float PlayerSpeed {
+        get
+        {
+            if (_isStoped) return 0;
+            else return _playerSpeed;
+        }
+    }
     [SerializeField] private float _playerSpeed = 10f;
 
     [SerializeField] private float _maxPlayerSpeed = 100;
 
     [SerializeField] private LineSwitcher _lineSwitcher;
-    [SerializeField] private UILoader _menuLoader;
 
     private Vector3 _targetPosition = new Vector3(0, 0, 0);
-    private float _previousPlayerSpeed;
     private bool _isStoped = false;
 
     private void Awake()
     {
         _lineSwitcher = GetComponent<LineSwitcher>();
         _isStoped = false;
-        _previousPlayerSpeed = 0;
+        _playerSpeed = 10f;
     }
 
     private IEnumerator MoveBall(int currentLine)
@@ -38,40 +42,33 @@ public class PlayerMovement : MonoBehaviour
 
     public void TryChangeSpeed(float changeValue)
     {
-        if(PlayerSpeed < 0 || PlayerSpeed + changeValue > _maxPlayerSpeed && !_isStoped)
-            return;
+        if(PlayerSpeed < 0 || PlayerSpeed + changeValue > _maxPlayerSpeed || _isStoped)
+                return;
 
         _playerSpeed += changeValue;
     }
 
     public void StopMoving()
     {
-        _previousPlayerSpeed = PlayerSpeed;
         _isStoped = true;
-        _playerSpeed = 0;
-        Time.timeScale = 0;
+
     }
 
     public void ContinueMoving()
     {
         if (!_isStoped)
             return;
-        _playerSpeed = _previousPlayerSpeed;
         _isStoped = false;
-        Time.timeScale = 1;
+
     }
 
     private void OnEnable()
     {
         _lineSwitcher.OnPlayerMoving += MoveBall;
-        _menuLoader.OnMenuLoaded += StopMoving;
-        _menuLoader.OnMenuHided += ContinueMoving;
     }
 
     private void OnDisable()
     {
         _lineSwitcher.OnPlayerMoving -= MoveBall;
-        _menuLoader.OnMenuLoaded -= StopMoving;
-        _menuLoader.OnMenuHided -= ContinueMoving;
     }
 }

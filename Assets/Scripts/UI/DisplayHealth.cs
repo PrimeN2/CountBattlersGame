@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class DisplayHealth : MonoBehaviour
 {
-    [SerializeField] private SessionData _sessionData;
+    [SerializeField] private PlayerLife _playerLife;
     [SerializeField] private TMP_Text _label;
 
     private void ChangeHealthLabel()
     {
-        _label.text = $"Health: {_sessionData.PlayerHealth}";
+        _label.text = $"Health: {_playerLife.PlayerHealth}";
     }
 
     private void Awake()
@@ -18,11 +18,11 @@ public class DisplayHealth : MonoBehaviour
 
     private void OnEnable()
     {
-        _sessionData.OnPlayerDamaged += ChangeHealthLabel;
+        _playerLife.OnPlayerDamaged += ChangeHealthLabel;
     }
 
     private void OnDisable()
     {
-        _sessionData.OnPlayerDamaged -= ChangeHealthLabel;
+        _playerLife.OnPlayerDamaged -= ChangeHealthLabel;
     }
 }

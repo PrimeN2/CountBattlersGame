@@ -31,26 +31,14 @@ public class InputManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         return Utils.ScreenToWorld(_mainCamera, Input.mousePosition);
     }
 
-    private void InitInputHandle()
+    public void InitInputHandle()
     {
         _mainCamera = Camera.main;
         _isPaused = false;
     }
 
-    private void DeInitInputHandle()
+    public void DeInitInputHandle()
     {
         _isPaused = true;
-    }
-
-    private void OnEnable()
-    {
-        _UILoader.OnMenuLoaded += DeInitInputHandle;
-        _UILoader.OnMenuHided += InitInputHandle;
-    }
-
-    private void OnDisable()
-    {
-        _UILoader.OnMenuLoaded -= DeInitInputHandle;
-        _UILoader.OnMenuHided -= InitInputHandle;
     }
 }
