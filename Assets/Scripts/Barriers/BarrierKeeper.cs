@@ -4,7 +4,7 @@ public class BarrierKeeper : MonoBehaviour
 {
     public DefaultBarrier BarrierType { get; private set; }
 
-    public EmissionMaterial CurrentMaterial { get; private set; }
+    public Material CurrentMaterial { get; private set; }
 
     public void Init(DefaultBarrier barrierType, RoadSegmentKeeper roadSegment)
     {
@@ -12,7 +12,7 @@ public class BarrierKeeper : MonoBehaviour
 
         CurrentMaterial = BarrierType.BarrierMaterials[
             Random.Range(0, BarrierType.BarrierMaterials.Length)];
-        gameObject.GetComponent<Renderer>().material = CurrentMaterial.Material;
+        gameObject.GetComponent<Renderer>().material = CurrentMaterial;
 
         gameObject.transform.position = roadSegment.GetPointToSpawn(
             barrierType.PossibleLines[Random.Range(0, barrierType.PossibleLines.Length)],

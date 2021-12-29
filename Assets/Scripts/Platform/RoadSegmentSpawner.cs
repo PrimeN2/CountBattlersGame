@@ -27,6 +27,7 @@ public class RoadSegmentSpawner : MonoBehaviour
 
         _currentRoadSegments.Add(_startRoadSegment);
         _roadSegments.Add(_startRoadSegment, _startRoadSegment.GetComponent<RoadSegmentKeeper>());
+        _roadSegmentKeepers.Add(_startRoadSegment.GetComponent<RoadSegmentKeeper>());
 
         _platformLength = _startPlatform.GetComponent<Collider>().bounds.size.z;
 

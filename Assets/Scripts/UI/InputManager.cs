@@ -2,24 +2,31 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class InputManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class InputManager : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public event Action<Vector2> OnTouchStarted;
     public event Action<Vector2> OnTouchEnded;
 
-    [SerializeField] private UILoader _UILoader;
-
     private Camera _mainCamera;
     private bool _isPaused = true;
+    private Vector2 _currentPosition;
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void OnBeginDrag(PointerEventData eventData)
     {
         if (_isPaused)
             return;
         OnTouchStarted?.Invoke(Utils.ScreenToWorld(_mainCamera, eventData.position));
     }
 
-    public void OnPointerUp(PointerEventData eventData)
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (eventData.dragging)
+        {
+            _currentPosition = eventData.position;
+        }
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
     {
         if (_isPaused)
             return;
@@ -28,7 +35,7 @@ public class InputManager : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
     public Vector2 PrimaryPosition()
     {
-        return Utils.ScreenToWorld(_mainCamera, Input.mousePosition);
+        return Utils.ScreenToWorld(_mainCamera, _currentPosition);
     }
 
     public void InitInputHandle()

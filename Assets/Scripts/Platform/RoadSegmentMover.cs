@@ -7,7 +7,7 @@ public class RoadSegmentMover : MonoBehaviour
     [SerializeField] private PlayerMovement _playerMovement;
     [SerializeField] private List<IMovable> _objectsToMove;
 
-    private Vector3 _derection = Vector3.back;
+    private Vector3 _direction = Vector3.back;
 
     private void Start()
     {
@@ -19,11 +19,13 @@ public class RoadSegmentMover : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        foreach(var objectToMove in _objectsToMove)
+        float speed = _playerMovement.PlayerSpeed * Time.deltaTime;
+
+        foreach (var objectToMove in _objectsToMove)
         {
-            objectToMove.Move(_derection, _playerMovement.PlayerSpeed * Time.deltaTime);
+            objectToMove.Move(_direction, speed);
         }
     }
 }

@@ -11,11 +11,10 @@ public class ColorSwitcher : MonoBehaviour, ISwitcher
         Center = 0
     }
 
-    public EmissionMaterial CurrentMaterial { get; private set; }
-    [SerializeField] private EmissionMaterial _lightPlayerMaterial;
-    [SerializeField] private EmissionMaterial _darkPlayerMaterial;
+    public static readonly Color BlueColor = new Color(0, 0.6588f, 1, 1);
+    public static readonly Color OrangeColor = new Color(1, 0.447f, 0, 1);
 
-    [SerializeField] private Material _playerMaterial;
+    public Color CurrentColor { get; private set; }
 
     [SerializeField] private float _duration = 3;
 
@@ -24,26 +23,26 @@ public class ColorSwitcher : MonoBehaviour, ISwitcher
     private PlayerMovement _playerMovement;
     private Renderer _playerRenderer;
 
-    private EmissionMaterial _newMaterial;
+    private Color _newColor;
     private Coroutine _currentCoroutine;
 
     private void Start()
     {
         _playerRenderer = GetComponent<Renderer>();
         _playerMovement = GetComponent<PlayerMovement>();
-        CurrentMaterial = new EmissionMaterial(_playerMaterial, Color.cyan);
-        _newMaterial = new EmissionMaterial(_playerMaterial, Color.cyan);
+        CurrentColor = GetComponent<Renderer>().material.color;
+        _newColor = CurrentColor;
         _isColorSwitching = false;
     }
 
     public bool TrySwitch(VerticalDirection direction, LineSwitcher.Line line)
     {
-        EmissionMaterial material = DefineMaterial(direction);
+        Color color = DefineColor(direction);
 
-        if (_newMaterial.Equals(material))
+        if (_newColor == color)
             return false;
 
-        _newMaterial = material;
+        _newColor = color;
 
         if (_isColorSwitching)
             StopCoroutine(_currentCoroutine);
@@ -61,27 +60,27 @@ public class ColorSwitcher : MonoBehaviour, ISwitcher
         while (time < _duration)
         {
             time += Time.deltaTime * _playerMovement.PlayerSpeed;
-            _playerRenderer.material.Lerp(CurrentMaterial.Material, _newMaterial.Material, time / _duration);
+            _playerRenderer.material.color = Color.Lerp(CurrentColor, _newColor, time / _duration);
 
             yield return null;
         }
         _isColorSwitching = false;
-        CurrentMaterial = _newMaterial;
+        CurrentColor = _newColor;
     }
 
-    private EmissionMaterial DefineMaterial(VerticalDirection direction)
+    private Color DefineColor(VerticalDirection direction)
     {
         if (direction is VerticalDirection.Up)
         {
-            return _darkPlayerMaterial;
+            return BlueColor;
         }
         else if (direction is VerticalDirection.Down)
         {
-            return _lightPlayerMaterial;
+            return OrangeColor;
         }
         else
         {
-            return CurrentMaterial;
+            return CurrentColor;
         }
     }
 }

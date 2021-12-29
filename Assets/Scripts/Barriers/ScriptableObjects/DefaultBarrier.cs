@@ -5,8 +5,8 @@ public abstract class DefaultBarrier : ScriptableObject
 {
     public abstract void Accept(IBarrierVisitor obstacleVisitor, GameObject player, GameObject barrier);
     
-    public EmissionMaterial[] BarrierMaterials { get => _barrierMaterials; }
-    [SerializeField] protected EmissionMaterial[] _barrierMaterials;
+    public Material[] BarrierMaterials { get => _barrierMaterials; }
+    [SerializeField] protected Material[] _barrierMaterials;
 
     public Vector3 BarrierPostion { get => _barrierPosition; }
     [SerializeField] private Vector3 _barrierPosition;

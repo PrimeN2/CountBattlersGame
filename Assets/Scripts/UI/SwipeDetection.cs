@@ -12,6 +12,7 @@ public class SwipeDetection : MonoBehaviour
 
     private Vector2 _startPosition;
     private Vector2 _currentPosition;
+    private Vector2 _previousPostion;
     private bool _isSwiped = false;
 
     private SwipeDirection _currentSwipeDirection;
@@ -21,10 +22,12 @@ public class SwipeDetection : MonoBehaviour
     {
         _currentSwipeDirection = new SwipeDirection(_lineSwitcher, _colorSwitcher);
     }
+
     private void SwipeStart(Vector2 position)
     {
         _isSwiped = false;
         _startPosition = position;
+        _previousPostion = _startPosition;
         _swipeCoroutine = StartCoroutine(SwipeControls());
     }
 
@@ -46,13 +49,15 @@ public class SwipeDetection : MonoBehaviour
         while (true)
         {
             _currentPosition = _inputManager.PrimaryPosition();
-            if (CanSwipe())
-            {
-                _currentSwipeDirection.Define(_currentPosition, _startPosition, _directionThreshold);
+            
+            //if (CanSwipe())
+            //{
+            //    _currentSwipeDirection.Define(_currentPosition, _startPosition, _directionThreshold);
 
-                _currentSwipeDirection.Switcher.TrySwitch(_currentSwipeDirection.VerticalDirection, _currentSwipeDirection.Line);
-                _isSwiped = true;
-            }
+            //    _currentSwipeDirection.Switcher.TrySwitch(_currentSwipeDirection.VerticalDirection, _currentSwipeDirection.Line);
+            //    _isSwiped = true;
+            //}
+            _previousPostion = _currentPosition;
             yield return null;
         }
     }
