@@ -17,7 +17,7 @@ public abstract class DefaultBarrier : ScriptableObject
     public Vector3 BarrierRotation { get => _barrierRotation; }
     [SerializeField] private Vector3 _barrierRotation;
 
-    public LineSwitcher.Line[] PossibleLines { get => _possibleLines; }
-    [SerializeField] protected LineSwitcher.Line[] _possibleLines;
+    public Lines.Line[] PossibleLines { get => _possibleLines; }
+    [SerializeField] protected Lines.Line[] _possibleLines;
 
 }

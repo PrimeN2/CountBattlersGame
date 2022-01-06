@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
-[RequireComponent(typeof(LineSwitcher))]
 public class PlayerMovement : MonoBehaviour
 {
     public float PlayerSpeed {
@@ -11,33 +9,24 @@ public class PlayerMovement : MonoBehaviour
             else return _playerSpeed;
         }
     }
-    [SerializeField] private float _playerSpeed = 10f;
 
     [SerializeField] private float _maxPlayerSpeed = 100;
+    [SerializeField] private float _playerControlMultiplier;
 
-    [SerializeField] private LineSwitcher _lineSwitcher;
-
-    private Vector3 _targetPosition = new Vector3(0, 0, 0);
+    private float _playerSpeed = 10f;
     private bool _isStoped = false;
 
     private void Awake()
     {
-        _lineSwitcher = GetComponent<LineSwitcher>();
         _isStoped = false;
         _playerSpeed = 10f;
     }
 
-    private IEnumerator MoveBall(int currentLine)
+    public void TryMove(float xOffset)
     {
-        _targetPosition = new Vector3(0.83f * currentLine, transform.position.y, transform.position.z);
-
-        while (transform.position.x != _targetPosition.x)
-        {
-            _targetPosition = new Vector3(0.83f * currentLine, transform.position.y, transform.position.z);
-            transform.position = Vector3.MoveTowards(transform.position, _targetPosition, PlayerSpeed * Time.deltaTime);
-
-            yield return null;
-        }
+        xOffset *= _playerControlMultiplier;
+        float positionX = transform.position.x + xOffset;
+        transform.position += positionX > -1 && positionX < 1 ? new Vector3(xOffset, 0, 0) : Vector3.zero;
     }
 
     public void TryChangeSpeed(float changeValue)
@@ -51,7 +40,6 @@ public class PlayerMovement : MonoBehaviour
     public void StopMoving()
     {
         _isStoped = true;
-
     }
 
     public void ContinueMoving()
@@ -60,15 +48,5 @@ public class PlayerMovement : MonoBehaviour
             return;
         _isStoped = false;
 
-    }
-
-    private void OnEnable()
-    {
-        _lineSwitcher.OnPlayerMoving += MoveBall;
-    }
-
-    private void OnDisable()
-    {
-        _lineSwitcher.OnPlayerMoving -= MoveBall;
     }
 }

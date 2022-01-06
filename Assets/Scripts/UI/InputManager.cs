@@ -4,39 +4,37 @@ using UnityEngine.EventSystems;
 
 public class InputManager : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public event Action<Vector2> OnTouchStarted;
-    public event Action<Vector2> OnTouchEnded;
+    [SerializeField] private PlayerMovement _playerMovement;
 
     private Camera _mainCamera;
-    private bool _isPaused = true;
+
+    private Vector2 _previousPostion;
     private Vector2 _currentPosition;
+
+    private bool _isPaused = true;
+
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (_isPaused)
             return;
-        OnTouchStarted?.Invoke(Utils.ScreenToWorld(_mainCamera, eventData.position));
+
+        _currentPosition = Utils.ScreenToWorld(_mainCamera, eventData.position);
+        _previousPostion = _currentPosition;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (eventData.dragging)
+        if (eventData.dragging && !_isPaused)
         {
-            _currentPosition = eventData.position;
+            _currentPosition = Utils.ScreenToWorld(_mainCamera, eventData.position);
+            _playerMovement.TryMove((_currentPosition - _previousPostion).x);
+            _previousPostion = _currentPosition;
         }
     }
 
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        if (_isPaused)
-            return;
-        OnTouchEnded?.Invoke(Utils.ScreenToWorld(_mainCamera, eventData.position));
-    }
+    public void OnEndDrag(PointerEventData eventData) { }
 
-    public Vector2 PrimaryPosition()
-    {
-        return Utils.ScreenToWorld(_mainCamera, _currentPosition);
-    }
 
     public void InitInputHandle()
     {

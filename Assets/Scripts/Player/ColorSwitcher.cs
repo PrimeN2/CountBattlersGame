@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Renderer), typeof(PlayerMovement))]
-public class ColorSwitcher : MonoBehaviour, ISwitcher
+public class ColorSwitcher : MonoBehaviour
 {
     public enum VerticalDirection
     {
@@ -35,7 +35,7 @@ public class ColorSwitcher : MonoBehaviour, ISwitcher
         _isColorSwitching = false;
     }
 
-    public bool TrySwitch(VerticalDirection direction, LineSwitcher.Line line)
+    public bool TrySwitch(VerticalDirection direction)
     {
         Color color = DefineColor(direction);
 
