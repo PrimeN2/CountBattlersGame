@@ -2,8 +2,8 @@
     "m_SelectedDeviceId": "JNV4CQOZ9TNJFIWW",
     "m_SelectedPackage": {
         "deviceId": "JNV4CQOZ9TNJFIWW",
-        "name": "com.DefaultCompany.Main",
-        "processId": 7568,
+        "name": "com.DefaultCompany.CountBattlers",
+        "processId": 24941,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -96,6 +96,12 @@
             "deviceId": "JNV4CQOZ9TNJFIWW",
             "name": "com.DefaultCompany.Main",
             "processId": 7568,
+            "exited": false
+        },
+        {
+            "deviceId": "JNV4CQOZ9TNJFIWW",
+            "name": "com.DefaultCompany.CountBattlers",
+            "processId": 24941,
             "exited": false
         }
     ],

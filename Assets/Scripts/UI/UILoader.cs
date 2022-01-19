@@ -17,6 +17,7 @@ public class UILoader : MonoBehaviour, IGameStateSwitcher
     [SerializeField] private PlayerMovement _playerMovement;
     [SerializeField] private ParticlesController _particlesController;
     [SerializeField] private PlayerLife _playerLife;
+    [SerializeField] private Animator _animator;
 
     [Header("Input Components")]
     [SerializeField] private InputManager _inputManager;
@@ -32,18 +33,40 @@ public class UILoader : MonoBehaviour, IGameStateSwitcher
         };
         _currentState = _allStates[0];
 
-        LoadMenu();
+        LoadMainMenu();
     }
 
-    public void LoadMenu()
+    public void LoadMainMenu()
     {
         _currentState.LoadMenu();
+        //_animator.SetBool("IsMoving", false);
     }
 
     public void HideMenu()
     {
         _currentState.HideMenu();
         _currentState.LoadMenu();
+        //_animator.SetBool("IsMoving", true);
+    }
+
+    public void LoadPauseMenu()
+    {
+        _currentState.HideMenu();
+        _currentState.LoadMenu();
+        _animator.SetBool("IsMoving", true);
+    }
+    public void LoadGameHUD()
+    {
+        _currentState.HideMenu();
+        _currentState.LoadMenu();
+        _animator.SetBool("IsMoving", true);
+    }
+
+    public void LoadLossMenu()
+    {
+        _currentState.HideMenu();
+        _currentState.LoadMenu();
+        _animator.SetBool("IsMoving", true);
     }
 
     public void SwitchState<T>() where T : BaseGameState

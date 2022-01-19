@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Renderer), typeof(PlayerMovement))]
+[RequireComponent(typeof(PlayerMovement))]
 public class ColorSwitcher : MonoBehaviour
 {
     public enum VerticalDirection
@@ -16,21 +16,20 @@ public class ColorSwitcher : MonoBehaviour
 
     public Color CurrentColor { get; private set; }
 
+    [SerializeField] private Renderer _renderer;
     [SerializeField] private float _duration = 3;
 
     private bool _isColorSwitching = false;
 
     private PlayerMovement _playerMovement;
-    private Renderer _playerRenderer;
 
     private Color _newColor;
     private Coroutine _currentCoroutine;
 
     private void Start()
     {
-        _playerRenderer = GetComponent<Renderer>();
         _playerMovement = GetComponent<PlayerMovement>();
-        CurrentColor = GetComponent<Renderer>().material.color;
+        CurrentColor = _renderer.material.color;
         _newColor = CurrentColor;
         _isColorSwitching = false;
     }
@@ -60,7 +59,7 @@ public class ColorSwitcher : MonoBehaviour
         while (time < _duration)
         {
             time += Time.deltaTime * _playerMovement.PlayerSpeed;
-            _playerRenderer.material.color = Color.Lerp(CurrentColor, _newColor, time / _duration);
+            _renderer.material.color = Color.Lerp(CurrentColor, _newColor, time / _duration);
 
             yield return null;
         }

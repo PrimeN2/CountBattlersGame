@@ -6,6 +6,7 @@ public abstract class BaseGameState
     protected readonly PlayerMovement _playerMovement;
     protected readonly InputManager _inputManager;
     protected readonly ParticlesController _particlesController;
+    protected GameObject _currentPanel;
 
     protected BaseGameState(IGameStateSwitcher stateSwitcher, 
         PlayerMovement playerMovement, 

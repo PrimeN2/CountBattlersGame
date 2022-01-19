@@ -41,7 +41,7 @@ public class SessionData : MonoBehaviour
     {
         if (pause == true)
         {
-            _UILoader.LoadMenu();
+            _UILoader.LoadMainMenu();
             _saveSystem.Save(_playerData);
         }
 

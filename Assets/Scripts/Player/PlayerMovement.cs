@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
     public float PlayerSpeed {
@@ -10,31 +11,53 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    [SerializeField] private float _maxPlayerSpeed = 100;
+    [SerializeField] private RoadSegmentSpawner _roadSegmentSpawner;
+    [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private float _playerControlMultiplier;
 
     private float _playerSpeed = 10f;
     private bool _isStoped = false;
+    private Vector3 _direction;
+    private float _safeZone;
+
+
+    private Vector3 _deltaDirection;
 
     private void Awake()
     {
+        _rigidbody = GetComponent<Rigidbody>();
         _isStoped = false;
         _playerSpeed = 10f;
+        _direction = Vector3.forward;
+        _safeZone = 0.4f;
     }
 
-    public void TryMove(float xOffset)
+    private void FixedUpdate()
+    {
+        _rigidbody.MovePosition(_rigidbody.position + _direction * PlayerSpeed * Time.deltaTime + _deltaDirection);
+        _deltaDirection = Vector3.zero;
+    }
+
+    public bool TryMove(float xOffset)
     {
         xOffset *= _playerControlMultiplier;
-        float positionX = transform.position.x + xOffset;
-        transform.position += positionX > -1 && positionX < 1 ? new Vector3(xOffset, 0, 0) : Vector3.zero;
+        float positionX = _rigidbody.position.x + xOffset;
+        
+        if (positionX + -_safeZone < _roadSegmentSpawner.LeftBorder / 2 || 
+            positionX + _safeZone > _roadSegmentSpawner.RightBorder / 2)
+            return false;
+
+        _deltaDirection = Vector3.right * xOffset;
+        return true;
     }
 
-    public void TryChangeSpeed(float changeValue)
+    public bool TryChangeSpeed(float changeValue)
     {
-        if(PlayerSpeed < 0 || PlayerSpeed + changeValue > _maxPlayerSpeed || _isStoped)
-                return;
+        //if(PlayerSpeed < 0 || PlayerSpeed + changeValue > _maxPlayerSpeed || _isStoped)
+        //        return;
 
-        _playerSpeed += changeValue;
+        //_playerSpeed += changeValue;
+        return false;
     }
 
     public void StopMoving()

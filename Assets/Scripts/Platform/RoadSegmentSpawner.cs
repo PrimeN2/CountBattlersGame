@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class RoadSegmentSpawner : MonoBehaviour
 {
-    public IEnumerable<RoadSegmentKeeper> RoadSegmentKeepers => _roadSegmentKeepers;
+    public float LeftBorder;
+    public float RightBorder;
 
     [SerializeField] private GameObject _roadSegmentPrefab;
     [SerializeField] private GameObject _startRoadSegment;
@@ -23,6 +24,8 @@ public class RoadSegmentSpawner : MonoBehaviour
         _roadSegmentKeepers.Add(_startRoadSegment.GetComponent<RoadSegmentKeeper>());
 
         _segmentLength = _startRoadSegment.GetComponent<Collider>().bounds.size.z;
+        LeftBorder = -_startRoadSegment.GetComponent<Collider>().bounds.size.x;
+        RightBorder = _startRoadSegment.GetComponent<Collider>().bounds.size.x;
 
         //_barrierSpawner.SpawnBarrier(_currentRoadSegments[0], false);
         for (int i = 0; i < _segmentsCount; ++i)

@@ -26,7 +26,7 @@ public class PlayingState : BaseGameState
         if (_menuPanel.activeInHierarchy)
         {
             _stateSwitcher.SwitchState<PausedState>();
-            ((UILoader)_stateSwitcher).LoadMenu();
+            ((UILoader)_stateSwitcher).LoadMainMenu();
         }
         _menuPanel.SetActive(true);
         _playerMovement.ContinueMoving();
