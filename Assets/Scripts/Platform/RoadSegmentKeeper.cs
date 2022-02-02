@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using System;
+﻿using UnityEngine;
 
 public class RoadSegmentKeeper : MonoBehaviour
 {
@@ -9,9 +7,8 @@ public class RoadSegmentKeeper : MonoBehaviour
         transform.SetParent(parent);
     }
 
-    public Vector3 GetPointToSpawn(Lines.Line line, Vector3 offset)
+    public Vector3 GetPointToSpawn(Vector3 position)
     {
-        Vector3 position = new Vector3(offset.x * (int)line, offset.y, offset.z) + transform.position;
-        return position;
+        return position + transform.position;
     }
 }

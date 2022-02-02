@@ -6,31 +6,26 @@ public class PlayingState : BaseGameState
 
     public PlayingState(IGameStateSwitcher stateSwitcher, GameObject menuPanel,
         PlayerMovement playerMovement,
-        InputManager inputManager, ParticlesController _particlesController)
-        : base(stateSwitcher, playerMovement, inputManager, _particlesController)
+        InputManager inputManager, ParticlesController _particlesController, Animator animatorController)
+        : base(stateSwitcher, playerMovement, inputManager, _particlesController, animatorController)
     {
         _menuPanel = menuPanel;
     }
 
-    public override void HideMenu()
-    {
-        _menuPanel.SetActive(false);
-        if (PlayerLife.IsPlayerDead)
-            _stateSwitcher.SwitchState<LostState>();
-        else
-            _stateSwitcher.SwitchState<PausedState>();
-    }
-
     public override void LoadMenu()
     {
-        if (_menuPanel.activeInHierarchy)
+        if (_currentPanel != null && _currentPanel != _menuPanel)
         {
-            _stateSwitcher.SwitchState<PausedState>();
-            ((UILoader)_stateSwitcher).LoadMainMenu();
+            _currentPanel.SetActive(false);
+            
         }
+
         _menuPanel.SetActive(true);
+        _currentPanel = _menuPanel;
+
         _playerMovement.ContinueMoving();
         _inputManager.InitInputHandle();
         _particlesController.ContinueParticles();
+        _animatorController.SetBool(IS_MOVING, true);
     }
 }

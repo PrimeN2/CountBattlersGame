@@ -8,8 +8,8 @@ public class UILoader : MonoBehaviour, IGameStateSwitcher
     private List<BaseGameState> _allStates; 
 
     [Header("UI Components")]
+    [HideInInspector] public GameObject CurrentPanel;
     [SerializeField] private GameObject _mainMenuPanel;
-    [SerializeField] private GameObject _pauseMenuPanel;
     [SerializeField] private GameObject _gameMenuPanel;
     [SerializeField] private GameObject _loseMenuPanel;
 
@@ -26,10 +26,10 @@ public class UILoader : MonoBehaviour, IGameStateSwitcher
     {
         _allStates = new List<BaseGameState>()
         {
-            new MainState(this, _mainMenuPanel, _playerMovement, _inputManager, _particlesController),
-            new PlayingState(this, _gameMenuPanel, _playerMovement, _inputManager, _particlesController),
-            new PausedState(this, _pauseMenuPanel, _playerMovement, _inputManager, _particlesController),
-            new LostState(this, _loseMenuPanel, _playerMovement, _inputManager, _particlesController)
+            new MainState(this, _mainMenuPanel, _playerMovement, _inputManager, _particlesController, _animator),
+            new PlayingState(this, _gameMenuPanel, _playerMovement, _inputManager, _particlesController, _animator),
+            new LostState(this, _loseMenuPanel, _playerMovement, _inputManager, _particlesController, _animator),
+            new WonState(this, _gameMenuPanel, _playerMovement, _inputManager, _particlesController, _animator)
         };
         _currentState = _allStates[0];
 
@@ -38,35 +38,26 @@ public class UILoader : MonoBehaviour, IGameStateSwitcher
 
     public void LoadMainMenu()
     {
+        SwitchState<MainState>();
         _currentState.LoadMenu();
-        //_animator.SetBool("IsMoving", false);
     }
 
-    public void HideMenu()
-    {
-        _currentState.HideMenu();
-        _currentState.LoadMenu();
-        //_animator.SetBool("IsMoving", true);
-    }
-
-    public void LoadPauseMenu()
-    {
-        _currentState.HideMenu();
-        _currentState.LoadMenu();
-        _animator.SetBool("IsMoving", true);
-    }
     public void LoadGameHUD()
     {
-        _currentState.HideMenu();
+        SwitchState<PlayingState>();
         _currentState.LoadMenu();
-        _animator.SetBool("IsMoving", true);
     }
 
     public void LoadLossMenu()
     {
-        _currentState.HideMenu();
+        SwitchState<LostState>();
         _currentState.LoadMenu();
-        _animator.SetBool("IsMoving", true);
+    }
+
+    public void LoadWonMenu()
+    {
+        SwitchState<WonState>();
+        _currentState.LoadMenu();
     }
 
     public void SwitchState<T>() where T : BaseGameState
@@ -77,11 +68,11 @@ public class UILoader : MonoBehaviour, IGameStateSwitcher
 
     private void OnEnable()
     {
-        _playerLife.OnPlayerDied += HideMenu;
+        _playerLife.OnPlayerDied += LoadLossMenu;
     }
 
     private void OnDisable()
     {
-        _playerLife.OnPlayerDied -= HideMenu;
+        _playerLife.OnPlayerDied -= LoadLossMenu;
     }
 }

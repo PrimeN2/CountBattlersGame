@@ -14,9 +14,7 @@ public class BarrierKeeper : MonoBehaviour
             Random.Range(0, BarrierType.BarrierMaterials.Length)];
         gameObject.GetComponent<Renderer>().material = CurrentMaterial;
 
-        gameObject.transform.position = roadSegment.GetPointToSpawn(
-            barrierType.PossibleLines[Random.Range(0, barrierType.PossibleLines.Length)],
-            barrierType.BarrierPostion);
+        gameObject.transform.position = roadSegment.GetPointToSpawn(barrierType.BarrierPostion);
 
         gameObject.transform.localScale = BarrierType.BarrierScale;
 
