@@ -11,6 +11,8 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public Vector3 PlayerPosition { get => transform.position; }
+
     [SerializeField] private RoadSegmentSpawner _roadSegmentSpawner;
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private float _playerControlMultiplier;

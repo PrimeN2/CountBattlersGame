@@ -6,10 +6,13 @@ public class RoadSegmentSpawner : MonoBehaviour
     public float LeftBorder;
     public float RightBorder;
 
-    [SerializeField] private GameObject _roadSegmentPrefab;
-    [SerializeField] private GameObject _startRoadSegment;
-    //[SerializeField] private BarrierSpawner _barrierSpawner;
+    [SerializeField] private PlayerMovement _playerMovement;
+    [SerializeField] private GameObject _roadSegment;
+    [SerializeField] private RoadSegmentKeeper _startRoadSegmentKeeper;
+    [SerializeField] private GameObject _startRoadSegmen;
+    [SerializeField] private BarrierSpawner _barrierSpawner;
     [SerializeField] private int _segmentsCount;
+    [SerializeField] private float _bounds;
 
     private List<GameObject> _currentRoadSegments;
     private List<RoadSegmentKeeper> _roadSegmentKeepers;
@@ -20,12 +23,15 @@ public class RoadSegmentSpawner : MonoBehaviour
         _currentRoadSegments = new List<GameObject>();
         _roadSegmentKeepers = new List<RoadSegmentKeeper>();
 
-        _currentRoadSegments.Add(_startRoadSegment);
-        _roadSegmentKeepers.Add(_startRoadSegment.GetComponent<RoadSegmentKeeper>());
+        Initialize(_startRoadSegmentKeeper);
 
-        _segmentLength = _startRoadSegment.GetComponent<Collider>().bounds.size.z;
-        LeftBorder = -_startRoadSegment.GetComponent<Collider>().bounds.size.x;
-        RightBorder = _startRoadSegment.GetComponent<Collider>().bounds.size.x;
+        _currentRoadSegments.Add(_startRoadSegmen);
+        _roadSegmentKeepers.Add(_startRoadSegmentKeeper);
+
+        Vector3 StartSegmentColliderSize = _startRoadSegmen.GetComponent<Collider>().bounds.size;
+        _segmentLength = StartSegmentColliderSize.z;
+        LeftBorder = -StartSegmentColliderSize.x;
+        RightBorder = StartSegmentColliderSize.x;
 
         //_barrierSpawner.SpawnBarrier(_currentRoadSegments[0], false);
         for (int i = 0; i < _segmentsCount; ++i)
@@ -41,13 +47,15 @@ public class RoadSegmentSpawner : MonoBehaviour
 
     private void SpawnRoadSegment()
     {
-        //It is better not to change the order
-        GameObject roadSegment = Instantiate(_roadSegmentPrefab);
+        GameObject roadSegment = Instantiate(_roadSegment);
         RoadSegmentKeeper roadSegmentKeeper = roadSegment.GetComponent<RoadSegmentKeeper>();
-        roadSegmentKeeper.Init(transform);
+
+        Initialize(roadSegmentKeeper);
         PutRoadSegment(roadSegment);
+
         _currentRoadSegments.Add(roadSegment);
         _roadSegmentKeepers.Add(roadSegmentKeeper);
+
     }
     private void ReuseRoadSegment(GameObject roadSegment)
     {
@@ -63,5 +71,19 @@ public class RoadSegmentSpawner : MonoBehaviour
             roadSegment.transform.position = 
                 _currentRoadSegments[_currentRoadSegments.Count - 1].transform.position + 
                 Vector3.forward * _segmentLength;
+    }
+
+    private void Initialize(RoadSegmentKeeper roadSegmentKeeper)
+    {
+        roadSegmentKeeper.Init(transform, _playerMovement, _bounds);
+        roadSegmentKeeper.OnSegmentOverFlew += ReuseRoadSegment;
+    }
+
+    private void OnDisable()
+    {
+        foreach(var roadSegmentKeeper in _roadSegmentKeepers)
+        {
+            roadSegmentKeeper.Unsubscribe(ReuseRoadSegment);
+        }
     }
 }

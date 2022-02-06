@@ -1205,10 +1205,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LeftBorder: 0
   RightBorder: 0
-  _roadSegmentPrefab: {fileID: 5910991507753112415, guid: aada765d2f0b81d49a24308f60f0759a,
+  _playerMovement: {fileID: 7871578663121104369}
+  _roadSegment: {fileID: 5910991507753112415, guid: aada765d2f0b81d49a24308f60f0759a,
     type: 3}
-  _startRoadSegment: {fileID: 418536274}
+  _startRoadSegmentKeeper: {fileID: 418536276}
+  _startRoadSegmen: {fileID: 418536274}
+  _barrierSpawner: {fileID: 355281548}
   _segmentsCount: 12
+  _bounds: 10
 --- !u!4 &355281547
 Transform:
   m_ObjectHideFlags: 0
@@ -1253,6 +1257,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2050887369983794303}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &418536276 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8388387699746643090, guid: aada765d2f0b81d49a24308f60f0759a,
+    type: 3}
+  m_PrefabInstance: {fileID: 2050887369983794303}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 418536274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 353084ae47a752e458b2943f62a9a5cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &597047606
 GameObject:
   m_ObjectHideFlags: 0
@@ -6935,7 +6951,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.27563733, y: -0, z: -0, w: 0.96126175}
-  m_LocalPosition: {x: 16.1568, y: 25.693747, z: -21.231112}
+  m_LocalPosition: {x: 0, y: 3.8, z: -4.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1276175459}
@@ -13341,6 +13357,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 771ef0db413b5b24291b37bb67fbdf04, type: 2}
+    - target: {fileID: 2169860353865932559, guid: aada765d2f0b81d49a24308f60f0759a,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3391443261177880294, guid: aada765d2f0b81d49a24308f60f0759a,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -13354,7 +13375,7 @@ PrefabInstance:
     - target: {fileID: 6299264531437212200, guid: aada765d2f0b81d49a24308f60f0759a,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6299264531437212200, guid: aada765d2f0b81d49a24308f60f0759a,
         type: 3}
