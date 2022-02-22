@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class RoadSegmentSpawner : MonoBehaviour
 {
-    public float LeftBorder;
-    public float RightBorder;
+    [HideInInspector] public float LeftBorder;
+    [HideInInspector] public float RightBorder;
 
     [SerializeField] private PlayerMovement _playerMovement;
     [SerializeField] private GameObject _roadSegment;

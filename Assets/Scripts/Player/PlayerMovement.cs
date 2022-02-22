@@ -48,18 +48,8 @@ public class PlayerMovement : MonoBehaviour
         if (positionX + -_safeZone < _roadSegmentSpawner.LeftBorder / 2 || 
             positionX + _safeZone > _roadSegmentSpawner.RightBorder / 2)
             return false;
-
         _deltaDirection = Vector3.right * xOffset;
         return true;
-    }
-
-    public bool TryChangeSpeed(float changeValue)
-    {
-        //if(PlayerSpeed < 0 || PlayerSpeed + changeValue > _maxPlayerSpeed || _isStoped)
-        //        return;
-
-        //_playerSpeed += changeValue;
-        return false;
     }
 
     public void StopMoving()

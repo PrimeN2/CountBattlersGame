@@ -72,12 +72,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Amount: 0.031
+    - _Amount: 0.025
     - _BumpScale: 1
     - _Cull: 2
     - _Cutoff: 0.5
     - _DamageOnOff: 0
-    - _DamagePower: 0.31
+    - _DamagePower: 0.34
     - _DetailNormalMapScale: 1
     - _Dissolve: 0
     - _DstBlend: 0
@@ -90,7 +90,7 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
-    - _OutlineWidth: 0.0169
+    - _OutlineWidth: 0.0106
     - _Parallax: 0.02
     - _RIM: 0
     - _RimPower: 0
@@ -100,21 +100,22 @@ Material:
     - _SpecSize: 0.681
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _Threshold: 0.605
+    - _Threshold: 0.564
     - _TopBottomOffset: -0.35
     - _USEOUTLINE: 1
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
     - _BColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.43805626, g: 0.8679245, b: 0.82913095, a: 1}
     - _DamageColor: {r: 1, g: 0.26795822, b: 0, a: 1}
     - _DissolveColor: {r: 0, g: 1, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _GColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    - _HColor: {r: 0, g: 0.93309736, b: 1, a: 1}
+    - _HColor: {r: 0, g: 0.9333334, b: 1, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _RColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _RimColor: {r: 0, g: 0, b: 0, a: 1}
-    - _SColor: {r: 0.67886823, g: 0.3915094, b: 1, a: 1}
+    - _SColor: {r: 0.6154337, g: 0.41585082, b: 0.8396226, a: 1}
     - _SpColor: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []

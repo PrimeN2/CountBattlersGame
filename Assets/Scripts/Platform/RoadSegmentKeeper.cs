@@ -25,7 +25,7 @@ public class RoadSegmentKeeper : MonoBehaviour
         OnSegmentOverFlew -= action;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (_playerMovement.PlayerPosition.z - transform.position.z > _bounds)
         {
