@@ -14,9 +14,10 @@ public class BarrierKeeper : MonoBehaviour
             Random.Range(0, BarrierType.BarrierMaterials.Length)];
         gameObject.GetComponent<Renderer>().material = CurrentMaterial;
 
-        gameObject.transform.position = roadSegment.GetPointToSpawn(barrierType.BarrierPostion);
+        gameObject.transform.position = roadSegment.GetPlatformCentre() + 
+            new Vector3(barrierType.BarrierPostion.x * Random.Range(-1, 2), barrierType.BarrierPostion.y, barrierType.BarrierPostion.z);
 
-        gameObject.transform.localScale = BarrierType.BarrierScale;
+        gameObject.transform.localScale = barrierType.BarrierScale;
 
         gameObject.transform.rotation = Quaternion.Euler(BarrierType.BarrierRotation);
 

@@ -15,9 +15,9 @@ public class RoadSegmentKeeper : MonoBehaviour
         _bounds = bounds;
     }
 
-    public Vector3 GetPointToSpawn(Vector3 position)
+    public Vector3 GetPlatformCentre()
     {
-        return position + transform.position;
+        return transform.position;
     }
 
     public void Unsubscribe(Action<GameObject> action)

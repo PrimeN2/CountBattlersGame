@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Fading
+  m_Name: FadingBlue
   m_Shader: {fileID: 4800000, guid: b869619d81a7e944789e7ceff75bea77, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4

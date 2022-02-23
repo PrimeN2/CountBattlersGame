@@ -480,6 +480,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d68141f4b023be54a824f5d7106ca03d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &81693286
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 81693287}
+  - component: {fileID: 81693288}
+  m_Layer: 0
+  m_Name: BarrierSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &81693287
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81693286}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1047059100}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &81693288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81693286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd9cfe83e7fe0da4db26a825d4cfdbc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _barrierTypes:
+  - {fileID: 11400000, guid: 4cc45cfecf9a0484091a7ba336f12aca, type: 2}
+  - {fileID: 11400000, guid: 8a1c2afa4f4fabc4a9787050b6eae684, type: 2}
+  _barrierPrefab: {fileID: 8658665198297686266, guid: 83d1f1d15d548234aa63dd6c5b38b1f9,
+    type: 3}
 --- !u!1 &195944459
 GameObject:
   m_ObjectHideFlags: 0
@@ -1183,9 +1231,8 @@ GameObject:
   m_Component:
   - component: {fileID: 355281547}
   - component: {fileID: 355281546}
-  - component: {fileID: 355281548}
   m_Layer: 0
-  m_Name: RoadSegmentSpawner
+  m_Name: RoadSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1205,13 +1252,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LeftBorder: 0
   RightBorder: 0
+  _selectionBlockSpawner: {fileID: 2010302781}
   _playerMovement: {fileID: 7871578663121104369}
   _roadSegment: {fileID: 5910991507753112415, guid: aada765d2f0b81d49a24308f60f0759a,
     type: 3}
   _startRoadSegmentKeeper: {fileID: 418536276}
   _startRoadSegmen: {fileID: 418536274}
-  _barrierSpawner: {fileID: 355281548}
+  _barrierSpawner: {fileID: 81693288}
   _segmentsCount: 15
+  _countOfSelectionBlocksOnAPlatform: 1
   _bounds: 8
 --- !u!4 &355281547
 Transform:
@@ -1225,26 +1274,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 418536275}
-  m_Father: {fileID: 1961045469}
+  m_Father: {fileID: 1047059100}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &355281548
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 355281545}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd9cfe83e7fe0da4db26a825d4cfdbc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _barrierTypes:
-  - {fileID: 11400000, guid: 4cc45cfecf9a0484091a7ba336f12aca, type: 2}
-  - {fileID: 11400000, guid: 8a1c2afa4f4fabc4a9787050b6eae684, type: 2}
-  _barrierPrefab: {fileID: 4451354747909501092, guid: 656f6865a884f9749b2ba3ddcb47366e,
-    type: 3}
 --- !u!1 &418536274 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5910991507753112415, guid: aada765d2f0b81d49a24308f60f0759a,
@@ -7109,6 +7141,39 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1047059099
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1047059100}
+  m_Layer: 0
+  m_Name: Spawners
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1047059100
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047059099}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 355281547}
+  - {fileID: 81693287}
+  - {fileID: 2010302780}
+  m_Father: {fileID: 1961045469}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1053365114
 GameObject:
   m_ObjectHideFlags: 0
@@ -8089,7 +8154,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 355281547}
+  - {fileID: 1047059100}
   - {fileID: 7383273057203320662}
   m_Father: {fileID: 0}
   m_RootOrder: 4
@@ -8228,6 +8293,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1972021104}
   m_CullTransparentMesh: 0
+--- !u!1 &2010302779
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2010302780}
+  - component: {fileID: 2010302781}
+  m_Layer: 0
+  m_Name: SelectionBlockSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2010302780
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2010302779}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1047059100}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2010302781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2010302779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d88493196169bbd479eb5f2e2d4b04e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _selectionBlock: {fileID: 20602235459563313, guid: 656f6865a884f9749b2ba3ddcb47366e,
+    type: 3}
 --- !u!1 &2061397518
 GameObject:
   m_ObjectHideFlags: 0
@@ -14221,7 +14331,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _roadSegmentSpawner: {fileID: 355281546}
   _rigidbody: {fileID: 7871578663121104366}
-  _playerControlMultiplier: 0.01
+  _playerControlMultiplier: 0.008
 --- !u!114 &7871578663121104370
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -6,20 +6,24 @@ public class RoadSegmentSpawner : MonoBehaviour
     [HideInInspector] public float LeftBorder;
     [HideInInspector] public float RightBorder;
 
+    [SerializeField] private SelectionBlockSpawner _selectionBlockSpawner;
     [SerializeField] private PlayerMovement _playerMovement;
     [SerializeField] private GameObject _roadSegment;
     [SerializeField] private RoadSegmentKeeper _startRoadSegmentKeeper;
     [SerializeField] private GameObject _startRoadSegmen;
     [SerializeField] private BarrierSpawner _barrierSpawner;
     [SerializeField] private int _segmentsCount;
+    [SerializeField] private int _countOfSelectionBlocksOnAPlatform;
     [SerializeField] private float _bounds;
-
+    
     private List<GameObject> _currentRoadSegments;
     private List<RoadSegmentKeeper> _roadSegmentKeepers;
     private float _segmentLength;
 
     private void Awake()
     {
+        _selectionBlockSpawner.InitSpawner();
+        _barrierSpawner.InitSpawner();
         _currentRoadSegments = new List<GameObject>();
         _roadSegmentKeepers = new List<RoadSegmentKeeper>();
 
@@ -33,15 +37,13 @@ public class RoadSegmentSpawner : MonoBehaviour
         LeftBorder = -StartSegmentColliderSize.x;
         RightBorder = StartSegmentColliderSize.x;
 
-        //_barrierSpawner.SpawnBarrier(_currentRoadSegments[0], false);
+        _selectionBlockSpawner.SpawnNewSelectionBlock(_roadSegmentKeepers[0], _countOfSelectionBlocksOnAPlatform, false);
+        _barrierSpawner.SpawnBarrier(_currentRoadSegments[0], false);
         for (int i = 0; i < _segmentsCount; ++i)
         {
             SpawnRoadSegment();
-
-            //if (i <= 3)
-            //    _barrierSpawner.SpawnBarrier(_currentRoadSegments[i + 1], false);
-            //else
-            //    _barrierSpawner.SpawnBarrier(_currentRoadSegments[i + 1], true);
+            _selectionBlockSpawner.SpawnNewSelectionBlock(_roadSegmentKeepers[i + 1], _countOfSelectionBlocksOnAPlatform, i >= 4);
+            _barrierSpawner.SpawnBarrier(_currentRoadSegments[i + 1], i >= 4);
         }
     }
 
@@ -59,8 +61,12 @@ public class RoadSegmentSpawner : MonoBehaviour
     }
     private void ReuseRoadSegment(GameObject roadSegment)
     {
-        //_barrierSpawner.InitBarrierOnSegment(roadSegment, true);
+        _selectionBlockSpawner.SetSelectionBlockOnSegment(
+            roadSegment.GetComponent<RoadSegmentKeeper>(), true);
+        _barrierSpawner.SetBarrierOnSegment(roadSegment, true);
+
         PutRoadSegment(roadSegment);
+
         _currentRoadSegments.Remove(roadSegment);
         _currentRoadSegments.Add(roadSegment);
     }
