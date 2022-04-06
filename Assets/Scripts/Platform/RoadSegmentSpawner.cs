@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class RoadSegmentSpawner : MonoBehaviour
 {
@@ -7,18 +9,22 @@ public class RoadSegmentSpawner : MonoBehaviour
     [HideInInspector] public float RightBorder;
 
     [SerializeField] private SelectionBlockSpawner _selectionBlockSpawner;
+    [SerializeField] private EnemySpawner _enemySpawner;
     [SerializeField] private PlayerMovement _playerMovement;
     [SerializeField] private GameObject _roadSegment;
     [SerializeField] private RoadSegmentKeeper _startRoadSegmentKeeper;
     [SerializeField] private GameObject _startRoadSegmen;
     [SerializeField] private BarrierSpawner _barrierSpawner;
     [SerializeField] private int _segmentsCount;
-    [SerializeField] private int _countOfSelectionBlocksOnAPlatform;
     [SerializeField] private float _bounds;
-    
+
     private List<GameObject> _currentRoadSegments;
     private List<RoadSegmentKeeper> _roadSegmentKeepers;
+
+    private NavMeshSurface _navMeshSurface;
     private float _segmentLength;
+
+
 
     private void Awake()
     {
@@ -28,6 +34,7 @@ public class RoadSegmentSpawner : MonoBehaviour
         _roadSegmentKeepers = new List<RoadSegmentKeeper>();
 
         Initialize(_startRoadSegmentKeeper);
+        _navMeshSurface = _startRoadSegmen.GetComponent<NavMeshSurface>();
 
         _currentRoadSegments.Add(_startRoadSegmen);
         _roadSegmentKeepers.Add(_startRoadSegmentKeeper);
@@ -37,14 +44,12 @@ public class RoadSegmentSpawner : MonoBehaviour
         LeftBorder = -StartSegmentColliderSize.x;
         RightBorder = StartSegmentColliderSize.x;
 
-        _selectionBlockSpawner.SpawnNewSelectionBlock(_roadSegmentKeepers[0], _countOfSelectionBlocksOnAPlatform, false);
-        _barrierSpawner.SpawnBarrier(_currentRoadSegments[0], false);
         for (int i = 0; i < _segmentsCount; ++i)
         {
             SpawnRoadSegment();
-            _selectionBlockSpawner.SpawnNewSelectionBlock(_roadSegmentKeepers[i + 1], _countOfSelectionBlocksOnAPlatform, i >= 4);
-            _barrierSpawner.SpawnBarrier(_currentRoadSegments[i + 1], i >= 4);
         }
+        _enemySpawner.Spawn(_startRoadSegmentKeeper);
+        _navMeshSurface.BuildNavMesh();
     }
 
     private void SpawnRoadSegment()
@@ -53,7 +58,7 @@ public class RoadSegmentSpawner : MonoBehaviour
         RoadSegmentKeeper roadSegmentKeeper = roadSegment.GetComponent<RoadSegmentKeeper>();
 
         Initialize(roadSegmentKeeper);
-        PutRoadSegment(roadSegment);
+        PutRoadSegment(roadSegment, roadSegmentKeeper);
 
         _currentRoadSegments.Add(roadSegment);
         _roadSegmentKeepers.Add(roadSegmentKeeper);
@@ -61,22 +66,24 @@ public class RoadSegmentSpawner : MonoBehaviour
     }
     private void ReuseRoadSegment(GameObject roadSegment)
     {
-        _selectionBlockSpawner.SetSelectionBlockOnSegment(
-            roadSegment.GetComponent<RoadSegmentKeeper>(), true);
-        _barrierSpawner.SetBarrierOnSegment(roadSegment, true);
+        RoadSegmentKeeper roadSegmentKeeper = roadSegment.GetComponent<RoadSegmentKeeper>();
 
-        PutRoadSegment(roadSegment);
+        PutRoadSegment(roadSegment, roadSegmentKeeper);
 
         _currentRoadSegments.Remove(roadSegment);
         _currentRoadSegments.Add(roadSegment);
     }
 
-    private void PutRoadSegment(GameObject roadSegment)
+    private void PutRoadSegment(GameObject roadSegment, RoadSegmentKeeper roadSegmentKeeper)
     {
         if (_currentRoadSegments.Count > 0)
             roadSegment.transform.position = 
                 _currentRoadSegments[_currentRoadSegments.Count - 1].transform.position + 
                 Vector3.forward * _segmentLength;
+
+        _selectionBlockSpawner.SetSelectionBlockOnSegment(roadSegmentKeeper, true);
+        _barrierSpawner.SetBarrierOnSegment(roadSegmentKeeper, true, 4);
+        _navMeshSurface.BuildNavMesh();
     }
 
     private void Initialize(RoadSegmentKeeper roadSegmentKeeper)
@@ -89,7 +96,7 @@ public class RoadSegmentSpawner : MonoBehaviour
     {
         foreach(var roadSegmentKeeper in _roadSegmentKeepers)
         {
-            roadSegmentKeeper.Unsubscribe(ReuseRoadSegment);
+            roadSegmentKeeper.OnSegmentOverFlew -= ReuseRoadSegment;
         }
     }
 }

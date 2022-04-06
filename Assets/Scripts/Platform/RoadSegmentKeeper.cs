@@ -20,11 +20,6 @@ public class RoadSegmentKeeper : MonoBehaviour
         return transform.position;
     }
 
-    public void Unsubscribe(Action<GameObject> action)
-    {
-        OnSegmentOverFlew -= action;
-    }
-
     private void FixedUpdate()
     {
         if (_playerMovement.PlayerPosition.z - transform.position.z > _bounds)

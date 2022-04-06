@@ -4,31 +4,38 @@ using UnityEngine;
 public class BarrierSpawner : MonoBehaviour
 {
     [SerializeField] private DefaultBarrier[] _barrierTypes;
-    [SerializeField] private GameObject _barrierPrefab;
+    [SerializeField] private BarrierKeeper _barrierKeeper;
 
     private BarrierIdentifier _barrierIdentifier;
-    private Dictionary<GameObject, BarrierKeeper> _barrierOnTheSegment;
+    private Queue<BarrierKeeper> _barriersPool;
 
     public void InitSpawner()
     {
+        _barriersPool = new Queue<BarrierKeeper>();
         _barrierIdentifier = new BarrierIdentifier(_barrierTypes);
-        _barrierOnTheSegment = new Dictionary<GameObject, BarrierKeeper>();
+
+        Spawn();
     }
 
-    public void SpawnBarrier(GameObject roadSegment, bool isActive)
+    public void SetBarrierOnSegment(RoadSegmentKeeper roadSegmentKeeper, bool isActive, int count)
     {
-        GameObject currentBarrier = Instantiate(_barrierPrefab, roadSegment.transform, true);
-        BarrierKeeper barrierKeeper = currentBarrier.GetComponent<BarrierKeeper>();
-        _barrierOnTheSegment.Add(roadSegment, barrierKeeper);
-        SetBarrierOnSegment(roadSegment, isActive);
-
+        for (int i = 0; i < count; ++i)
+        {
+            BarrierKeeper currentBarrier = _barriersPool.Dequeue();
+            currentBarrier.Init(
+                _barrierTypes[Random.Range(0, _barrierTypes.Length)], roadSegmentKeeper, i);
+            currentBarrier.gameObject.SetActive(isActive);
+            _barriersPool.Enqueue(currentBarrier);
+        }
     }
 
-    public void SetBarrierOnSegment(GameObject roadSegment, bool isActive)
+    private void Spawn()
     {
-        _barrierOnTheSegment[roadSegment].Init(
-            _barrierTypes[Random.Range(0, _barrierTypes.Length)], 
-            roadSegment.GetComponent<RoadSegmentKeeper>());
-        _barrierOnTheSegment[roadSegment].gameObject.SetActive(isActive);
+        for(int i = 0; i < 20; ++i)
+        {
+            BarrierKeeper current = Instantiate(_barrierKeeper, transform);
+            current.gameObject.SetActive(false);
+            _barriersPool.Enqueue(current);
+        }
     }
 }

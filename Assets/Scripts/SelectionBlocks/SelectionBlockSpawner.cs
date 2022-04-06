@@ -6,31 +6,30 @@ public class SelectionBlockSpawner : MonoBehaviour
 {
     [SerializeField] private SelectionBlockKeeper _selectionBlock;
 
-    private Dictionary<RoadSegmentKeeper, SelectionBlockKeeper[]> _selectionBlocksOnSegment;
+    private Queue<SelectionBlockKeeper> _selectionBlocksPull;
 
     public void InitSpawner()
     {
-        _selectionBlocksOnSegment = new Dictionary<RoadSegmentKeeper, SelectionBlockKeeper[]>();
+        _selectionBlocksPull = new Queue<SelectionBlockKeeper>();
+
+        Spawn();
     }
 
-    public void SpawnNewSelectionBlock(RoadSegmentKeeper roadSegmentKeeper, int count, bool isActive)
-    {
-        SelectionBlockKeeper[] currentKeepers = new SelectionBlockKeeper[count];
-
-        for (int i = 0; i < count; ++i)
-        {
-            SelectionBlockKeeper currentKeeper = Instantiate(_selectionBlock, roadSegmentKeeper.transform, true);
-            currentKeepers[i] = currentKeeper;
-        }
-        _selectionBlocksOnSegment.Add(roadSegmentKeeper, currentKeepers);
-        SetSelectionBlockOnSegment(roadSegmentKeeper, isActive);
-    }
     public void SetSelectionBlockOnSegment(RoadSegmentKeeper roadSegmentKeeper, bool isActive)
     {
-        foreach (var selectionBlockKeeper in _selectionBlocksOnSegment[roadSegmentKeeper])
+        SelectionBlockKeeper currentSelectionBlock = _selectionBlocksPull.Dequeue();
+        currentSelectionBlock.Set(roadSegmentKeeper, Random.Range(1, 51), Random.Range(1, 51));
+        currentSelectionBlock.gameObject.SetActive(isActive);
+        _selectionBlocksPull.Enqueue(currentSelectionBlock);
+    }
+
+    private void Spawn()
+    {
+        for (int i = 0; i < 5; ++i)
         {
-            selectionBlockKeeper.Set(roadSegmentKeeper);
-            selectionBlockKeeper.gameObject.SetActive(isActive);
+            SelectionBlockKeeper current = Instantiate(_selectionBlock, transform);
+            current.gameObject.SetActive(false);
+            _selectionBlocksPull.Enqueue(current);
         }
     }
 }
