@@ -8,7 +8,7 @@ public class BarrierKeeper : MonoBehaviour
 
     private int _distanceMultiplier = 5;
 
-    public void Init(DefaultBarrier barrierType, RoadSegmentKeeper roadSegment, int delta)
+    public void Init(DefaultBarrier barrierType, RoadSegmentKeeper roadSegment, int current)
     {
         BarrierType = barrierType;
 
@@ -16,8 +16,9 @@ public class BarrierKeeper : MonoBehaviour
             Random.Range(0, BarrierType.BarrierMaterials.Length)];
         gameObject.GetComponent<Renderer>().material = CurrentMaterial;
 
-        gameObject.transform.position = roadSegment.GetPlatformCentre() + 
-            new Vector3(barrierType.BarrierPostion.x * Random.Range(-1, 2), barrierType.BarrierPostion.y, barrierType.BarrierPostion.z + delta * _distanceMultiplier);
+        gameObject.transform.position = roadSegment.GetPlatformEnd() + 
+            new Vector3(barrierType.BarrierPostion.x * Random.Range(-1, 2), barrierType.BarrierPostion.y, 
+            barrierType.BarrierPostion.z + current * _distanceMultiplier);
 
         gameObject.transform.localScale = barrierType.BarrierScale;
 

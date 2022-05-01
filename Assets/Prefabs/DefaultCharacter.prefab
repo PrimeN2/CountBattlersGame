@@ -220,7 +220,7 @@ GameObject:
   - component: {fileID: 5129482168714741236}
   - component: {fileID: 3116480553704537395}
   m_Layer: 0
-  m_Name: hyper_low02
+  m_Name: DefaultCharacter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

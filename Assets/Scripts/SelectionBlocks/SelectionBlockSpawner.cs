@@ -8,18 +8,18 @@ public class SelectionBlockSpawner : MonoBehaviour
 
     private Queue<SelectionBlockKeeper> _selectionBlocksPull;
 
-    public void InitSpawner()
+    private void Awake()
     {
         _selectionBlocksPull = new Queue<SelectionBlockKeeper>();
 
         Spawn();
     }
 
-    public void SetSelectionBlockOnSegment(RoadSegmentKeeper roadSegmentKeeper, bool isActive)
+    public void SetSelectionBlockOnSegment(RoadSegmentKeeper roadSegmentKeeper)
     {
         SelectionBlockKeeper currentSelectionBlock = _selectionBlocksPull.Dequeue();
         currentSelectionBlock.Set(roadSegmentKeeper, Random.Range(1, 51), Random.Range(1, 51));
-        currentSelectionBlock.gameObject.SetActive(isActive);
+        currentSelectionBlock.gameObject.SetActive(true);
         _selectionBlocksPull.Enqueue(currentSelectionBlock);
     }
 

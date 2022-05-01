@@ -9,7 +9,7 @@ public class BarrierSpawner : MonoBehaviour
     private BarrierIdentifier _barrierIdentifier;
     private Queue<BarrierKeeper> _barriersPool;
 
-    public void InitSpawner()
+    private void Awake()
     {
         _barriersPool = new Queue<BarrierKeeper>();
         _barrierIdentifier = new BarrierIdentifier(_barrierTypes);
@@ -17,14 +17,14 @@ public class BarrierSpawner : MonoBehaviour
         Spawn();
     }
 
-    public void SetBarrierOnSegment(RoadSegmentKeeper roadSegmentKeeper, bool isActive, int count)
+    public void SpawnBarrierOnSegment(RoadSegmentKeeper roadSegmentKeeper)
     {
-        for (int i = 0; i < count; ++i)
+        for (int i = 0; i < 3; ++i)
         {
             BarrierKeeper currentBarrier = _barriersPool.Dequeue();
             currentBarrier.Init(
                 _barrierTypes[Random.Range(0, _barrierTypes.Length)], roadSegmentKeeper, i);
-            currentBarrier.gameObject.SetActive(isActive);
+            currentBarrier.gameObject.SetActive(true);
             _barriersPool.Enqueue(currentBarrier);
         }
     }

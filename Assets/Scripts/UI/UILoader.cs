@@ -54,7 +54,7 @@ public class UILoader : MonoBehaviour, IGameStateSwitcher
         _currentState.LoadMenu();
     }
 
-    public void LoadWonMenu()
+    public void LoadWinMenu()
     {
         SwitchState<WonState>();
         _currentState.LoadMenu();
