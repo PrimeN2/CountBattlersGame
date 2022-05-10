@@ -11,7 +11,8 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public Vector3 PlayerPosition { get => transform.position; }
+    public Vector3 PlayerPosition { get => _playerTransform.position; }
+    private Transform _playerTransform;
 
     [SerializeField] private RoadSegmentSpawner _roadSegmentSpawner;
     [SerializeField] private Rigidbody _rigidbody;
@@ -28,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        _playerTransform = transform;
         _isStoped = false;
         _playerSpeed = 10f;
         _direction = Vector3.forward;

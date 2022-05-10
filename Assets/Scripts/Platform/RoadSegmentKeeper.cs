@@ -22,7 +22,7 @@ public class RoadSegmentKeeper : MonoBehaviour
         return transform.position;
     }
 
-    public Vector3 GetPlatformEnd()
+    public Vector3 GetPlatformStart()
     {
         return transform.position + new Vector3(0, 0, _zOffset);
     }

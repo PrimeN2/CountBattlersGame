@@ -8,7 +8,7 @@ public class PlatformSetter : MonoBehaviour
     [Header("Spawners")]
     [SerializeField] private RoadSegmentSpawner _roadSegmentSpawner;
     [SerializeField] private SelectionBlockSpawner _selectionBlockSpawner;
-    [SerializeField] private EnemySpawner _enemySpawner;
+    [SerializeField] private CharacterSpawner _characterSpawner;
     [SerializeField] private BarrierSpawner _barrierSpawner;
 
     private int[] _segmentsOrder;
@@ -17,7 +17,7 @@ public class PlatformSetter : MonoBehaviour
     {
         _selectionBlockSpawner.SetSelectionBlockOnSegment(roadSegmentKeeper);
         _barrierSpawner.SpawnBarrierOnSegment(roadSegmentKeeper);
-        _enemySpawner.Spawn(roadSegmentKeeper);
+        _characterSpawner.Spawn(roadSegmentKeeper);
     }
 
     private void OnEnable()

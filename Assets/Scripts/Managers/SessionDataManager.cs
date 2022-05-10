@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class SessionData : MonoBehaviour
+public class SessionDataManager : MonoBehaviour
 {
     public Action OnScoreIncreased;
 

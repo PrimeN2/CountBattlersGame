@@ -5,7 +5,7 @@ using UnityEngine;
 public class DisplayBestScore : MonoBehaviour
 {
     [SerializeField] private TMP_Text _label;
-    [SerializeField] private SessionData _sessionData;
+    [SerializeField] private SessionDataManager _sessionData;
 
     private void OnEnable()
     {

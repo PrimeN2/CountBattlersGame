@@ -45,8 +45,6 @@ public class RoadSegmentSpawner : MonoBehaviour
     {
         for (int i = 0; i < _segmentsCount; ++i)
             SpawnRoadSegment();
-
-        _navMeshSurface.BuildNavMesh();
     }
 
     public void SpawnRoadSegment()
@@ -78,8 +76,8 @@ public class RoadSegmentSpawner : MonoBehaviour
                 _currentRoadSegments[_currentRoadSegments.Count - 1].transform.position + 
                 Vector3.forward * _segmentLength;
 
-        OnRoadSegmentAdded?.Invoke(roadSegmentKeeper);
         _navMeshSurface.BuildNavMesh();
+        OnRoadSegmentAdded?.Invoke(roadSegmentKeeper);
     }
 
     private void Initialize(RoadSegmentKeeper roadSegmentKeeper)

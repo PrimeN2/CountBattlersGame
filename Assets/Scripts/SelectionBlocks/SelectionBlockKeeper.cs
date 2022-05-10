@@ -12,7 +12,7 @@ public class SelectionBlockKeeper : MonoBehaviour
 
     public void Set(RoadSegmentKeeper roadSegmentKeeper, int rightSum, int leftSum)
     {
-        gameObject.transform.position = roadSegmentKeeper.GetPlatformEnd() + _selectionBlockOffset;
+        gameObject.transform.position = roadSegmentKeeper.GetPlatformStart() + _selectionBlockOffset;
         _leftLabel.text = $"+{leftSum}";
         _rightLable.text = $"+{rightSum}";
     }

@@ -4,15 +4,13 @@ public class PlayingState : BaseGameState
 {
     private GameObject _menuPanel;
 
-    public PlayingState(IGameStateSwitcher stateSwitcher, GameObject menuPanel,
-        PlayerMovement playerMovement,
-        InputManager inputManager, ParticlesController _particlesController, Animator animatorController)
-        : base(stateSwitcher, playerMovement, inputManager, _particlesController, animatorController)
+    public PlayingState(IGameStateSwitcher stateSwitcher, GameObject menuPanel, StateArguments stateArguments)
+        : base(stateSwitcher, stateArguments)
     {
         _menuPanel = menuPanel;
     }
 
-    public override void LoadMenu()
+    public override void Load()
     {
         if (_currentPanel != null && _currentPanel != _menuPanel)
         {
@@ -23,9 +21,9 @@ public class PlayingState : BaseGameState
         _menuPanel.SetActive(true);
         _currentPanel = _menuPanel;
 
-        _playerMovement.ContinueMoving();
-        _inputManager.InitInputHandle();
-        _particlesController.ContinueParticles();
-        _animatorController.SetBool(IS_MOVING, true);
+        _stateArguments._playerMovement.ContinueMoving();
+        _stateArguments._inputManager.InitInputHandle();
+        _stateArguments._particlesController.ContinueParticles();
+        //_stateArguments._animatorController.SetBool(IS_MOVING, true);
     }
 }

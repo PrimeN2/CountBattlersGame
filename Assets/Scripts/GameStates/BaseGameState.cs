@@ -9,23 +9,13 @@ public abstract class BaseGameState
     protected static GameObject _currentPanel;
 
     protected readonly IGameStateSwitcher _stateSwitcher;
-    protected readonly PlayerMovement _playerMovement;
-    protected readonly InputManager _inputManager;
-    protected readonly ParticlesController _particlesController;
-    protected readonly Animator _animatorController;
+    protected StateArguments _stateArguments;
 
-    protected BaseGameState(IGameStateSwitcher stateSwitcher, 
-        PlayerMovement playerMovement, 
-        InputManager inputManager,
-        ParticlesController particlesController,
-        Animator animatorController)
+    protected BaseGameState(IGameStateSwitcher stateSwitcher, StateArguments stateArguments)
     {
         _stateSwitcher = stateSwitcher;
-        _playerMovement = playerMovement;
-        _inputManager = inputManager;
-        _particlesController = particlesController;
-        _animatorController = animatorController;
+        _stateArguments = stateArguments;
     }
 
-    public abstract void LoadMenu();
+    public abstract void Load();
 }
