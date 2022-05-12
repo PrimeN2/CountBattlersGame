@@ -12,11 +12,9 @@ public class CharacterSpawner : MonoBehaviour
     [SerializeField] private GameObject _characterPrefab;
     [SerializeField] private GameObject _bunchPrefab;
 
-    [SerializeField] private Vector3 _triggerOffset;
+    [SerializeField] private Vector3 _bunchOffset;
     [SerializeField]
     [Range(1, 200)] private int _maxCountOfEnemiesInAGroup = 100;
-
-    private Transform _currentTransformForCharacters;
 
     private IObjectPool<CharacterKeeper> _characterPool;
 
@@ -40,9 +38,7 @@ public class CharacterSpawner : MonoBehaviour
 
     private CharacterKeeper CreateCharacter()
     {
-        CharacterKeeper characterKeeper = Instantiate(
-            _characterPrefab, _currentTransformForCharacters.position, Quaternion.identity, _currentTransformForCharacters)
-            .GetComponent<CharacterKeeper>();
+        CharacterKeeper characterKeeper = Instantiate(_characterPrefab).GetComponent<CharacterKeeper>();
         characterKeeper.Init(OnCharacterReleased);
         return characterKeeper;
     }
@@ -50,14 +46,17 @@ public class CharacterSpawner : MonoBehaviour
     public void Spawn(RoadSegmentKeeper roadSegment)
     {
         BunchHandler bunch = Instantiate(_bunchPrefab, transform).GetComponent<BunchHandler>();
-        _currentTransformForCharacters = bunch.transform;
         bunch.Init(OnBunchTriggered);
-        bunch.transform.position = roadSegment.GetPlatformStart() + _triggerOffset;
+        bunch.transform.position = roadSegment.GetPlatformStart() + _bunchOffset;
 
         for (int i = 0; i < _maxCountOfEnemiesInAGroup; ++i)
         {
             var character = _characterPool.Get();
-            character.gameObject.GetComponent<NavMeshAgent>().Warp(character.transform.position + GetOffsetFor(i));
+            Transform transform = character.transform;
+            character.gameObject.GetComponent<NavMeshAgent>().Warp(
+                bunch.transform.position + GetOffsetFor(i));
+            transform.SetParent(bunch.transform);
+            transform.Rotate(new Vector3(0, 180, 0));
             bunch.AddCharacter(character);
         }
     }
@@ -65,12 +64,12 @@ public class CharacterSpawner : MonoBehaviour
 
     public void Spawn(int count)
     {
-        _currentTransformForCharacters = _playerAlliensHandler.transform;
-
         for (int i = 0; i < count; ++i)
         {
             var character = _characterPool.Get();
-            character.gameObject.GetComponent<NavMeshAgent>().Warp(_playerAlliensHandler.GetPositionForCharacters() + GetOffsetFor(i) - new Vector3(0, 0, 5));
+            character.gameObject.GetComponent<NavMeshAgent>().Warp(
+                _playerAlliensHandler.GetPositionForCharacters() + GetOffsetFor(i) - new Vector3(0, 0, 5));
+            character.transform.SetParent(_playerAlliensHandler.transform);
             _playerAlliensHandler.AddCharacter(character);
         }
     }
@@ -78,6 +77,7 @@ public class CharacterSpawner : MonoBehaviour
     private void ReleaseCharacter(CharacterKeeper character)
     {
         character.transform.parent = null;
+        character.transform.rotation = new Quaternion(0, 0, 0, 0);
         _characterPool.Release(character);
     }
 

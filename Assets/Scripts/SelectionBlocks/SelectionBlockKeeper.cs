@@ -3,6 +3,8 @@ using TMPro;
 
 public class SelectionBlockKeeper : MonoBehaviour
 {
+    public bool IsTouched = false;
+
     [SerializeField] private Renderer _leftArea;
     [SerializeField] private Renderer _rightArea;
     [SerializeField] private TextMeshPro _leftLabel;
