@@ -1,35 +1,52 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
-public class BunchHandler : MonoBehaviour
+public class BunchHandler : MonoBehaviour, ICharactersHandler
 {
+    public bool Triggered { get; private set; }
+    public bool IsPlayerLose;
+
     private Action<Vector3> _onCrowdTriggered;
+    private Action _onBunchDefeated;
 
-    private List<CharacterKeeper> _characterKeepers;
+    private List<CharacterKeeper> _characters;
 
-    public void Init(Action<Vector3> onCrowdTriggered)
+    public void Init(Action<Vector3> onCrowdTriggered, Action onBunchDefeated)
     {
-        _characterKeepers = new List<CharacterKeeper>();
+        _characters = new List<CharacterKeeper>();
         _onCrowdTriggered = onCrowdTriggered;
+        _onBunchDefeated = onBunchDefeated;
+        Triggered = false;
     }
 
     public void AddCharacter(CharacterKeeper character)
     {
-        _characterKeepers.Add(character);
+        _characters.Add(character);
     }
-
-    private void SetDestination(Vector3 position)
+    public void RemoveCharacter(CharacterKeeper character)
     {
-        foreach (var character in _characterKeepers)
+        _characters.Remove(character);
+
+        if (_characters.Count == 0 && !IsPlayerLose)
         {
-            character.SetDestination(position);
+            _onBunchDefeated?.Invoke();
+            Destroy(gameObject);
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void MoveTo(Vector3 position)
     {
-        SetDestination(other.transform.position);
+        foreach (var character in _characters)
+        {
+            character.SetDestination(position);
+        }
+        Triggered = true;
         _onCrowdTriggered?.Invoke(transform.position);
+    }
+
+    public Vector3 GetPositionForSpawn()
+    {
+        return transform.position;
     }
 }

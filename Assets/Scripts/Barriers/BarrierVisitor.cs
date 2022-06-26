@@ -11,7 +11,7 @@ public class BarrierVisitor : IBarrierVisitor
         }
         else
         {
-            player.GetComponent<PlayerLife>().DamagePlayer(1);
+            //player.GetComponent<PlayerLife>().DamagePlayer(1);
         }
         currentBarrier.Impacted();
     }

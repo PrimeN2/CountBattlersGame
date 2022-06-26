@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class InputManager : MonoBehaviour, IDragHandler
+public class InputController : MonoBehaviour, IDragHandler
 {
     [SerializeField] private PlayerMovement _playerMovement;
 

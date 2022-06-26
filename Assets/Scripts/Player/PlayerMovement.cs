@@ -12,28 +12,29 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public Vector3 PlayerPosition { get => _playerTransform.position; }
+
     private Transform _playerTransform;
 
     [SerializeField] private RoadSegmentSpawner _roadSegmentSpawner;
+    [SerializeField] private PlayerAlliensHandler _playerAlliensHandler;
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private float _playerControlMultiplier;
 
     private float _playerSpeed = 10f;
     private bool _isStoped = false;
     private Vector3 _direction;
-    private float _safeZone;
-
 
     private Vector3 _deltaDirection;
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        _playerAlliensHandler = GetComponent<PlayerAlliensHandler>();
+
         _playerTransform = transform;
         _isStoped = false;
         _playerSpeed = 10f;
         _direction = Vector3.forward;
-        _safeZone = 0.4f;
     }
 
     private void FixedUpdate()
@@ -46,9 +47,9 @@ public class PlayerMovement : MonoBehaviour
     {
         xOffset *= _playerControlMultiplier;
         float positionX = _rigidbody.position.x + xOffset;
-        
-        if (positionX + -_safeZone < _roadSegmentSpawner.LeftBorder / 2 || 
-            positionX + _safeZone > _roadSegmentSpawner.RightBorder / 2)
+
+        if (positionX + _playerAlliensHandler.DistanceToFartherstLeft < _roadSegmentSpawner.LeftBorder / 2 || 
+            positionX + _playerAlliensHandler.DistanceToFartherstRight > _roadSegmentSpawner.RightBorder / 2)
             return false;
         _deltaDirection = Vector3.right * xOffset;
         return true;
@@ -64,6 +65,5 @@ public class PlayerMovement : MonoBehaviour
         if (!_isStoped)
             return;
         _isStoped = false;
-
     }
 }

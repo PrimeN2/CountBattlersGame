@@ -14,6 +14,7 @@ public class RoadSegmentSpawner : MonoBehaviour
     [SerializeField] private GameObject _roadSegment;
     [SerializeField] private RoadSegmentKeeper _startRoadSegmentKeeper;
     [SerializeField] private GameObject _startRoadSegmen;
+    [SerializeField] private NavMeshSurface _navMeshBuilder;
     [SerializeField] private int _segmentsCount;
     [SerializeField] private float _zOffset;
     [SerializeField] private float _bounds;
@@ -21,7 +22,6 @@ public class RoadSegmentSpawner : MonoBehaviour
     private List<GameObject> _currentRoadSegments;
     private List<RoadSegmentKeeper> _roadSegmentKeepers;
 
-    private NavMeshSurface _navMeshSurface;
     private float _segmentLength;
 
     private void Awake()
@@ -30,7 +30,6 @@ public class RoadSegmentSpawner : MonoBehaviour
         _roadSegmentKeepers = new List<RoadSegmentKeeper>();
 
         Initialize(_startRoadSegmentKeeper);
-        _navMeshSurface = _startRoadSegmen.GetComponent<NavMeshSurface>();
 
         _currentRoadSegments.Add(_startRoadSegmen);
         _roadSegmentKeepers.Add(_startRoadSegmentKeeper);
@@ -61,12 +60,13 @@ public class RoadSegmentSpawner : MonoBehaviour
     }
     private void ReuseRoadSegment(GameObject roadSegment)
     {
-        RoadSegmentKeeper roadSegmentKeeper = roadSegment.GetComponent<RoadSegmentKeeper>();
+        //RoadSegmentKeeper roadSegmentKeeper = roadSegment.GetComponent<RoadSegmentKeeper>();
 
-        PutRoadSegment(roadSegment, roadSegmentKeeper);
+        //PutRoadSegment(roadSegment, roadSegmentKeeper);
 
-        _currentRoadSegments.Remove(roadSegment);
-        _currentRoadSegments.Add(roadSegment);
+        //_currentRoadSegments.Remove(roadSegment);
+        //_currentRoadSegments.Add(roadSegment);
+        //SpawnRoadSegment();
     }
 
     private void PutRoadSegment(GameObject roadSegment, RoadSegmentKeeper roadSegmentKeeper)
@@ -76,7 +76,7 @@ public class RoadSegmentSpawner : MonoBehaviour
                 _currentRoadSegments[_currentRoadSegments.Count - 1].transform.position + 
                 Vector3.forward * _segmentLength;
 
-        _navMeshSurface.BuildNavMesh();
+        _navMeshBuilder.BuildNavMesh();
         OnRoadSegmentAdded?.Invoke(roadSegmentKeeper);
     }
 

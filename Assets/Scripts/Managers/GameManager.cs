@@ -12,18 +12,19 @@ public class GameManager : Singleton<GameManager>, IGameStateSwitcher
     [SerializeField] private GameObject _mainMenuPanel;
     [SerializeField] private GameObject _gameMenuPanel;
     [SerializeField] private GameObject _loseMenuPanel;
+    [SerializeField] private GameObject _wonMenuPanel;
 
     [Header("Player Components")]
     [SerializeField] private PlayerMovement _playerMovement;
     [SerializeField] private ParticlesController _particlesController;
-    [SerializeField] private PlayerLife _playerLife;
+    [SerializeField] private PlayerAlliensHandler _playerAlliensHandler;
     [SerializeField] private Animator _animator;
 
     [Header("Spawners")]
     [SerializeField] private CharacterSpawner _characterSpawner;
 
     [Header("Input Components")]
-    [SerializeField] private InputManager _inputManager;
+    [SerializeField] private InputController _inputManager;
 
     private void Start()
     {
@@ -35,7 +36,7 @@ public class GameManager : Singleton<GameManager>, IGameStateSwitcher
             new PlayingState(this, _gameMenuPanel, stateArguments),
             new LostState(this, _loseMenuPanel, stateArguments),
             new FightState(this, stateArguments),
-            new WonState(this, _gameMenuPanel, stateArguments)
+            new WonState(this, _wonMenuPanel, stateArguments)
         };
         _currentState = _allStates[0];
 
@@ -80,27 +81,31 @@ public class GameManager : Singleton<GameManager>, IGameStateSwitcher
 
     private void OnEnable()
     {
+        FinishHandler.OnFinished += LoadWinMenu;
         _characterSpawner.OnBunchTriggered += StartFight;
-        _playerLife.OnPlayerDied += LoadLossMenu;
+        _characterSpawner.OnBunchDefeated += LoadGameHUD;
+        _playerAlliensHandler.OnPlayerLose += LoadLossMenu;
     }
 
     private void OnDisable()
     {
+        FinishHandler.OnFinished -= LoadWinMenu;
         _characterSpawner.OnBunchTriggered -= StartFight;
-        _playerLife.OnPlayerDied -= LoadLossMenu;
+        _characterSpawner.OnBunchDefeated -= LoadGameHUD;
+        _playerAlliensHandler.OnPlayerLose -= LoadLossMenu;
     }
 }
 
 public class StateArguments
 {
     public readonly PlayerMovement _playerMovement;
-    public readonly InputManager _inputManager;
+    public readonly InputController _inputManager;
     public readonly ParticlesController _particlesController;
     public readonly Animator _animatorController;
 
 
     public StateArguments(PlayerMovement playerMovement,
-        InputManager inputManager,
+        InputController inputManager,
         ParticlesController particlesController,
         Animator animatorController)
     {
