@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class SelectionAreaKeeper : MonoBehaviour
 {
+    public int Amount;
+
     private SelectionBlockKeeper _selectionBlockKeeper;
 
     private void OnEnable()

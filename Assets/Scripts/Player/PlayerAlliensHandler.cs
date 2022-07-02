@@ -5,7 +5,9 @@ using UnityEngine.AI;
 
 public class PlayerAlliensHandler : MonoBehaviour, ICharactersHandler
 {
+    public Action OnCharacterAdded;
     public Action OnPlayerLose;
+
     public SphereCollider Collider { get; private set; }
     public float DistanceToFartherstRight { get; private set; }
     public float DistanceToFartherstLeft { get; private set; }
@@ -14,13 +16,13 @@ public class PlayerAlliensHandler : MonoBehaviour, ICharactersHandler
     [SerializeField] private CharacterSpawner _characterSpawner;
     [SerializeField] private float _characterXOffset;
 
-    private List<CharacterKeeper> _characters;
+    public List<CharacterKeeper> Characters { get; private set; }
 
     private BunchHandler _enemyBunch;
 
     private void Awake()
     {
-        _characters = new List<CharacterKeeper>();
+        Characters = new List<CharacterKeeper>();
         Collider = GetComponent<SphereCollider>();
         DistanceToFartherstRight = 0;
         DistanceToFartherstLeft = 0;
@@ -28,26 +30,26 @@ public class PlayerAlliensHandler : MonoBehaviour, ICharactersHandler
 
     public void AddCharacter(CharacterKeeper character)
     {
-        _characters.Add(character);
+        Characters.Add(character);
+        OnCharacterAdded?.Invoke();
         RecountDistances();
     }
 
     public void RemoveCharacter(CharacterKeeper character)
     {
-        _characters.Remove(character);
+        Characters.Remove(character);
         RecountDistances();
 
-        if (_characters.Count == 0)
+        if (Characters.Count == 0)
         {
             _enemyBunch.IsPlayerLose = true;
             OnPlayerLose?.Invoke();
         }
-
     }
 
     public void MoveTo(Vector3 destination)
     {
-        foreach(var character in _characters)
+        foreach(var character in Characters)
         {
             character.SetDestination(destination);
         }
@@ -60,7 +62,7 @@ public class PlayerAlliensHandler : MonoBehaviour, ICharactersHandler
 
     public void ResetDestination()
     {
-        foreach (var characterKeeper in _characters)
+        foreach (var characterKeeper in Characters)
         {
             characterKeeper.GetComponent<NavMeshAgent>().ResetPath();
         }
@@ -70,9 +72,9 @@ public class PlayerAlliensHandler : MonoBehaviour, ICharactersHandler
         float maxPositivDistance = 0;
         float maxNegativeDistance = 0;
 
-        foreach (var characterKeeper in _characters)
+        foreach (var characterKeeper in Characters)
         {
-            float currentDistance = transform.position.x - characterKeeper.transform.position.x;
+            float currentDistance = characterKeeper.transform.position.x - transform.position.x ;
 
             if (currentDistance > maxPositivDistance)
                 maxPositivDistance = currentDistance + _characterXOffset;

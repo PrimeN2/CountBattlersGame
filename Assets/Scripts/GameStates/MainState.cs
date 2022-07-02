@@ -21,6 +21,6 @@ public class MainState : BaseGameState
         _stateArguments._playerMovement.StopMoving();
         _stateArguments._inputManager.DeInitInputHandle();
         _stateArguments._particlesController.ContinueParticles();
-        //_stateArguments._animatorController.SetBool(IS_MOVING, false);
+        _stateArguments._animationHandler.StartStandAnimation();
     }
 }

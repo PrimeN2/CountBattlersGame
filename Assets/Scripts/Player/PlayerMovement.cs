@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
@@ -48,11 +49,21 @@ public class PlayerMovement : MonoBehaviour
         xOffset *= _playerControlMultiplier;
         float positionX = _rigidbody.position.x + xOffset;
 
-        if (positionX + _playerAlliensHandler.DistanceToFartherstLeft < _roadSegmentSpawner.LeftBorder / 2 || 
-            positionX + _playerAlliensHandler.DistanceToFartherstRight > _roadSegmentSpawner.RightBorder / 2)
+        if (positionX + _playerAlliensHandler.DistanceToFartherstLeft < -_roadSegmentSpawner.Border / 2 ||
+            positionX + _playerAlliensHandler.DistanceToFartherstRight > _roadSegmentSpawner.Border / 2)
             return false;
         _deltaDirection = Vector3.right * xOffset;
         return true;
+    }
+
+    public IEnumerator MoveTo(Vector3 position)
+    {
+        while (transform.position != position)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, position, 2 * Time.deltaTime);
+
+            yield return new WaitForEndOfFrame();
+        }
     }
 
     public void StopMoving()

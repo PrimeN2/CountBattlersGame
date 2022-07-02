@@ -18,7 +18,7 @@ public class GameManager : Singleton<GameManager>, IGameStateSwitcher
     [SerializeField] private PlayerMovement _playerMovement;
     [SerializeField] private ParticlesController _particlesController;
     [SerializeField] private PlayerAlliensHandler _playerAlliensHandler;
-    [SerializeField] private Animator _animator;
+    [SerializeField] private PlayersCharactersAnimationHandler _animationHandler;
 
     [Header("Spawners")]
     [SerializeField] private CharacterSpawner _characterSpawner;
@@ -28,7 +28,7 @@ public class GameManager : Singleton<GameManager>, IGameStateSwitcher
 
     private void Start()
     {
-        StateArguments stateArguments = new StateArguments(_playerMovement, _inputManager, _particlesController, _animator);
+        StateArguments stateArguments = new StateArguments(_playerMovement, _inputManager, _particlesController, _animationHandler);
 
         _allStates = new List<BaseGameState>()
         {
@@ -101,17 +101,17 @@ public class StateArguments
     public readonly PlayerMovement _playerMovement;
     public readonly InputController _inputManager;
     public readonly ParticlesController _particlesController;
-    public readonly Animator _animatorController;
+    public readonly PlayersCharactersAnimationHandler _animationHandler;
 
 
     public StateArguments(PlayerMovement playerMovement,
         InputController inputManager,
         ParticlesController particlesController,
-        Animator animatorController)
+        PlayersCharactersAnimationHandler animationHandler)
     {
         _playerMovement = playerMovement;
         _inputManager = inputManager;
         _particlesController = particlesController;
-        _animatorController = animatorController;
+        _animationHandler = animationHandler;
     }
 }

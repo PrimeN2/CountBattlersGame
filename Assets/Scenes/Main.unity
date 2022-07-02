@@ -1111,8 +1111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53f5c808a0ac4f94ba16b0e03d717cf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftBorder: 0
-  RightBorder: 0
+  Border: 0
   _playerMovement: {fileID: 1507473865}
   _roadSegment: {fileID: 5910991507753112415, guid: aada765d2f0b81d49a24308f60f0759a,
     type: 3}
@@ -1151,7 +1150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfa03d81608210347b608caea6f7e0c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FinishBlock: {fileID: 8912938904240571859, guid: e15fa9d49d89f8d4bbee6a755eefb78b,
+  _finishBlock: {fileID: 8912938904240571859, guid: e15fa9d49d89f8d4bbee6a755eefb78b,
     type: 3}
   _roadSegmentSpawner: {fileID: 355281546}
   _selectionBlockSpawner: {fileID: 2010302781}
@@ -6786,7 +6785,7 @@ MonoBehaviour:
   _playerMovement: {fileID: 1507473865}
   _particlesController: {fileID: 746049674}
   _playerAlliensHandler: {fileID: 1507473871}
-  _animator: {fileID: 0}
+  _animationHandler: {fileID: 1507473873}
   _characterSpawner: {fileID: 749258975}
   _inputManager: {fileID: 1562808571}
 --- !u!4 &899857559
@@ -8281,6 +8280,7 @@ GameObject:
   - component: {fileID: 1507473865}
   - component: {fileID: 1507473867}
   - component: {fileID: 1507473871}
+  - component: {fileID: 1507473873}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -8349,6 +8349,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterSpawner: {fileID: 749258975}
   _playerAlliensHandler: {fileID: 1507473871}
+  _playerMovment: {fileID: 1507473865}
 --- !u!114 &1507473871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8376,6 +8377,19 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1507473873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1507473863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f234cb6aa5bec3499940434fe31e763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerAlliensHandler: {fileID: 1507473871}
 --- !u!1 &1532452861
 GameObject:
   m_ObjectHideFlags: 0
@@ -14063,6 +14077,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: RoadSegment
       objectReference: {fileID: 0}
+    - target: {fileID: 5910991507753112415, guid: aada765d2f0b81d49a24308f60f0759a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6299264531437212200, guid: aada765d2f0b81d49a24308f60f0759a,
         type: 3}
       propertyPath: m_RootOrder
@@ -14081,7 +14100,7 @@ PrefabInstance:
     - target: {fileID: 6299264531437212200, guid: aada765d2f0b81d49a24308f60f0759a,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5
+      value: 4.6
       objectReference: {fileID: 0}
     - target: {fileID: 6299264531437212200, guid: aada765d2f0b81d49a24308f60f0759a,
         type: 3}

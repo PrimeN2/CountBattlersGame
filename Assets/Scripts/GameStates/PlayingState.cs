@@ -17,13 +17,14 @@ public class PlayingState : BaseGameState
             _currentPanel.SetActive(false);
             
         }
-
+#if UNITY_EDITOR
         _menuPanel.SetActive(true);
+#endif
         _currentPanel = _menuPanel;
 
         _stateArguments._playerMovement.ContinueMoving();
         _stateArguments._inputManager.InitInputHandle();
         _stateArguments._particlesController.ContinueParticles();
-        //_stateArguments._animatorController.SetBool(IS_MOVING, true);
+        _stateArguments._animationHandler.StartRunAnimation();
     }
 }

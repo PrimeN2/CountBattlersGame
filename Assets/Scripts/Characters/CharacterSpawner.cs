@@ -32,25 +32,13 @@ public class CharacterSpawner : MonoBehaviour
 
     private void Start()
     {
-        Spawn(15, true);
-
-        //_currentCharacterHandler = _playerAlliensHandler;
-
-        //for (int i = 0; i < 15; ++i)
-        //{
-        //    var character = _charactersPool.Get();
-        //    character.gameObject.GetComponent<NavMeshAgent>().Warp(
-        //        _playerAlliensHandler.GetPositionForSpawn());
-        //    character.transform.SetParent(_playerAlliensHandler.transform);
-        //    _playerAlliensHandler.AddCharacter(character);
-        //}
-        //_playerAlliensHandler.MoveTo(new Vector3(0, 0, 0.01f));
-        //StartCoroutine(Reset());
+        Spawn(15);
     }
 
     private IEnumerator Reset()
     {
-        yield return new WaitForEndOfFrame();
+        for (int i = 0; i < 8; ++i)
+            yield return new WaitForEndOfFrame();
 
         _playerAlliensHandler.ResetDestination();
         _playerAlliensHandler.RecountDistances();
@@ -97,36 +85,20 @@ public class CharacterSpawner : MonoBehaviour
         }
     }
 
-    public void Spawn(int count, bool isFirst)
+    public void Spawn(int count)
     {
         _currentCharacterHandler = _playerAlliensHandler;
 
-        if (isFirst)
+        for (int i = 0; i < count; ++i)
         {
-            count -= 1;
             var character = _charactersPool.Get();
             character.gameObject.GetComponent<NavMeshAgent>().Warp(
                 _playerAlliensHandler.GetPositionForSpawn());
             character.transform.SetParent(_playerAlliensHandler.transform);
             _playerAlliensHandler.AddCharacter(character);
-
-            if (count <= 0)
-                return;
         }
-
-        for (int j = 1; j <= count / 12 + 1; ++j)
-        {
-            for (int i = 0; i < j * 6; ++i)
-            {
-                var character = _charactersPool.Get();
-                character.gameObject.GetComponent<NavMeshAgent>().Warp(
-                    _playerAlliensHandler.GetPositionForSpawn() + GetOffsetFor(i, j * 6, j));
-                character.transform.SetParent(_playerAlliensHandler.transform);
-                _playerAlliensHandler.AddCharacter(character);
-            }
-
-            _playerAlliensHandler.Collider.radius = j * _distanceBetweenCharacters;
-        }
+        _playerAlliensHandler.MoveTo(_playerAlliensHandler.transform.position + new Vector3(0, 0, -0.1f));
+        StartCoroutine(Reset());
     }
 
     private void ReleaseCharacter(CharacterKeeper character)

@@ -7,8 +7,7 @@ public class RoadSegmentSpawner : MonoBehaviour
 {
     public Action<RoadSegmentKeeper> OnRoadSegmentAdded;
 
-    [HideInInspector] public float LeftBorder;
-    [HideInInspector] public float RightBorder;
+    [HideInInspector] public float Border;
 
     [SerializeField] private PlayerMovement _playerMovement;
     [SerializeField] private GameObject _roadSegment;
@@ -36,8 +35,8 @@ public class RoadSegmentSpawner : MonoBehaviour
 
         Vector3 StartSegmentColliderSize = _startRoadSegmen.GetComponent<Collider>().bounds.size;
         _segmentLength = StartSegmentColliderSize.z;
-        LeftBorder = -StartSegmentColliderSize.x;
-        RightBorder = StartSegmentColliderSize.x;
+
+        Border = StartSegmentColliderSize.x;
     }
 
     private void Start()

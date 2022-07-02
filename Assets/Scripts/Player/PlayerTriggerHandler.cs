@@ -5,6 +5,7 @@ public class PlayerTriggerHandler : MonoBehaviour
 {
     [SerializeField] private CharacterSpawner _characterSpawner;
     [SerializeField] private PlayerAlliensHandler _playerAlliensHandler;
+    [SerializeField] private PlayerMovement _playerMovment;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -17,7 +18,8 @@ public class PlayerTriggerHandler : MonoBehaviour
             SelectionBlockKeeper selectionBlock = currentArea.GetBlock();
             if (selectionBlock.IsTouched == false)
             {
-                _characterSpawner.Spawn(6, false);
+                _characterSpawner.Spawn(currentArea.Amount);
+                Destroy(currentArea.gameObject);
                 selectionBlock.IsTouched = true;
             }
         }
@@ -27,8 +29,10 @@ public class PlayerTriggerHandler : MonoBehaviour
                 return;
             var collisionPoint = other.ClosestPoint(transform.position);
             currentBunch.MoveTo(collisionPoint);
-            _playerAlliensHandler.MoveTo(collisionPoint);
+
             _playerAlliensHandler.SetEnemyBunch(currentBunch);
+            _playerAlliensHandler.MoveTo(collisionPoint);
+            StartCoroutine(_playerMovment.MoveTo(collisionPoint));
         }
     }
 }

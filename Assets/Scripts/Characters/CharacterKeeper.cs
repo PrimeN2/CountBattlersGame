@@ -4,6 +4,8 @@ using UnityEngine.AI;
 
 public class CharacterKeeper : MonoBehaviour
 {
+    public Animator Animator { get; private set; }
+
     private Action<CharacterKeeper> _onCharacterReleased;
     private NavMeshAgent _AI;
     private ICharactersHandler _handler;
@@ -11,6 +13,7 @@ public class CharacterKeeper : MonoBehaviour
     public void Init(Action<CharacterKeeper> onCharacterReleased)
     {
         _AI = GetComponent<NavMeshAgent>();
+        Animator = GetComponent<Animator>();
         _onCharacterReleased = onCharacterReleased;
     }
 

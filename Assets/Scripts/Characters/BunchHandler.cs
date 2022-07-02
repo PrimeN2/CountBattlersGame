@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class BunchHandler : MonoBehaviour, ICharactersHandler
 {
+    public Action OnBunchDefeated;
+
     public bool Triggered { get; private set; }
     public bool IsPlayerLose;
 
     private Action<Vector3> _onCrowdTriggered;
-    private Action _onBunchDefeated;
 
     private List<CharacterKeeper> _characters;
 
@@ -16,7 +17,7 @@ public class BunchHandler : MonoBehaviour, ICharactersHandler
     {
         _characters = new List<CharacterKeeper>();
         _onCrowdTriggered = onCrowdTriggered;
-        _onBunchDefeated = onBunchDefeated;
+        OnBunchDefeated = onBunchDefeated;
         Triggered = false;
     }
 
@@ -30,7 +31,7 @@ public class BunchHandler : MonoBehaviour, ICharactersHandler
 
         if (_characters.Count == 0 && !IsPlayerLose)
         {
-            _onBunchDefeated?.Invoke();
+            OnBunchDefeated?.Invoke();
             Destroy(gameObject);
         }
     }
