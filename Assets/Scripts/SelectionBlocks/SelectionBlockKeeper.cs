@@ -7,25 +7,20 @@ public class SelectionBlockKeeper : MonoBehaviour
 
     private SelectionAreaKeeper[] _selectionAreaKeepers;
 
-    [SerializeField] private Renderer _leftArea;
-    [SerializeField] private Renderer _rightArea;
     [SerializeField] private TextMeshPro _leftLabel;
     [SerializeField] private TextMeshPro _rightLable;
 
     private Vector3 _selectionBlockOffset = new Vector3(0, 0, -0.075f);
 
-    public void Set(RoadSegmentKeeper roadSegmentKeeper)
+    public void Set(RoadSegmentKeeper roadSegmentKeeper, int leftValue, int rightValue)
     {
-        int LeftAmount = Random.Range(5, 12);
-        int RightAmount = Random.Range(5, 12);
-
         _selectionAreaKeepers = GetComponentsInChildren<SelectionAreaKeeper>();
 
-        _selectionAreaKeepers[1].Amount = LeftAmount;
-        _selectionAreaKeepers[0].Amount = RightAmount;
+        _selectionAreaKeepers[1].Amount = leftValue;
+        _selectionAreaKeepers[0].Amount = rightValue;
 
         gameObject.transform.position = roadSegmentKeeper.GetPlatformStart() + _selectionBlockOffset;
-        _leftLabel.text = $"+{LeftAmount}";
-        _rightLable.text = $"+{RightAmount}";
+        _leftLabel.text = $"+{leftValue}";
+        _rightLable.text = $"+{rightValue}";
     }
 }

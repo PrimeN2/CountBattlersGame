@@ -27,6 +27,11 @@ public class CharacterKeeper : MonoBehaviour
         _AI.SetDestination(position);
     }
 
+    public void ResetDestination()
+    {
+        _AI.ResetPath();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent<CharacterKeeper>(out _) || other.TryGetComponent<BarrierKeeper>(out _))

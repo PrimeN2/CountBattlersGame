@@ -17,8 +17,6 @@ public class CharacterSpawner : MonoBehaviour
 
     [SerializeField] private Vector3 _bunchOffset;
     [SerializeField] private float _distanceBetweenCharacters;
-    [SerializeField]
-    [Range(1, 200)] private int _maxCountOfEnemiesInAGroup = 100;
 
     private IObjectPool<CharacterKeeper> _charactersPool;
     private ICharactersHandler _currentCharacterHandler;
@@ -32,7 +30,7 @@ public class CharacterSpawner : MonoBehaviour
 
     private void Start()
     {
-        Spawn(15);
+        Spawn(1);
     }
 
     private IEnumerator Reset()
@@ -57,31 +55,45 @@ public class CharacterSpawner : MonoBehaviour
         character.Set(_currentCharacterHandler);
     }
 
-    public void Spawn(RoadSegmentKeeper roadSegment)
+    public void Spawn(RoadSegmentKeeper roadSegment, int count)
     {
         BunchHandler bunch = CreateBunch(roadSegment);
         _currentCharacterHandler = bunch;
 
-        var firstCharacter = _charactersPool.Get();
-        Transform firstTransform = firstCharacter.transform;
-        firstCharacter.gameObject.GetComponent<NavMeshAgent>().Warp(
-            bunch.GetPositionForSpawn());
-        firstTransform.SetParent(bunch.transform);
-        firstTransform.Rotate(new Vector3(0, 180, 0));
-        bunch.AddCharacter(firstCharacter);
+        //var firstCharacter = _charactersPool.Get();
+        //Transform firstTransform = firstCharacter.transform;
+        //firstCharacter.gameObject.GetComponent<NavMeshAgent>().Warp(
+        //    bunch.GetPositionForSpawn());
+        //SetCharacter(firstCharacter, firstTransform);
 
-        for (int j = 1; j <= (_maxCountOfEnemiesInAGroup - 1) / 12 + 1; ++j)
+        //for (int j = 1; j <= (_maxCountOfEnemiesInAGroup - 1) / 12 + 1; ++j)
+        //{
+        //    for (int i = 0; i < j * 6; ++i)
+        //    {
+        //        var character = _charactersPool.Get();
+        //        Transform transform = character.transform;
+        //        character.gameObject.GetComponent<NavMeshAgent>().Warp(
+        //            bunch.GetPositionForSpawn() + GetOffsetFor(i, j * 6, j));
+
+        //        SetCharacter(character, transform);
+        //    }
+        //}
+
+        for (int i = 0; i < count; ++i)
         {
-            for (int i = 0; i < j * 6; ++i)
-            {
-                var character = _charactersPool.Get();
-                Transform transform = character.transform;
-                character.gameObject.GetComponent<NavMeshAgent>().Warp(
-                    bunch.GetPositionForSpawn() + GetOffsetFor(i, j * 6, j));
-                transform.SetParent(bunch.transform);
-                transform.Rotate(new Vector3(0, 180, 0));
-                bunch.AddCharacter(character);
-            }
+            var character = _charactersPool.Get();
+            Transform transform = character.transform;
+            character.gameObject.GetComponent<NavMeshAgent>().Warp(
+                bunch.GetPositionForSpawn());
+            character.transform.SetParent(bunch.transform);
+            SetCharacter(character, transform);
+        }
+
+        void SetCharacter(CharacterKeeper character, Transform characterTransform)
+        {
+            characterTransform.SetParent(bunch.transform);
+            characterTransform.Rotate(new Vector3(0, 180, 0));
+            bunch.AddCharacter(character);
         }
     }
 

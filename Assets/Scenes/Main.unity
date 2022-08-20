@@ -1712,7 +1712,7 @@ MonoBehaviour:
     type: 3}
   _bunchOffset: {x: 0, y: 0, z: 25}
   _distanceBetweenCharacters: 0.3
-  _maxCountOfEnemiesInAGroup: 5
+  _maxCountOfEnemiesInAGroup: 56
 --- !u!1 &777150124
 GameObject:
   m_ObjectHideFlags: 0

@@ -43,6 +43,7 @@ public class PlayerAlliensHandler : MonoBehaviour, ICharactersHandler
         if (Characters.Count == 0)
         {
             _enemyBunch.IsPlayerLose = true;
+            _enemyBunch.Reset();
             OnPlayerLose?.Invoke();
         }
     }
@@ -64,7 +65,7 @@ public class PlayerAlliensHandler : MonoBehaviour, ICharactersHandler
     {
         foreach (var characterKeeper in Characters)
         {
-            characterKeeper.GetComponent<NavMeshAgent>().ResetPath();
+            characterKeeper.ResetDestination();
         }
     }
     public void RecountDistances()

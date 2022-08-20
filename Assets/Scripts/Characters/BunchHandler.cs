@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class BunchHandler : MonoBehaviour, ICharactersHandler
 {
@@ -44,6 +45,14 @@ public class BunchHandler : MonoBehaviour, ICharactersHandler
         }
         Triggered = true;
         _onCrowdTriggered?.Invoke(transform.position);
+    }
+
+    public void Reset()
+    {
+        foreach (var character in _characters)
+        {
+            character.ResetDestination();
+        }
     }
 
     public Vector3 GetPositionForSpawn()

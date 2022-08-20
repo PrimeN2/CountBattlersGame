@@ -25,9 +25,12 @@ public class PlatformSetter : MonoBehaviour
             return;
         }
 
-        _selectionBlockSpawner.SetSelectionBlockOnSegment(roadSegmentKeeper);
+        int firstValue = Random.Range(10, 20);
+        int secondValue = Random.Range(10, 20);
+
+        _selectionBlockSpawner.SetSelectionBlockOnSegment(roadSegmentKeeper, firstValue, secondValue);
         _barrierSpawner.SpawnBarrierOnSegment(roadSegmentKeeper);
-        _characterSpawner.Spawn(roadSegmentKeeper);
+        _characterSpawner.Spawn(roadSegmentKeeper, Mathf.Max(firstValue, secondValue) + Random.Range(-5, 0));
         _countOfPlatforms += 1;
     }
 
