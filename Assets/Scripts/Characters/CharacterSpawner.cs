@@ -12,11 +12,13 @@ public class CharacterSpawner : MonoBehaviour
     private Action<CharacterKeeper> OnCharacterReleased;
 
     [SerializeField] private PlayerAlliensHandler _playerAlliensHandler;
+
+    [SerializeField] private Material _playerMaterial;
+    [SerializeField] private Material _enemyMaterial;
+
     [SerializeField] private GameObject _characterPrefab;
     [SerializeField] private GameObject _bunchPrefab;
-
     [SerializeField] private Vector3 _bunchOffset;
-    [SerializeField] private float _distanceBetweenCharacters;
 
     private IObjectPool<CharacterKeeper> _charactersPool;
     private ICharactersHandler _currentCharacterHandler;
@@ -55,42 +57,25 @@ public class CharacterSpawner : MonoBehaviour
         character.Set(_currentCharacterHandler);
     }
 
-    public void Spawn(RoadSegmentKeeper roadSegment, int count)
+    public void SpawnEnemies(RoadSegmentKeeper roadSegment, int count)
     {
         BunchHandler bunch = CreateBunch(roadSegment);
         _currentCharacterHandler = bunch;
 
-        //var firstCharacter = _charactersPool.Get();
-        //Transform firstTransform = firstCharacter.transform;
-        //firstCharacter.gameObject.GetComponent<NavMeshAgent>().Warp(
-        //    bunch.GetPositionForSpawn());
-        //SetCharacter(firstCharacter, firstTransform);
-
-        //for (int j = 1; j <= (_maxCountOfEnemiesInAGroup - 1) / 12 + 1; ++j)
-        //{
-        //    for (int i = 0; i < j * 6; ++i)
-        //    {
-        //        var character = _charactersPool.Get();
-        //        Transform transform = character.transform;
-        //        character.gameObject.GetComponent<NavMeshAgent>().Warp(
-        //            bunch.GetPositionForSpawn() + GetOffsetFor(i, j * 6, j));
-
-        //        SetCharacter(character, transform);
-        //    }
-        //}
-
         for (int i = 0; i < count; ++i)
         {
             var character = _charactersPool.Get();
+
             Transform transform = character.transform;
             character.gameObject.GetComponent<NavMeshAgent>().Warp(
-                bunch.GetPositionForSpawn());
+                bunch.GetPositionForSpawn() + new Vector3(UnityEngine.Random.Range(-0.1f, 0.1f), 0, UnityEngine.Random.Range(-0.1f, 0.1f)));
             character.transform.SetParent(bunch.transform);
             SetCharacter(character, transform);
         }
 
         void SetCharacter(CharacterKeeper character, Transform characterTransform)
         {
+            character.SetMaterial(_enemyMaterial);
             characterTransform.SetParent(bunch.transform);
             characterTransform.Rotate(new Vector3(0, 180, 0));
             bunch.AddCharacter(character);
@@ -104,13 +89,15 @@ public class CharacterSpawner : MonoBehaviour
         for (int i = 0; i < count; ++i)
         {
             var character = _charactersPool.Get();
+            character.SetMaterial(_playerMaterial);
             character.gameObject.GetComponent<NavMeshAgent>().Warp(
-                _playerAlliensHandler.GetPositionForSpawn());
-            character.transform.SetParent(_playerAlliensHandler.transform);
+                _playerAlliensHandler.GetPositionForSpawn() + new Vector3(UnityEngine.Random.Range(-0.1f, 0.1f), 0, UnityEngine.Random.Range(-0.1f, 0.1f)));
+        character.transform.SetParent(_playerAlliensHandler.transform);
             _playerAlliensHandler.AddCharacter(character);
         }
-        _playerAlliensHandler.MoveTo(_playerAlliensHandler.transform.position + new Vector3(0, 0, -0.1f));
-        StartCoroutine(Reset());
+        //_playerAlliensHandler.MoveTo(_playerAlliensHandler.transform.position + new Vector3(0, 0, -0.1f));
+        //StartCoroutine(Reset());
+        //Can be useful for convergence to the center, after getting hit from obstacle
     }
 
     private void ReleaseCharacter(CharacterKeeper character)
@@ -130,15 +117,16 @@ public class CharacterSpawner : MonoBehaviour
         return bunch;
     }
 
-    private Vector3 GetOffsetFor(int i, int amount, float multiplier)
-    {
-        float angle = i * Mathf.PI * 2f / amount;
-        float radius = multiplier * _distanceBetweenCharacters;
+    //private Vector3 GetOffsetFor(int i, int amount, float multiplier)
+    //{
+    //    float angle = i * Mathf.PI * 2f / amount;
+    //    float radius = multiplier * _distanceBetweenCharacters;
 
-        Vector3 offset = new Vector3(Mathf.Cos(angle) * radius, 0.05f, Mathf.Sin(angle) * radius);
+    //    Vector3 offset = new Vector3(Mathf.Cos(angle) * radius, 0.05f, Mathf.Sin(angle) * radius);
 
-        return offset;
-    }
+    //    return offset;
+    //}
+    //Another way to spawn characters(doesn't really work well(need to be reworked))
 
     private void OnEnable()
     {

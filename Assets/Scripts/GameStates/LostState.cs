@@ -19,6 +19,7 @@ public class LostState : BaseGameState
 
         _stateArguments._playerMovement.StopMoving();
         _stateArguments._inputManager.DeInitInputHandle();
+        _stateArguments._playerLabel.HideLabel();
         //_stateArguments._animatorController.SetBool(IS_MOVING, false);
     }
 }

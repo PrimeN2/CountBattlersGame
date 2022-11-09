@@ -18,7 +18,11 @@ public class PlayerTriggerHandler : MonoBehaviour
             SelectionBlockKeeper selectionBlock = currentArea.GetBlock();
             if (selectionBlock.IsTouched == false)
             {
-                _characterSpawner.Spawn(currentArea.Amount);
+                if (currentArea.IsMultiplyable)
+                    _characterSpawner.Spawn(currentArea.Amount * _playerAlliensHandler.Characters.Count - _playerAlliensHandler.Characters.Count);
+                else
+                    _characterSpawner.Spawn(currentArea.Amount);
+
                 Destroy(currentArea.gameObject);
                 selectionBlock.IsTouched = true;
             }

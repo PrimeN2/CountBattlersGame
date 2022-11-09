@@ -26,5 +26,6 @@ public class PlayingState : BaseGameState
         _stateArguments._inputManager.InitInputHandle();
         _stateArguments._particlesController.ContinueParticles();
         _stateArguments._animationHandler.StartRunAnimation();
+        _stateArguments._playerLabel.ShowLabel();
     }
 }

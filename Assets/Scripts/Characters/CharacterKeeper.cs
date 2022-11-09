@@ -9,17 +9,24 @@ public class CharacterKeeper : MonoBehaviour
     private Action<CharacterKeeper> _onCharacterReleased;
     private NavMeshAgent _AI;
     private ICharactersHandler _handler;
+    private SkinnedMeshRenderer _renderer;
 
     public void Init(Action<CharacterKeeper> onCharacterReleased)
     {
         _AI = GetComponent<NavMeshAgent>();
         Animator = GetComponent<Animator>();
         _onCharacterReleased = onCharacterReleased;
+        _renderer = GetComponentInChildren<SkinnedMeshRenderer>();
     }
 
     public void Set(ICharactersHandler handler)
     {
         _handler = handler;
+    }
+
+    public void SetMaterial(Material material)
+    {
+        _renderer.material = material;
     }
 
     public void SetDestination(Vector3 position)

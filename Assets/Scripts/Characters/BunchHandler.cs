@@ -8,8 +8,9 @@ public class BunchHandler : MonoBehaviour, ICharactersHandler
     public Action OnBunchDefeated;
 
     public bool Triggered { get; private set; }
-    public bool IsPlayerLose;
+    [HideInInspector] public bool IsPlayerLose;
 
+    [SerializeField] private PlayerLabel _label;
     private Action<Vector3> _onCrowdTriggered;
 
     private List<CharacterKeeper> _characters;
@@ -25,10 +26,12 @@ public class BunchHandler : MonoBehaviour, ICharactersHandler
     public void AddCharacter(CharacterKeeper character)
     {
         _characters.Add(character);
+        _label.SetAmount(_characters.Count);
     }
     public void RemoveCharacter(CharacterKeeper character)
     {
         _characters.Remove(character);
+        _label.SetAmount(_characters.Count);
 
         if (_characters.Count == 0 && !IsPlayerLose)
         {

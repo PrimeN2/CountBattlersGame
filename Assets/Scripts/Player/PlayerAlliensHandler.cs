@@ -9,11 +9,12 @@ public class PlayerAlliensHandler : MonoBehaviour, ICharactersHandler
     public Action OnPlayerLose;
 
     public SphereCollider Collider { get; private set; }
-    public float DistanceToFartherstRight { get; private set; }
-    public float DistanceToFartherstLeft { get; private set; }
+    public float DistanceToFarthestRight { get; private set; }
+    public float DistanceToFarthestLeft { get; private set; }
 
 
     [SerializeField] private CharacterSpawner _characterSpawner;
+    [SerializeField] private PlayerLabel _playerLabel;
     [SerializeField] private float _characterXOffset;
 
     public List<CharacterKeeper> Characters { get; private set; }
@@ -24,20 +25,22 @@ public class PlayerAlliensHandler : MonoBehaviour, ICharactersHandler
     {
         Characters = new List<CharacterKeeper>();
         Collider = GetComponent<SphereCollider>();
-        DistanceToFartherstRight = 0;
-        DistanceToFartherstLeft = 0;
+        DistanceToFarthestRight = 0;
+        DistanceToFarthestLeft = 0;
     }
 
     public void AddCharacter(CharacterKeeper character)
     {
         Characters.Add(character);
         OnCharacterAdded?.Invoke();
+        _playerLabel.SetAmount(Characters.Count);
         RecountDistances();
     }
 
     public void RemoveCharacter(CharacterKeeper character)
     {
         Characters.Remove(character);
+        _playerLabel.SetAmount(Characters.Count);
         RecountDistances();
 
         if (Characters.Count == 0)
@@ -84,8 +87,8 @@ public class PlayerAlliensHandler : MonoBehaviour, ICharactersHandler
                 maxNegativeDistance = currentDistance - _characterXOffset;
         }
 
-        DistanceToFartherstRight = maxPositivDistance;
-        DistanceToFartherstLeft = maxNegativeDistance;
+        DistanceToFarthestRight = maxPositivDistance;
+        DistanceToFarthestLeft = maxNegativeDistance;
     }
 
     public void SetEnemyBunch(BunchHandler currentBunch)

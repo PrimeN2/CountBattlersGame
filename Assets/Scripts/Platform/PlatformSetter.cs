@@ -25,18 +25,23 @@ public class PlatformSetter : MonoBehaviour
             return;
         }
 
-        int firstValue = Random.Range(10, 20);
-        int secondValue = Random.Range(10, 20);
-
-        _selectionBlockSpawner.SetSelectionBlockOnSegment(roadSegmentKeeper, firstValue, secondValue);
-        _barrierSpawner.SpawnBarrierOnSegment(roadSegmentKeeper);
-        _characterSpawner.Spawn(roadSegmentKeeper, Mathf.Max(firstValue, secondValue) + Random.Range(-5, 0));
-        _countOfPlatforms += 1;
+        SpawnRoadObjects(roadSegmentKeeper);
     }
 
     private void SetFinishBlock(RoadSegmentKeeper roadSegmentKeeper)
     {
         Instantiate(_finishBlock, roadSegmentKeeper.GetPlatformStart(), Quaternion.identity);
+    }
+
+    private void SpawnRoadObjects(RoadSegmentKeeper roadSegmentKeeper)
+    {
+        int value = Random.Range(10, 50);
+        int multipliedValue = (int)(value * Random.Range(0.5f, 0.9f));
+
+        _selectionBlockSpawner.SetSelectionBlockOnSegment(roadSegmentKeeper, value, multipliedValue);
+        _barrierSpawner.SpawnBarrierOnSegment(roadSegmentKeeper);
+        _characterSpawner.SpawnEnemies(roadSegmentKeeper, multipliedValue);
+        _countOfPlatforms += 1;
     }
 
     private void OnEnable()

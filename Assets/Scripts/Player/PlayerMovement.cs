@@ -49,8 +49,8 @@ public class PlayerMovement : MonoBehaviour
         xOffset *= _playerControlMultiplier;
         float positionX = _rigidbody.position.x + xOffset;
 
-        if (positionX + _playerAlliensHandler.DistanceToFartherstLeft < -_roadSegmentSpawner.Border / 2 ||
-            positionX + _playerAlliensHandler.DistanceToFartherstRight > _roadSegmentSpawner.Border / 2)
+        if (positionX + _playerAlliensHandler.DistanceToFarthestLeft < -_roadSegmentSpawner.Border / 2 ||
+            positionX + _playerAlliensHandler.DistanceToFarthestRight > _roadSegmentSpawner.Border / 2)
             return false;
         _deltaDirection = Vector3.right * xOffset;
         return true;

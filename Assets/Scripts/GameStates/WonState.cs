@@ -20,5 +20,6 @@ public class WonState : BaseGameState
         _stateArguments._playerMovement.StopMoving();
         _stateArguments._inputManager.DeInitInputHandle();
         _stateArguments._animationHandler.StartWinAnimation();
+        _stateArguments._playerLabel.HideLabel();
     }
 }

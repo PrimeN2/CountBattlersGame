@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MainState : BaseGameState
@@ -22,5 +23,6 @@ public class MainState : BaseGameState
         _stateArguments._inputManager.DeInitInputHandle();
         _stateArguments._particlesController.ContinueParticles();
         _stateArguments._animationHandler.StartStandAnimation();
+        _stateArguments._playerLabel.HideLabel();
     }
 }

@@ -13,6 +13,7 @@ public class GameManager : Singleton<GameManager>, IGameStateSwitcher
     [SerializeField] private GameObject _gameMenuPanel;
     [SerializeField] private GameObject _loseMenuPanel;
     [SerializeField] private GameObject _wonMenuPanel;
+    [SerializeField] private PlayerLabel _playerLabel;
 
     [Header("Player Components")]
     [SerializeField] private PlayerMovement _playerMovement;
@@ -28,7 +29,8 @@ public class GameManager : Singleton<GameManager>, IGameStateSwitcher
 
     private void Start()
     {
-        StateArguments stateArguments = new StateArguments(_playerMovement, _inputManager, _particlesController, _animationHandler);
+        StateArguments stateArguments = new StateArguments(
+            _playerMovement, _inputManager, _particlesController, _animationHandler, _playerLabel);
 
         _allStates = new List<BaseGameState>()
         {
@@ -102,16 +104,18 @@ public class StateArguments
     public readonly InputController _inputManager;
     public readonly ParticlesController _particlesController;
     public readonly PlayersCharactersAnimationHandler _animationHandler;
-
+    public readonly PlayerLabel _playerLabel;
 
     public StateArguments(PlayerMovement playerMovement,
         InputController inputManager,
         ParticlesController particlesController,
-        PlayersCharactersAnimationHandler animationHandler)
+        PlayersCharactersAnimationHandler animationHandler,
+        PlayerLabel playerLabel)
     {
         _playerMovement = playerMovement;
         _inputManager = inputManager;
         _particlesController = particlesController;
         _animationHandler = animationHandler;
+        _playerLabel = playerLabel;
     }
 }

@@ -9,14 +9,12 @@ public class RoadSegmentSpawner : MonoBehaviour
 
     [HideInInspector] public float Border;
 
-    [SerializeField] private PlayerMovement _playerMovement;
     [SerializeField] private GameObject _roadSegment;
     [SerializeField] private RoadSegmentKeeper _startRoadSegmentKeeper;
     [SerializeField] private GameObject _startRoadSegmen;
     [SerializeField] private NavMeshSurface _navMeshBuilder;
     [SerializeField] private int _segmentsCount;
     [SerializeField] private float _zOffset;
-    [SerializeField] private float _bounds;
 
     private List<GameObject> _currentRoadSegments;
     private List<RoadSegmentKeeper> _roadSegmentKeepers;
@@ -57,16 +55,6 @@ public class RoadSegmentSpawner : MonoBehaviour
         _roadSegmentKeepers.Add(roadSegmentKeeper);
 
     }
-    private void ReuseRoadSegment(GameObject roadSegment)
-    {
-        //RoadSegmentKeeper roadSegmentKeeper = roadSegment.GetComponent<RoadSegmentKeeper>();
-
-        //PutRoadSegment(roadSegment, roadSegmentKeeper);
-
-        //_currentRoadSegments.Remove(roadSegment);
-        //_currentRoadSegments.Add(roadSegment);
-        //SpawnRoadSegment();
-    }
 
     private void PutRoadSegment(GameObject roadSegment, RoadSegmentKeeper roadSegmentKeeper)
     {
@@ -81,15 +69,6 @@ public class RoadSegmentSpawner : MonoBehaviour
 
     private void Initialize(RoadSegmentKeeper roadSegmentKeeper)
     {
-        roadSegmentKeeper.Init(transform, _playerMovement, _bounds, _zOffset);
-        roadSegmentKeeper.OnSegmentOverFlew += ReuseRoadSegment;
-    }
-
-    private void OnDisable()
-    {
-        foreach(var roadSegmentKeeper in _roadSegmentKeepers)
-        {
-            roadSegmentKeeper.OnSegmentOverFlew -= ReuseRoadSegment;
-        }
+        roadSegmentKeeper.Init(transform, _zOffset);
     }
 }

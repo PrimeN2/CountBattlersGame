@@ -12,15 +12,53 @@ public class SelectionBlockKeeper : MonoBehaviour
 
     private Vector3 _selectionBlockOffset = new Vector3(0, 0, -0.075f);
 
-    public void Set(RoadSegmentKeeper roadSegmentKeeper, int leftValue, int rightValue)
+    public void Set(RoadSegmentKeeper roadSegmentKeeper, int firstValue, int secondValue)
     {
         _selectionAreaKeepers = GetComponentsInChildren<SelectionAreaKeeper>();
 
-        _selectionAreaKeepers[1].Amount = leftValue;
-        _selectionAreaKeepers[0].Amount = rightValue;
+        int rand = Random.Range(0, 2);
 
+        if (rand == 1)
+        {
+            _selectionAreaKeepers[1].Init(firstValue, false);
+            _selectionAreaKeepers[0].Init(secondValue, false);
+
+            _leftLabel.text = $"+{firstValue}";
+            _rightLable.text = $"+{secondValue}";
+        }
+        else
+        {
+            _selectionAreaKeepers[1].Init(secondValue, false);
+            _selectionAreaKeepers[0].Init(firstValue, false);
+
+            _leftLabel.text = $"+{secondValue}";
+            _rightLable.text = $"+{firstValue}";
+        }
         gameObject.transform.position = roadSegmentKeeper.GetPlatformStart() + _selectionBlockOffset;
-        _leftLabel.text = $"+{leftValue}";
-        _rightLable.text = $"+{rightValue}";
+    }
+
+    public void Set(RoadSegmentKeeper roadSegmentKeeper, int firstValue, short multiplier)
+    {
+        _selectionAreaKeepers = GetComponentsInChildren<SelectionAreaKeeper>();
+
+        int rand = Random.Range(0, 2);
+
+        if (rand == 1)
+        {
+            _selectionAreaKeepers[1].Init(firstValue, false); //left
+            _selectionAreaKeepers[0].Init(multiplier, true); //right
+
+            _leftLabel.text = $"+{firstValue}";
+            _rightLable.text = $"x{multiplier}";
+        }
+        else
+        {
+            _selectionAreaKeepers[1].Init(multiplier, true);
+            _selectionAreaKeepers[0].Init(firstValue, false);
+
+            _leftLabel.text = $"x{multiplier}";
+            _rightLable.text = $"+{firstValue}";
+        }
+        gameObject.transform.position = roadSegmentKeeper.GetPlatformStart() + _selectionBlockOffset;
     }
 }
