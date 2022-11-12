@@ -32,7 +32,7 @@ public class BinarySaveSystem : ISaveSystem
         }
         catch
         {
-            saveData = new PlayerData(0, 0);
+            saveData = new PlayerData(0, 1);
         }
 
         return saveData;
@@ -42,7 +42,7 @@ public class BinarySaveSystem : ISaveSystem
     {
         using (FileStream file = File.Open(_filePath, FileMode.Open))
         {
-            new BinaryFormatter().Serialize(file, new PlayerData(0, 0));
+            new BinaryFormatter().Serialize(file, new PlayerData(0, 1));
         }
     }
 }

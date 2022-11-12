@@ -13,6 +13,7 @@ public class GameManager : Singleton<GameManager>, IGameStateSwitcher
     [SerializeField] private GameObject _gameMenuPanel;
     [SerializeField] private GameObject _loseMenuPanel;
     [SerializeField] private GameObject _wonMenuPanel;
+    [SerializeField] private GameObject _shopPanel;
     [SerializeField] private PlayerLabel _playerLabel;
 
     [Header("Player Components")]
@@ -24,6 +25,9 @@ public class GameManager : Singleton<GameManager>, IGameStateSwitcher
     [Header("Spawners")]
     [SerializeField] private CharacterSpawner _characterSpawner;
 
+    [Header("Managers")]
+    [SerializeField] private SessionDataManager _sessionData;
+ 
     [Header("Input Components")]
     [SerializeField] private InputController _inputManager;
 
@@ -38,7 +42,8 @@ public class GameManager : Singleton<GameManager>, IGameStateSwitcher
             new PlayingState(this, _gameMenuPanel, stateArguments),
             new LostState(this, _loseMenuPanel, stateArguments),
             new FightState(this, stateArguments),
-            new WonState(this, _wonMenuPanel, stateArguments)
+            new WonState(this, _wonMenuPanel, stateArguments),
+            new BuyingState(this, _shopPanel, stateArguments)
         };
         _currentState = _allStates[0];
 
@@ -63,7 +68,7 @@ public class GameManager : Singleton<GameManager>, IGameStateSwitcher
         _currentState.Load();
     }
 
-    public void LoadWinMenu()
+    public void LoadWinMenu(int value)
     {
         SwitchState<WonState>();
         _currentState.Load();
@@ -72,6 +77,12 @@ public class GameManager : Singleton<GameManager>, IGameStateSwitcher
     public void StartFight(Vector3 position)
     {
         SwitchState<FightState>();
+        _currentState.Load();
+    }
+
+    public void OpenShop()
+    {
+        SwitchState<BuyingState>();
         _currentState.Load();
     }
 
@@ -84,6 +95,7 @@ public class GameManager : Singleton<GameManager>, IGameStateSwitcher
     private void OnEnable()
     {
         FinishHandler.OnFinished += LoadWinMenu;
+        FinishHandler.OnFinished += _sessionData.IncreaseScore;
         _characterSpawner.OnBunchTriggered += StartFight;
         _characterSpawner.OnBunchDefeated += LoadGameHUD;
         _playerAlliensHandler.OnPlayerLose += LoadLossMenu;
@@ -92,6 +104,7 @@ public class GameManager : Singleton<GameManager>, IGameStateSwitcher
     private void OnDisable()
     {
         FinishHandler.OnFinished -= LoadWinMenu;
+        FinishHandler.OnFinished -= _sessionData.IncreaseScore;
         _characterSpawner.OnBunchTriggered -= StartFight;
         _characterSpawner.OnBunchDefeated -= LoadGameHUD;
         _playerAlliensHandler.OnPlayerLose -= LoadLossMenu;

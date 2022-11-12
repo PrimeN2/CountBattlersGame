@@ -5,10 +5,12 @@ using UnityEngine;
 
 public class FinishHandler : MonoBehaviour
 {
-    public static Action OnFinished;
+    public static Action<int> OnFinished;
 
-    private void OnTriggerEnter()
+    private void OnTriggerEnter(Collider collider)
     {
-        OnFinished?.Invoke();
+        PlayerAlliensHandler player;
+        if (collider.gameObject.TryGetComponent<PlayerAlliensHandler>(out player))
+            OnFinished?.Invoke(player.Characters.Count);
     }
 }

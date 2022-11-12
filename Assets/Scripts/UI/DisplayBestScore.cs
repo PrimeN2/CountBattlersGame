@@ -9,6 +9,6 @@ public class DisplayBestScore : MonoBehaviour
 
     private void OnEnable()
     {
-        _label.text = $"Best score: {_sessionData.BestScore}";
+        _label.text = $"Coins: {_sessionData.PlayerScore}";
     }
 }

@@ -1,38 +1,64 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SessionDataManager : MonoBehaviour
 {
-    public Action OnScoreIncreased;
+    public Action OnScoreChanged;
 
-    public int PlayerScore { get; private set; }
-    public float PlayerDistance { get; private set; }
-    public int BestScore { get => _playerData.BestScore; }
+    public int CurrentSkin { get => _playerData.CurrentSkin; }
+    public int PlayerScore { get => _playerData.Score; }
+    public List<int> CurrentSkinsAvalible { get => _playerData.CurrentSkinsAvalible; }
 
     private ISaveSystem _saveSystem;
+
     private PlayerData _playerData;
 
     private void Awake()
     {
         SetSaveSystem(new BinarySaveSystem());
         _playerData = _saveSystem.Load();
-        PlayerScore = 0;
-        PlayerDistance = 0;
     }
 
     public void SetSaveSystem(ISaveSystem saveSystem)
     {
         _saveSystem = saveSystem;
     }
+    public void MarkSkinAsBought(int itemID)
+    {
+        if (_playerData.CurrentSkinsAvalible.Contains(itemID))
+        {
+            Debug.LogWarning($"Already have skin {itemID}");
+            return;
+        }
+
+        _playerData.CurrentSkinsAvalible.Add(itemID);
+        _saveSystem.Save(_playerData);
+    }
+
+    public void UseSkin(int itemID)
+    {
+        _playerData.CurrentSkin = itemID;
+        _saveSystem.Save(_playerData);
+    }
+
+    public void DecreaseScore(int score)
+    {
+        if (_playerData.Score < score)
+            return;
+
+        _playerData.Score += score;
+
+        OnScoreChanged?.Invoke();
+        _saveSystem.Save(_playerData);
+    }
 
     public void IncreaseScore(int score)
     {
-        PlayerScore += score;
-        if (PlayerScore > _playerData.BestScore)
-        {
-            _playerData.BestScore = PlayerScore;
-        }
-        OnScoreIncreased?.Invoke();
+        _playerData.Score += score;
+
+        OnScoreChanged?.Invoke();
+        _saveSystem.Save(_playerData);
     }
 
     private void OnApplicationPause(bool pause)

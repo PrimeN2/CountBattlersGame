@@ -13,16 +13,16 @@ public class DisplayPoints : MonoBehaviour
 
     private void Awake()
     {
-        _label.text = $"Score: 0";
+        ChangeScoreLabel();
     }
 
     private void OnEnable()
     {
-        _sessionData.OnScoreIncreased += ChangeScoreLabel;
+        _sessionData.OnScoreChanged += ChangeScoreLabel;
     }
 
     private void OnDisable()
     {
-        _sessionData.OnScoreIncreased -= ChangeScoreLabel;
+        _sessionData.OnScoreChanged -= ChangeScoreLabel;
     }
 }

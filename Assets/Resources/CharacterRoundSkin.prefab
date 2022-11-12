@@ -228,7 +228,7 @@ GameObject:
   - component: {fileID: -1918828020316353170}
   - component: {fileID: 680922702911036095}
   m_Layer: 0
-  m_Name: DefaultCharacter
+  m_Name: CharacterRoundSkin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Pool;
@@ -12,11 +13,12 @@ public class CharacterSpawner : MonoBehaviour
     private Action<CharacterKeeper> OnCharacterReleased;
 
     [SerializeField] private PlayerAlliensHandler _playerAlliensHandler;
+    [SerializeField] private SessionDataManager _sessionData; 
 
     [SerializeField] private Material _playerMaterial;
     [SerializeField] private Material _enemyMaterial;
 
-    [SerializeField] private GameObject _characterPrefab;
+    [SerializeField] private Dictionary<int, GameObject> _characterPrefabList;
     [SerializeField] private GameObject _bunchPrefab;
     [SerializeField] private Vector3 _bunchOffset;
 
@@ -28,6 +30,11 @@ public class CharacterSpawner : MonoBehaviour
         _charactersPool = new ObjectPool<CharacterKeeper>(CreateCharacter, GetCharacter,
             character => { character.gameObject.SetActive(false); },
             character => { Destroy(character); }, false, 500, 1000);
+        _characterPrefabList = new Dictionary<int, GameObject>()
+        {
+            { 1, Resources.Load("CharacterRoundSkin") as GameObject},
+            { 2, Resources.Load("CharacterTallSkin") as GameObject }
+        };
     }
 
     private void Start()
@@ -46,7 +53,7 @@ public class CharacterSpawner : MonoBehaviour
 
     private CharacterKeeper CreateCharacter()
     {
-        CharacterKeeper characterKeeper = Instantiate(_characterPrefab).GetComponent<CharacterKeeper>();
+        CharacterKeeper characterKeeper = Instantiate(_characterPrefabList[_sessionData.CurrentSkin]).GetComponent<CharacterKeeper>();
         characterKeeper.Init(OnCharacterReleased);
         return characterKeeper;
     }
