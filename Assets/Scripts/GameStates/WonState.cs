@@ -21,5 +21,7 @@ public class WonState : BaseGameState
         _stateArguments._inputManager.DeInitInputHandle();
         _stateArguments._animationHandler.StartWinAnimation();
         _stateArguments._playerLabel.HideLabel();
+
+        SceneController.Instance.StartDelayedReloading();
     }
 }

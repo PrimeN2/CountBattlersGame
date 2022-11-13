@@ -47,7 +47,7 @@ public class SessionDataManager : MonoBehaviour
         if (_playerData.Score < score)
             return;
 
-        _playerData.Score += score;
+        _playerData.Score -= score;
 
         OnScoreChanged?.Invoke();
         _saveSystem.Save(_playerData);

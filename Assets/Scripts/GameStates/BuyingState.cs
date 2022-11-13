@@ -22,5 +22,7 @@ public class BuyingState : BaseGameState
         _stateArguments._playerMovement.StopMoving();
         _stateArguments._inputManager.DeInitInputHandle();
         _stateArguments._playerLabel.HideLabel();
+
+        SceneController.Instance.StartDelayedReloading();
     }
 }
