@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -6,6 +7,7 @@ using UnityEngine.AI;
 public class RoadSegmentSpawner : MonoBehaviour
 {
     public Action<RoadSegmentKeeper> OnRoadSegmentAdded;
+    public Action OnRoadCompleted;
 
     [HideInInspector] public float Border;
 
@@ -13,7 +15,6 @@ public class RoadSegmentSpawner : MonoBehaviour
     [SerializeField] private RoadSegmentKeeper _startRoadSegmentKeeper;
     [SerializeField] private GameObject _startRoadSegmen;
     [SerializeField] private NavMeshSurface _navMeshBuilder;
-    [SerializeField] private int _segmentsCount;
     [SerializeField] private float _zOffset;
 
     private List<GameObject> _currentRoadSegments;
@@ -37,10 +38,14 @@ public class RoadSegmentSpawner : MonoBehaviour
         Border = StartSegmentColliderSize.x;
     }
 
+
     private void Start()
     {
-        for (int i = 0; i < _segmentsCount; ++i)
+        for (int i = 0; i < 6; ++i)
             SpawnRoadSegment();
+        _navMeshBuilder.BuildNavMesh();
+
+        OnRoadCompleted?.Invoke();
     }
 
     public void SpawnRoadSegment()
@@ -63,7 +68,6 @@ public class RoadSegmentSpawner : MonoBehaviour
                 _currentRoadSegments[_currentRoadSegments.Count - 1].transform.position + 
                 Vector3.forward * _segmentLength;
 
-        _navMeshBuilder.BuildNavMesh();
         OnRoadSegmentAdded?.Invoke(roadSegmentKeeper);
     }
 

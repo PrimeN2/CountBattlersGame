@@ -3,11 +3,13 @@ using UnityEngine;
 public class WonState : BaseGameState
 {
     private GameObject _menuPanel;
+    private AudioClip _winSound;
 
-    public WonState(IGameStateSwitcher stateSwitcher, GameObject menuPanel, StateArguments stateArguments)
+    public WonState(IGameStateSwitcher stateSwitcher, GameObject menuPanel, AudioClip winSound, StateArguments stateArguments)
         : base(stateSwitcher, stateArguments)
     {
         _menuPanel = menuPanel;
+        _winSound = winSound;
     }
 
     public override void Load()
@@ -23,5 +25,7 @@ public class WonState : BaseGameState
         _stateArguments._playerLabel.HideLabel();
 
         SceneController.Instance.StartDelayedReloading();
+        AudioManager.Instance.StopPlayingBackgroundSounds();
+        AudioManager.Instance.PlaySound(_winSound);
     }
 }

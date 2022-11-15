@@ -22,5 +22,6 @@ public class LostState : BaseGameState
         _stateArguments._playerLabel.HideLabel();
 
         SceneController.Instance.StartDelayedReloading();
+        AudioManager.Instance.StopPlayingBackgroundSounds();
     }
 }

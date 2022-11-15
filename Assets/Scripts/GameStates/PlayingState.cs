@@ -15,16 +15,16 @@ public class PlayingState : BaseGameState
         if (_currentPanel != null && _currentPanel != _menuPanel)
         {
             _currentPanel.SetActive(false);
-            
         }
 #if UNITY_EDITOR
         _menuPanel.SetActive(true);
 #endif
         _currentPanel = _menuPanel;
 
+        AudioManager.Instance.StartPlayingBackgroundSounds();
+
         _stateArguments._playerMovement.ContinueMoving();
         _stateArguments._inputManager.InitInputHandle();
-        _stateArguments._particlesController.ContinueParticles();
         _stateArguments._animationHandler.StartRunAnimation();
         _stateArguments._playerLabel.ShowLabel();
     }

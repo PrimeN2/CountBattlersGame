@@ -19,9 +19,10 @@ public class MainState : BaseGameState
         _menuPanel.SetActive(true);
         _currentPanel = _menuPanel;
 
+        AudioManager.Instance.StopPlayingBackgroundSounds();
+
         _stateArguments._playerMovement.StopMoving();
         _stateArguments._inputManager.DeInitInputHandle();
-        _stateArguments._particlesController.ContinueParticles();
         _stateArguments._animationHandler.StartStandAnimation();
         _stateArguments._playerLabel.HideLabel();
     }

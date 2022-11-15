@@ -22,8 +22,13 @@ public class CharacterSpawner : MonoBehaviour
     [SerializeField] private GameObject _bunchPrefab;
     [SerializeField] private Vector3 _bunchOffset;
 
+    [SerializeField] private AudioClip _spawnSound;
+    [SerializeField] private AudioClip _dyingSound;
+
     private IObjectPool<CharacterKeeper> _charactersPool;
     private ICharactersHandler _currentCharacterHandler;
+
+    private float _spawnRatio = 0.1f;
     
     private void Awake()
     {
@@ -89,16 +94,31 @@ public class CharacterSpawner : MonoBehaviour
         }
     }
 
+    private IEnumerator SpawnEffects(int count)
+    {
+        _spawnRatio = 0.01f * count;
+
+        for (int i = 0; i < Mathf.Round(count * 0.1f) + 1; i++)
+        {
+            AudioManager.Instance.PlaySound(_spawnSound);
+            yield return new WaitForSeconds(0.01f);
+        }
+    }
+
     public void Spawn(int count)
     {
         _currentCharacterHandler = _playerAlliensHandler;
+
+        StartCoroutine(SpawnEffects(count));
 
         for (int i = 0; i < count; ++i)
         {
             var character = _charactersPool.Get();
             character.SetMaterial(_playerMaterial);
             character.gameObject.GetComponent<NavMeshAgent>().Warp(
-                _playerAlliensHandler.GetPositionForSpawn() + new Vector3(UnityEngine.Random.Range(-0.1f, 0.1f), 0, UnityEngine.Random.Range(-0.1f, 0.1f)));
+                _playerAlliensHandler.GetPositionForSpawn() + 
+                new Vector3(UnityEngine.Random.insideUnitCircle.x * _spawnRatio, 0,
+                UnityEngine.Random.insideUnitCircle.y * _spawnRatio));
         character.transform.SetParent(_playerAlliensHandler.transform);
             _playerAlliensHandler.AddCharacter(character);
         }
@@ -113,6 +133,8 @@ public class CharacterSpawner : MonoBehaviour
         character.transform.rotation = new Quaternion(0, 0, 0, 0);
 
         _charactersPool.Release(character);
+
+        AudioManager.Instance.PlaySound(_dyingSound);
     }
 
     private BunchHandler CreateBunch(RoadSegmentKeeper roadSegment)
@@ -133,7 +155,7 @@ public class CharacterSpawner : MonoBehaviour
 
     //    return offset;
     //}
-    //Another way to spawn characters(doesn't really work well(need to be reworked))
+    //Another way to spawn characters(doesn't really work well)
 
     private void OnEnable()
     {

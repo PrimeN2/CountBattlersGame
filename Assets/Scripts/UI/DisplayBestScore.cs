@@ -9,6 +9,18 @@ public class DisplayBestScore : MonoBehaviour
 
     private void OnEnable()
     {
+        SetScore();
+
+        _sessionData.OnScoreChanged += SetScore;
+    }
+
+    private void OnDisable()
+    {
+        _sessionData.OnScoreChanged -= SetScore;
+    }
+
+    private void SetScore()
+    {
         _label.text = $"Coins: {_sessionData.PlayerScore}";
     }
 }

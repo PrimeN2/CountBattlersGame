@@ -24,5 +24,6 @@ public class BuyingState : BaseGameState
         _stateArguments._playerLabel.HideLabel();
 
         SceneController.Instance.StartDelayedReloading();
+        AudioManager.Instance.StopPlayingBackgroundSounds();
     }
 }

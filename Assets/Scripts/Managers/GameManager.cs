@@ -18,7 +18,6 @@ public class GameManager : Singleton<GameManager>, IGameStateSwitcher
 
     [Header("Player Components")]
     [SerializeField] private PlayerMovement _playerMovement;
-    [SerializeField] private ParticlesController _particlesController;
     [SerializeField] private PlayerAlliensHandler _playerAlliensHandler;
     [SerializeField] private PlayersCharactersAnimationHandler _animationHandler;
 
@@ -31,10 +30,14 @@ public class GameManager : Singleton<GameManager>, IGameStateSwitcher
     [Header("Input Components")]
     [SerializeField] private InputController _inputManager;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip _winSound;
+
+
     private void Start()
     {
         StateArguments stateArguments = new StateArguments(
-            _playerMovement, _inputManager, _particlesController, _animationHandler, _playerLabel);
+            _playerMovement, _inputManager, _animationHandler, _playerLabel);
 
         _allStates = new List<BaseGameState>()
         {
@@ -42,7 +45,7 @@ public class GameManager : Singleton<GameManager>, IGameStateSwitcher
             new PlayingState(this, _gameMenuPanel, stateArguments),
             new LostState(this, _loseMenuPanel, stateArguments),
             new FightState(this, stateArguments),
-            new WonState(this, _wonMenuPanel, stateArguments),
+            new WonState(this, _wonMenuPanel, _winSound, stateArguments),
             new BuyingState(this, _shopPanel, stateArguments)
         };
         _currentState = _allStates[0];
@@ -115,19 +118,16 @@ public class StateArguments
 {
     public readonly PlayerMovement _playerMovement;
     public readonly InputController _inputManager;
-    public readonly ParticlesController _particlesController;
     public readonly PlayersCharactersAnimationHandler _animationHandler;
     public readonly PlayerLabel _playerLabel;
 
     public StateArguments(PlayerMovement playerMovement,
         InputController inputManager,
-        ParticlesController particlesController,
         PlayersCharactersAnimationHandler animationHandler,
         PlayerLabel playerLabel)
     {
         _playerMovement = playerMovement;
         _inputManager = inputManager;
-        _particlesController = particlesController;
         _animationHandler = animationHandler;
         _playerLabel = playerLabel;
     }

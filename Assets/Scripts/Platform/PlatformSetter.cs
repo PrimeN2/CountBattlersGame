@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlatformSetter : MonoBehaviour
@@ -10,6 +11,7 @@ public class PlatformSetter : MonoBehaviour
     [SerializeField] private CharacterSpawner _characterSpawner;
     [SerializeField] private BarrierSpawner _barrierSpawner;
 
+    private List<RoadSegmentKeeper> _roadSegments;
     private int _countOfPlatforms = 0;
     private bool _isFinishSet = false;
 
@@ -25,7 +27,9 @@ public class PlatformSetter : MonoBehaviour
             return;
         }
 
-        SpawnRoadObjects(roadSegmentKeeper);
+        _roadSegments.Add(roadSegmentKeeper);
+        _countOfPlatforms += 1;
+
     }
 
     private void SetFinishBlock(RoadSegmentKeeper roadSegmentKeeper)
@@ -33,28 +37,33 @@ public class PlatformSetter : MonoBehaviour
         Instantiate(_finishBlock, roadSegmentKeeper.GetPlatformStart(), Quaternion.identity);
     }
 
-    private void SpawnRoadObjects(RoadSegmentKeeper roadSegmentKeeper)
+    private void SpawnRoadObjects()
     {
-        int value = Random.Range(10, 50);
-        int multipliedValue = (int)(value * Random.Range(0.5f, 0.9f));
+        foreach (var roadSegment in _roadSegments)
+        {
+            int value = Random.Range(10, 50);
+            int multipliedValue = (int)(value * Random.Range(0.5f, 0.9f));
 
-        _selectionBlockSpawner.SetSelectionBlockOnSegment(roadSegmentKeeper, value, multipliedValue);
-        _barrierSpawner.SpawnBarrierOnSegment(roadSegmentKeeper);
-        _characterSpawner.SpawnEnemies(roadSegmentKeeper, multipliedValue);
-        _countOfPlatforms += 1;
+            _selectionBlockSpawner.SetSelectionBlockOnSegment(roadSegment, value, multipliedValue);
+            _barrierSpawner.SpawnBarrierOnSegment(roadSegment);
+            _characterSpawner.SpawnEnemies(roadSegment, multipliedValue);
+        }
     }
 
     private void OnEnable()
     {
         _countOfPlatforms = 0;
+        _roadSegments = new List<RoadSegmentKeeper>();
         _isFinishSet = false;
 
         _roadSegmentSpawner.OnRoadSegmentAdded += DefineObjects;
+        _roadSegmentSpawner.OnRoadCompleted += SpawnRoadObjects;
     }
 
     private void OnDisable()
     {
         _roadSegmentSpawner.OnRoadSegmentAdded -= DefineObjects;
+        _roadSegmentSpawner.OnRoadCompleted -= SpawnRoadObjects;
     }
 }
 
