@@ -13,6 +13,7 @@ public class PlatformSetter : MonoBehaviour
 
     private List<RoadSegmentKeeper> _roadSegments;
     private int _countOfPlatforms = 0;
+    private int _countOfMultipliedBlocks = 0;
     private bool _isFinishSet = false;
 
     private void DefineObjects(RoadSegmentKeeper roadSegmentKeeper)
@@ -44,7 +45,15 @@ public class PlatformSetter : MonoBehaviour
             int value = Random.Range(10, 50);
             int multipliedValue = (int)(value * Random.Range(0.5f, 0.9f));
 
-            _selectionBlockSpawner.SetSelectionBlockOnSegment(roadSegment, value, multipliedValue);
+            bool hasMultiplier;
+            if (Random.Range(0, 2) == 1 && _countOfMultipliedBlocks < 2)
+            {
+                hasMultiplier = true;
+                _countOfMultipliedBlocks += 1;
+            }
+            else hasMultiplier = false;
+
+            _selectionBlockSpawner.SetSelectionBlockOnSegment(roadSegment, value, multipliedValue, hasMultiplier);
             _barrierSpawner.SpawnBarrierOnSegment(roadSegment);
             _characterSpawner.SpawnEnemies(roadSegment, multipliedValue);
         }
@@ -53,6 +62,7 @@ public class PlatformSetter : MonoBehaviour
     private void OnEnable()
     {
         _countOfPlatforms = 0;
+        _countOfMultipliedBlocks = 0;
         _roadSegments = new List<RoadSegmentKeeper>();
         _isFinishSet = false;
 

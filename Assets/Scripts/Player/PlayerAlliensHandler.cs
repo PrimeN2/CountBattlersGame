@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -34,14 +35,14 @@ public class PlayerAlliensHandler : MonoBehaviour, ICharactersHandler
         Characters.Add(character);
         OnCharacterAdded?.Invoke();
         _playerLabel.SetAmount(Characters.Count);
-        RecountDistances();
+        StartCoroutine(RecountDistances());
     }
 
     public void RemoveCharacter(CharacterKeeper character)
     {
         Characters.Remove(character);
         _playerLabel.SetAmount(Characters.Count);
-        RecountDistances();
+        StartCoroutine(RecountDistances());
 
         if (Characters.Count == 0)
         {
@@ -74,8 +75,10 @@ public class PlayerAlliensHandler : MonoBehaviour, ICharactersHandler
             characterKeeper.ResetDestination();
         }
     }
-    public void RecountDistances()
+    public IEnumerator RecountDistances()
     {
+        yield return new WaitForSeconds(0.1f);
+
         float maxPositivDistance = 0;
         float maxNegativeDistance = 0;
 

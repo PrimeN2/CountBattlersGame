@@ -47,15 +47,6 @@ public class CharacterSpawner : MonoBehaviour
         Spawn(1);
     }
 
-    private IEnumerator Reset()
-    {
-        for (int i = 0; i < 8; ++i)
-            yield return new WaitForEndOfFrame();
-
-        _playerAlliensHandler.ResetDestination();
-        _playerAlliensHandler.RecountDistances();
-    }
-
     private CharacterKeeper CreateCharacter()
     {
         CharacterKeeper characterKeeper = Instantiate(_characterPrefabList[_sessionData.CurrentSkin]).GetComponent<CharacterKeeper>();
@@ -80,7 +71,8 @@ public class CharacterSpawner : MonoBehaviour
 
             Transform transform = character.transform;
             character.gameObject.GetComponent<NavMeshAgent>().Warp(
-                bunch.GetPositionForSpawn() + new Vector3(UnityEngine.Random.Range(-0.1f, 0.1f), 0, UnityEngine.Random.Range(-0.1f, 0.1f)));
+                bunch.GetPositionForSpawn() + 
+                new Vector3(UnityEngine.Random.insideUnitCircle.x * 0.1f, 0, UnityEngine.Random.insideUnitCircle.y * 0.1f));
             character.transform.SetParent(bunch.transform);
             SetCharacter(character, transform);
         }
@@ -96,8 +88,6 @@ public class CharacterSpawner : MonoBehaviour
 
     private IEnumerator SpawnEffects(int count)
     {
-        _spawnRatio = 0.01f * count;
-
         for (int i = 0; i < Mathf.Round(count * 0.1f) + 1; i++)
         {
             AudioManager.Instance.PlaySound(_spawnSound);
@@ -108,6 +98,7 @@ public class CharacterSpawner : MonoBehaviour
     public void Spawn(int count)
     {
         _currentCharacterHandler = _playerAlliensHandler;
+        _spawnRatio = 0.01f * count;
 
         StartCoroutine(SpawnEffects(count));
 
@@ -117,14 +108,11 @@ public class CharacterSpawner : MonoBehaviour
             character.SetMaterial(_playerMaterial);
             character.gameObject.GetComponent<NavMeshAgent>().Warp(
                 _playerAlliensHandler.GetPositionForSpawn() + 
-                new Vector3(UnityEngine.Random.insideUnitCircle.x * _spawnRatio, 0,
-                UnityEngine.Random.insideUnitCircle.y * _spawnRatio));
+                new Vector3(UnityEngine.Random.onUnitSphere.x * _spawnRatio, 0,
+                UnityEngine.Random.onUnitSphere.y * _spawnRatio));
         character.transform.SetParent(_playerAlliensHandler.transform);
             _playerAlliensHandler.AddCharacter(character);
         }
-        //_playerAlliensHandler.MoveTo(_playerAlliensHandler.transform.position + new Vector3(0, 0, -0.1f));
-        //StartCoroutine(Reset());
-        //Can be useful for convergence to the center, after getting hit from obstacle
     }
 
     private void ReleaseCharacter(CharacterKeeper character)
