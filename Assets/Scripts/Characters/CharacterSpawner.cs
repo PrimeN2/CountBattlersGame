@@ -7,8 +7,8 @@ using UnityEngine.Pool;
 
 public class CharacterSpawner : MonoBehaviour
 {
-    public Action<Vector3> OnBunchTriggered;
-    public Action OnBunchDefeated;
+    public event Action<Vector3> OnBunchTriggered;
+    public event Action OnBunchDefeated;
 
     private Action<CharacterKeeper> OnCharacterReleased;
 
@@ -27,8 +27,6 @@ public class CharacterSpawner : MonoBehaviour
 
     private IObjectPool<CharacterKeeper> _charactersPool;
     private ICharactersHandler _currentCharacterHandler;
-
-    private float _spawnRatio = 0.1f;
     
     private void Awake()
     {
@@ -49,7 +47,8 @@ public class CharacterSpawner : MonoBehaviour
 
     private CharacterKeeper CreateCharacter()
     {
-        CharacterKeeper characterKeeper = Instantiate(_characterPrefabList[_sessionData.CurrentSkin]).GetComponent<CharacterKeeper>();
+        CharacterKeeper characterKeeper = 
+            Instantiate(_characterPrefabList[_sessionData.CurrentSkin]).GetComponent<CharacterKeeper>();
         characterKeeper.Init(OnCharacterReleased);
         return characterKeeper;
     }
@@ -98,7 +97,6 @@ public class CharacterSpawner : MonoBehaviour
     public void Spawn(int count)
     {
         _currentCharacterHandler = _playerAlliensHandler;
-        _spawnRatio = 0.01f * count;
 
         StartCoroutine(SpawnEffects(count));
 
@@ -107,12 +105,18 @@ public class CharacterSpawner : MonoBehaviour
             var character = _charactersPool.Get();
             character.SetMaterial(_playerMaterial);
             character.gameObject.GetComponent<NavMeshAgent>().Warp(
-                _playerAlliensHandler.GetPositionForSpawn() + 
-                new Vector3(UnityEngine.Random.onUnitSphere.x * _spawnRatio, 0,
-                UnityEngine.Random.onUnitSphere.y * _spawnRatio));
-        character.transform.SetParent(_playerAlliensHandler.transform);
+                _playerAlliensHandler.GetPositionForSpawn() + GetOffsetFor(i, _playerAlliensHandler.Characters.Count + 1, 0.1f));
+            character.transform.SetParent(_playerAlliensHandler.transform);
             _playerAlliensHandler.AddCharacter(character);
         }
+    }
+
+    private Vector3 GetOffsetFor(int i, int amount, float radius)
+    {
+        float angle = i * Mathf.PI * 2f / amount;
+        Vector3 offset = new Vector3(Mathf.Cos(angle) * radius, 0f, Mathf.Sin(angle) * radius);
+
+        return offset;
     }
 
     private void ReleaseCharacter(CharacterKeeper character)
@@ -133,17 +137,6 @@ public class CharacterSpawner : MonoBehaviour
 
         return bunch;
     }
-
-    //private Vector3 GetOffsetFor(int i, int amount, float multiplier)
-    //{
-    //    float angle = i * Mathf.PI * 2f / amount;
-    //    float radius = multiplier * _distanceBetweenCharacters;
-
-    //    Vector3 offset = new Vector3(Mathf.Cos(angle) * radius, 0.05f, Mathf.Sin(angle) * radius);
-
-    //    return offset;
-    //}
-    //Another way to spawn characters(doesn't really work well)
 
     private void OnEnable()
     {

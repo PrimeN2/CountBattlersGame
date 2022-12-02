@@ -12,6 +12,7 @@ public class PlatformSetter : MonoBehaviour
     [SerializeField] private BarrierSpawner _barrierSpawner;
 
     private List<RoadSegmentKeeper> _roadSegments;
+    private int _residualValue = 0;
     private int _countOfPlatforms = 0;
     private int _countOfMultipliedBlocks = 0;
     private bool _isFinishSet = false;
@@ -40,29 +41,48 @@ public class PlatformSetter : MonoBehaviour
 
     private void SpawnRoadObjects()
     {
+
+
+
         foreach (var roadSegment in _roadSegments)
         {
             int value = Random.Range(10, 50);
-            int multipliedValue = (int)(value * Random.Range(0.5f, 0.9f));
+            int decreasedValue = (int)(value * Random.Range(0.5f, 0.9f));
 
-            bool hasMultiplier;
-            if (Random.Range(0, 2) == 1 && _countOfMultipliedBlocks < 2)
+            int multiplier;
+            if (Random.Range(0, 2) == 1 && _countOfMultipliedBlocks < 2 && _residualValue <= 50)
             {
-                hasMultiplier = true;
+                multiplier = CountMultiplier(_residualValue);
                 _countOfMultipliedBlocks += 1;
+                _residualValue += value * multiplier - decreasedValue;
             }
-            else hasMultiplier = false;
+            else
+            {
+                multiplier = 0;
+                _residualValue += value - decreasedValue;
+            }
 
-            _selectionBlockSpawner.SetSelectionBlockOnSegment(roadSegment, value, multipliedValue, hasMultiplier);
+            _selectionBlockSpawner.SetSelectionBlockOnSegment(roadSegment, value, decreasedValue, multiplier);
             _barrierSpawner.SpawnBarrierOnSegment(roadSegment);
-            _characterSpawner.SpawnEnemies(roadSegment, multipliedValue);
+            _characterSpawner.SpawnEnemies(roadSegment, decreasedValue);
         }
+    }
+
+    private int CountMultiplier(int value)
+    {
+        int multiplier = 5;
+
+        for (int i = 5; i > 0; i--)
+            if (multiplier * value >= 100)
+                multiplier--;
+        return multiplier;
     }
 
     private void OnEnable()
     {
         _countOfPlatforms = 0;
         _countOfMultipliedBlocks = 0;
+        _residualValue = 0;
         _roadSegments = new List<RoadSegmentKeeper>();
         _isFinishSet = false;
 

@@ -37,7 +37,7 @@ public class SelectionBlockKeeper : MonoBehaviour
         gameObject.transform.position = roadSegmentKeeper.GetPlatformStart() + _selectionBlockOffset;
     }
 
-    public void Set(RoadSegmentKeeper roadSegmentKeeper, int firstValue, short multiplier)
+    public void SetWithMultiplier(RoadSegmentKeeper roadSegmentKeeper, int firstValue, int multiplier)
     {
         _selectionAreaKeepers = GetComponentsInChildren<SelectionAreaKeeper>();
 

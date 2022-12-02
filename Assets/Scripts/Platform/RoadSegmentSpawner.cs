@@ -6,8 +6,8 @@ using UnityEngine.AI;
 
 public class RoadSegmentSpawner : MonoBehaviour
 {
-    public Action<RoadSegmentKeeper> OnRoadSegmentAdded;
-    public Action OnRoadCompleted;
+    public event Action<RoadSegmentKeeper> OnRoadSegmentAdded;
+    public event Action OnRoadCompleted;
 
     [HideInInspector] public float Border;
 
@@ -22,7 +22,7 @@ public class RoadSegmentSpawner : MonoBehaviour
 
     private float _segmentLength;
 
-    private void Awake()
+    public void Initialize()
     {
         _currentRoadSegments = new List<GameObject>();
         _roadSegmentKeepers = new List<RoadSegmentKeeper>();
@@ -36,11 +36,6 @@ public class RoadSegmentSpawner : MonoBehaviour
         _segmentLength = StartSegmentColliderSize.z;
 
         Border = StartSegmentColliderSize.x;
-    }
-
-
-    private void Start()
-    {
         for (int i = 0; i < 6; ++i)
             SpawnRoadSegment();
         _navMeshBuilder.BuildNavMesh();

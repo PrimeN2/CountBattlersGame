@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-public class GameManager : Singleton<GameManager>, IGameStateSwitcher
+public class GameStateManager : Singleton<GameStateManager>, IGameStateSwitcher
 {
     public BaseGameState _currentState { get; private set; }
     private List<BaseGameState> _allStates; 
@@ -23,6 +23,7 @@ public class GameManager : Singleton<GameManager>, IGameStateSwitcher
 
     [Header("Spawners")]
     [SerializeField] private CharacterSpawner _characterSpawner;
+    [SerializeField] private RoadSegmentSpawner _roadSegmentSpawner;
 
     [Header("Managers")]
     [SerializeField] private SessionDataManager _sessionData;
@@ -41,7 +42,7 @@ public class GameManager : Singleton<GameManager>, IGameStateSwitcher
 
         _allStates = new List<BaseGameState>()
         {
-            new MainState(this, _mainMenuPanel, stateArguments),
+            new MainState(this, _mainMenuPanel, stateArguments, _roadSegmentSpawner),
             new PlayingState(this, _gameMenuPanel, stateArguments),
             new LostState(this, _loseMenuPanel, stateArguments),
             new FightState(this, stateArguments),

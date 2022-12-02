@@ -70,3 +70,10 @@ public class SceneController : SingletonPersistent<SceneController>
         _isAnyOperationsGoing = false;
     }
 }
+
+public enum Scenes
+{
+    StartingScene = 0,
+    Main = 1
+}
+

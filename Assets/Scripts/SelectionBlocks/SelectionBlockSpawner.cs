@@ -6,19 +6,13 @@ public class SelectionBlockSpawner : MonoBehaviour
 {
     [SerializeField] private SelectionBlockKeeper _selectionBlock;
 
-    public void SetSelectionBlockOnSegment(RoadSegmentKeeper roadSegmentKeeper, int value, int decreasedValue, bool hasMultiplier)
+    public void SetSelectionBlockOnSegment(RoadSegmentKeeper roadSegmentKeeper, int value, int decreasedValue, int multiplier)
     {
         SelectionBlockKeeper current = Instantiate(_selectionBlock, transform);
 
-        short multiplier = 5;
-
-        if (hasMultiplier)
-        {
-            CountMultiplier(ref multiplier, value);
-            SetBlockWithMultiplier(current, roadSegmentKeeper, multiplier, value);
-        }
-        else SetBlock(current, roadSegmentKeeper, value, decreasedValue);
-
+        if (multiplier <= 0)
+            SetBlock(current, roadSegmentKeeper, value, decreasedValue);
+        else SetBlockWithMultiplier(current, roadSegmentKeeper, multiplier, value);
     }
 
     private void SetBlock(SelectionBlockKeeper current, RoadSegmentKeeper roadSegmentKeeper, int value, int decreasedValue)
@@ -27,23 +21,9 @@ public class SelectionBlockSpawner : MonoBehaviour
         current.gameObject.SetActive(true);
     }
 
-    private void SetBlockWithMultiplier(SelectionBlockKeeper current, RoadSegmentKeeper roadSegmentKeeper, short multiplier, int value)
+    private void SetBlockWithMultiplier(SelectionBlockKeeper current, RoadSegmentKeeper roadSegmentKeeper, int multiplier, int value)
     {
-        current.Set(roadSegmentKeeper, value, multiplier);
+        current.SetWithMultiplier(roadSegmentKeeper, value, multiplier);
         current.gameObject.SetActive(true);
-    }
-
-    private bool CountMultiplier(ref short multiplier, int value)
-    {
-        for (int i = 5; i > 0; i--)
-            if (multiplier * value >= 100)
-                multiplier--;
-
-        int hasMultiplier = Random.Range(0, 2);
-
-        if (hasMultiplier == 1)
-            return true;
-        else
-            return false;
     }
 }

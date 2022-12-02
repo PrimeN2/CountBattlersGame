@@ -4,11 +4,13 @@ using UnityEngine;
 public class MainState : BaseGameState
 {
     private GameObject _menuPanel;
+    private RoadSegmentSpawner _roadSegmentSpawner;
 
-    public MainState(IGameStateSwitcher stateSwitcher, GameObject menuPanel, StateArguments stateArguments)
+    public MainState(IGameStateSwitcher stateSwitcher, GameObject menuPanel, StateArguments stateArguments, RoadSegmentSpawner roadSegmentSpawner)
         : base(stateSwitcher, stateArguments)
     {
         _menuPanel = menuPanel;
+        _roadSegmentSpawner = roadSegmentSpawner;
     }
 
     public override void Load()
@@ -20,6 +22,8 @@ public class MainState : BaseGameState
         _currentPanel = _menuPanel;
 
         AudioManager.Instance.StopPlayingBackgroundSounds();
+
+        _roadSegmentSpawner.Initialize();
 
         _stateArguments._playerMovement.StopMoving();
         _stateArguments._inputManager.DeInitInputHandle();
