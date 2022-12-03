@@ -5,9 +5,8 @@ public class RoadSegmentKeeper : MonoBehaviour
 {
     private float _zOffset;
 
-    public void Init(Transform parent, float zOffset)
+    public void Init(float zOffset)
     {
-        transform.SetParent(parent);
         _zOffset = zOffset;
     }
 
