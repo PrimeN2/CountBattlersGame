@@ -73,7 +73,7 @@ public class SceneController : SingletonPersistent<SceneController>
 
 public enum Scenes
 {
-    StartingScene = 0,
+    BootScene = 0,
     Main = 1
 }
 

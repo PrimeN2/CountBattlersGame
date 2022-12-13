@@ -24,14 +24,12 @@ public class PlayerTriggerHandler : MonoBehaviour
 
                 Destroy(currentArea.gameObject);
                 selectionBlock.IsTouched = true;
-                Debug.Log(1);
             }
         }
         else if (other.TryGetComponent(out currentBunch))
         {
             if (currentBunch.Triggered)
                 return;
-            Debug.Log(1);
             var collisionPoint = other.ClosestPoint(transform.position);
             currentBunch.MoveTo(collisionPoint);
 

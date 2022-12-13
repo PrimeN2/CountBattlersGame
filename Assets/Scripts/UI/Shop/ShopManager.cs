@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ShopManager : MonoBehaviour
 {
-    [SerializeField] private SessionDataManager _sessionData;
+    [SerializeField] private SessionData _sessionData;
 
     public void TryBuySkin(SkinArguments arguments)
     {

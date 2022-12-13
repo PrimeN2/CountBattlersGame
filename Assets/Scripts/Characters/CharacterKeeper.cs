@@ -15,6 +15,7 @@ public class CharacterKeeper : MonoBehaviour
     {
         _AI = GetComponent<NavMeshAgent>();
         Animator = GetComponent<Animator>();
+        Animator.keepAnimatorControllerStateOnDisable = true;
         _onCharacterReleased = onCharacterReleased;
         _renderer = GetComponentInChildren<SkinnedMeshRenderer>();
     }

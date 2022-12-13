@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-public class GameStateManager : Singleton<GameStateManager>, IGameStateSwitcher
+public class GameStateSwitcher : Singleton<GameStateSwitcher>, IGameStateSwitcher
 {
     public BaseGameState _currentState { get; private set; }
     private List<BaseGameState> _allStates; 
@@ -26,7 +26,7 @@ public class GameStateManager : Singleton<GameStateManager>, IGameStateSwitcher
     [SerializeField] private RoadSegmentSpawner _roadSegmentSpawner;
 
     [Header("Managers")]
-    [SerializeField] private SessionDataManager _sessionData;
+    [SerializeField] private SessionData _sessionData;
  
     [Header("Input Components")]
     [SerializeField] private InputController _inputManager;

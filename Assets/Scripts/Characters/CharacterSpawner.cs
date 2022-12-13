@@ -13,7 +13,7 @@ public class CharacterSpawner : MonoBehaviour
     private Action<CharacterKeeper> OnCharacterReleased;
 
     [SerializeField] private PlayerAlliensHandler _playerAlliensHandler;
-    [SerializeField] private SessionDataManager _sessionData; 
+    [SerializeField] private SessionData _sessionData; 
 
     [SerializeField] private Material _playerMaterial;
     [SerializeField] private Material _enemyMaterial;
@@ -35,8 +35,8 @@ public class CharacterSpawner : MonoBehaviour
             character => { Destroy(character); }, false, 500, 1000);
         _characterPrefabList = new Dictionary<int, GameObject>()
         {
-            { 1, Resources.Load("CharacterRoundSkin") as GameObject},
-            { 2, Resources.Load("CharacterTallSkin") as GameObject }
+            { 1, Resources.Load("Skins/CharacterRoundSkin") as GameObject},
+            { 2, Resources.Load("Skins/CharacterTallSkin") as GameObject }
         };
     }
 

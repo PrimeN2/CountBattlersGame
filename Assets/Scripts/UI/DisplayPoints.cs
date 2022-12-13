@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class DisplayPoints : MonoBehaviour
 {
-    [SerializeField] private SessionDataManager _sessionData;
+    [SerializeField] private SessionData _sessionData;
     [SerializeField] private TMP_Text _label;
 
     private void ChangeScoreLabel()

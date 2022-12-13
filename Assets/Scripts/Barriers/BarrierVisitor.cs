@@ -7,7 +7,7 @@ public class BarrierVisitor : IBarrierVisitor
         BarrierKeeper currentBarrier = barrier.GetComponent<BarrierKeeper>();
         if (player.GetComponent<ColorSwitcher>().CurrentColor == currentBarrier.CurrentMaterial.color)
         {
-            player.GetComponent<SessionDataManager>().IncreaseScore(1);
+            player.GetComponent<SessionData>().IncreaseScore(1);
         }
         else
         {

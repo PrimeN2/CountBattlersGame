@@ -3755,7 +3755,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5906297, y: 0.88639593}
   m_AnchorMax: {x: 0.9554815, y: 0.96356255}
-  m_AnchoredPosition: {x: 3.204193, y: 6.0599365}
+  m_AnchoredPosition: {x: 3.2042236, y: 6.0599365}
   m_SizeDelta: {x: 47.05069, y: 15.042801}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1006112999
@@ -6046,7 +6046,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1507473863}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 1

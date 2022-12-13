@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class SkinHandler : MonoBehaviour
 {
     [SerializeField] private ShopManager _shopManager;
-    [SerializeField] private SessionDataManager _sessionData;
+    [SerializeField] private SessionData _sessionData;
 
     [SerializeField] private int _skinCost;
     [SerializeField] private int _skinID;

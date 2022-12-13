@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SessionDataManager : MonoBehaviour
+public class SessionData : MonoBehaviour
 {
     public Action OnScoreChanged;
 
