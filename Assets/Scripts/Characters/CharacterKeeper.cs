@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent), typeof(Animator))]
 public class CharacterKeeper : MonoBehaviour
 {
     public Animator Animator { get; private set; }

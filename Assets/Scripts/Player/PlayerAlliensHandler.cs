@@ -13,12 +13,11 @@ public class PlayerAlliensHandler : MonoBehaviour, ICharactersHandler
     public float DistanceToFarthestRight { get; private set; }
     public float DistanceToFarthestLeft { get; private set; }
 
+    public List<CharacterKeeper> Characters { get; private set; }
 
     [SerializeField] private CharacterSpawner _characterSpawner;
     [SerializeField] private PlayerLabel _playerLabel;
     [SerializeField] private float _characterXOffset;
-
-    public List<CharacterKeeper> Characters { get; private set; }
 
     private BunchHandler _enemyBunch;
 

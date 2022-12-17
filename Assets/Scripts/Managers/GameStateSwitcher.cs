@@ -21,9 +21,9 @@ public class GameStateSwitcher : Singleton<GameStateSwitcher>, IGameStateSwitche
     [SerializeField] private PlayerAlliensHandler _playerAlliensHandler;
     [SerializeField] private PlayersCharactersAnimationHandler _animationHandler;
 
-    [Header("Spawners")]
+    [Header("Road Setters")]
+    [SerializeField] private RoadSetter _platformSetter;
     [SerializeField] private CharacterSpawner _characterSpawner;
-    [SerializeField] private RoadSegmentSpawner _roadSegmentSpawner;
 
     [Header("Managers")]
     [SerializeField] private SessionData _sessionData;
@@ -42,7 +42,7 @@ public class GameStateSwitcher : Singleton<GameStateSwitcher>, IGameStateSwitche
 
         _allStates = new List<BaseGameState>()
         {
-            new MainState(this, _mainMenuPanel, stateArguments, _roadSegmentSpawner),
+            new MainState(this, _mainMenuPanel, stateArguments, _platformSetter),
             new PlayingState(this, _gameMenuPanel, stateArguments),
             new LostState(this, _loseMenuPanel, stateArguments),
             new FightState(this, stateArguments),

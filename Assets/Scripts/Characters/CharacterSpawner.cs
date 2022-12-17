@@ -28,7 +28,7 @@ public class CharacterSpawner : MonoBehaviour
     private IObjectPool<CharacterKeeper> _charactersPool;
     private ICharactersHandler _currentCharacterHandler;
     
-    private void Awake()
+    public void Init()
     {
         _charactersPool = new ObjectPool<CharacterKeeper>(CreateCharacter, GetCharacter,
             character => { character.gameObject.SetActive(false); },
@@ -38,10 +38,7 @@ public class CharacterSpawner : MonoBehaviour
             { 1, Resources.Load("Skins/CharacterRoundSkin") as GameObject},
             { 2, Resources.Load("Skins/CharacterTallSkin") as GameObject }
         };
-    }
 
-    private void Start()
-    {
         Spawn(1);
     }
 

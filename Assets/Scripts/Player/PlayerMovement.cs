@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Transform _playerTransform;
 
-    [SerializeField] private RoadSegmentSpawner _roadSegmentSpawner;
+    [SerializeField] private Road _roadSegmentSpawner;
     [SerializeField] private PlayerAlliensHandler _playerAlliensHandler;
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private float _playerControlMultiplier;

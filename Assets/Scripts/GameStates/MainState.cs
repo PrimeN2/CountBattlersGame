@@ -1,16 +1,15 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MainState : BaseGameState
 {
     private GameObject _menuPanel;
-    private RoadSegmentSpawner _roadSegmentSpawner;
+    private RoadSetter _platformSetter;
 
-    public MainState(IGameStateSwitcher stateSwitcher, GameObject menuPanel, StateArguments stateArguments, RoadSegmentSpawner roadSegmentSpawner)
+    public MainState(IGameStateSwitcher stateSwitcher, GameObject menuPanel, StateArguments stateArguments, RoadSetter platformSetter)
         : base(stateSwitcher, stateArguments)
     {
         _menuPanel = menuPanel;
-        _roadSegmentSpawner = roadSegmentSpawner;
+        _platformSetter = platformSetter;
     }
 
     public override void Load()
@@ -23,7 +22,7 @@ public class MainState : BaseGameState
 
         AudioManager.Instance.StopPlayingBackgroundSounds();
 
-        _roadSegmentSpawner.Initialize();
+        _platformSetter.SetRoad();
 
         _stateArguments._playerMovement.StopMoving();
         _stateArguments._inputManager.DeInitInputHandle();

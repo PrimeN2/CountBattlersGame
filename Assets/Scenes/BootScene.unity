@@ -152,9 +152,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd0d916c0cc6484cba9290f973fb8ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _loadingScreen: {fileID: 1788639374}
-  _percentage: {fileID: 1220405997}
-  _label: {fileID: 942445925}
+  IsAnyOperationsGoing: 0
+  _loadingScreen: {fileID: 1788639378}
 --- !u!4 &400652401
 Transform:
   m_ObjectHideFlags: 0
@@ -518,6 +517,7 @@ GameObject:
   - component: {fileID: 1788639375}
   - component: {fileID: 1788639377}
   - component: {fileID: 1788639376}
+  - component: {fileID: 1788639378}
   m_Layer: 5
   m_Name: LoadingScreen
   m_TagString: Untagged
@@ -585,6 +585,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1788639374}
   m_CullTransparentMesh: 1
+--- !u!114 &1788639378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1788639374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 483de3a29c5077648bed67a306e81b66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _percentage: {fileID: 1220405997}
+  _label: {fileID: 942445925}
 --- !u!1 &1927461887
 GameObject:
   m_ObjectHideFlags: 0

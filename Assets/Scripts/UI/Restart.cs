@@ -7,6 +7,6 @@ public class Restart : MonoBehaviour
 {
     public void ReloadScene()
     {
-        SceneController.Instance.Reload();
+        SceneController.Instance.ReloadDelayedScene();
     }
 }
