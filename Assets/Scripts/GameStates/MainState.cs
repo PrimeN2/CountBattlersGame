@@ -25,7 +25,7 @@ public class MainState : BaseGameState
         _platformSetter.SetRoad();
 
         _stateArguments._playerMovement.StopMoving();
-        _stateArguments._inputManager.DeInitInputHandle();
+        _stateArguments._inputManager.DeinitInputHandle(true);
         _stateArguments._animationHandler.StartStandAnimation();
         _stateArguments._playerLabel.HideLabel();
     }

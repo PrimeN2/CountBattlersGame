@@ -10,10 +10,14 @@ public class PlayerData
 
         CurrentSkinsAvalible = new List<int> { currentSkin };
         CurrentSkin = currentSkin;
+        IsMusicOn = true;
+        AreSoundsOn = true;
     }
 
     public List<int> CurrentSkinsAvalible;
     public int Score;
     public int CurrentSkin;
+    public bool IsMusicOn;
+    public bool AreSoundsOn;
 }
 

@@ -20,7 +20,7 @@ public class BuyingState : BaseGameState
         _currentPanel = _menuPanel;
 
         _stateArguments._playerMovement.StopMoving();
-        _stateArguments._inputManager.DeInitInputHandle();
+        _stateArguments._inputManager.DeinitInputHandle(false);
         _stateArguments._playerLabel.HideLabel();
 
         SceneController.Instance.StartDelayedReloading();

@@ -4,10 +4,16 @@ using UnityEngine;
 
 public class SessionData : MonoBehaviour
 {
-    public Action OnScoreChanged;
+    public event Action OnScoreChanged;
+    public event Action<int> OnScoreIncreased;
+    public event Action<bool> OnMusicToggled;
+    public event Action<bool> OnSoundsToggled;
 
     public int CurrentSkin { get => _playerData.CurrentSkin; }
     public int PlayerScore { get => _playerData.Score; }
+    public bool IsMusicOn { get => _playerData.IsMusicOn; }
+    public bool AreSoundsOn { get => _playerData.AreSoundsOn; }
+
     public List<int> CurrentSkinsAvalible { get => _playerData.CurrentSkinsAvalible; }
 
     private ISaveSystem _saveSystem;
@@ -57,9 +63,23 @@ public class SessionData : MonoBehaviour
     {
         _playerData.Score += score;
 
+        OnScoreIncreased?.Invoke(score);
         OnScoreChanged?.Invoke();
         _saveSystem.Save(_playerData);
     }
+
+    public void ToggleMusic()
+    {
+        _playerData.IsMusicOn = !_playerData.IsMusicOn;
+        OnMusicToggled?.Invoke(!_playerData.IsMusicOn);
+    }
+
+    public void ToggleSounds()
+    {
+        _playerData.AreSoundsOn = !_playerData.AreSoundsOn;
+        OnSoundsToggled?.Invoke(!_playerData.AreSoundsOn);
+    }
+
 
     private void OnApplicationPause(bool pause)
     {

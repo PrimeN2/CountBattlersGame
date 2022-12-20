@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,13 +10,15 @@ public class SceneController : SingletonPersistent<SceneController>
 
     private AsyncOperation _loadingSceneOperation;
 
-    private void OnEnable()
+    private void Update()
     {
-        _loadingScreen.Init();
+        if (SceneManager.GetSceneByBuildIndex((int)Scenes.Main).isLoaded || IsAnyOperationsGoing)
+            return;
 
         _loadingSceneOperation = SceneManager.LoadSceneAsync((int)Scenes.Main);
-        _loadingSceneOperation.completed += _loadingScreen.CloseLoadingScreen;
+        _loadingScreen.Init(_loadingSceneOperation);
         IsAnyOperationsGoing = true;
+
     }
 
     public void StartDelayedReloading()

@@ -26,6 +26,8 @@ public class RoadSetter : MonoBehaviour
     {
         for (int i = 0; i < _road.RoadSegments.Count; i++)
         {
+            if (TryPutFinish(i)) break;
+
             int value, decreasedValue, multiplier;
             _roadValue.GetValues(out value, out decreasedValue, out multiplier);
 
@@ -35,14 +37,19 @@ public class RoadSetter : MonoBehaviour
             _barrierSpawner.SpawnBarrierOnSegment(_road.RoadSegments[i]);
 
             _characterSpawner.SpawnEnemies(_road.RoadSegments[i], decreasedValue);
-
-            PutFinish(i);
         }
     }
-    private void PutFinish(int index)
+    private bool TryPutFinish(int index)
     {
         if (index == _road.RoadSegments.Count - 1)
-            Instantiate(_finishBlock, _road.RoadSegments[index].GetPlatformStart(), Quaternion.identity);
+        {
+            Instantiate(
+                _finishBlock, 
+                _road.RoadSegments[index].GetPlatformStart(), 
+                Quaternion.identity);
+            return true;
+        }
+        return false;
     }
 }
 

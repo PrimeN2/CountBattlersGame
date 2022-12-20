@@ -1,11 +1,19 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class InputController : MonoBehaviour, IDragHandler
+public class InputController : MonoBehaviour, IDragHandler, IPointerDownHandler
 {
     [SerializeField] private PlayerMovement _playerMovement;
+    [SerializeField] private GameStateSwitcher gameStateSwitcher;
 
     private bool _isPaused = true;
+    private bool _readyForStart = false;
+
+    public void OnPointerDown(PointerEventData pointerEventData)
+    {
+        if (_readyForStart && _isPaused)
+            gameStateSwitcher.LoadGameHUD();
+    }
 
     public void OnDrag(PointerEventData eventData)
     {
@@ -20,8 +28,9 @@ public class InputController : MonoBehaviour, IDragHandler
         _isPaused = false;
     }
 
-    public void DeInitInputHandle()
+    public void DeinitInputHandle(bool readyForStart)
     {
+        _readyForStart = readyForStart;
         _isPaused = true;
     }
 }

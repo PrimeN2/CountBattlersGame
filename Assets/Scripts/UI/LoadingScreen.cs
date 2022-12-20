@@ -6,33 +6,37 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Image))]
 public class LoadingScreen : MonoBehaviour
 {
+    [SerializeField] private GameObject _background;
+    [SerializeField] private Image _progressBar;
     [SerializeField] private TextMeshProUGUI _percentage;
-    [SerializeField] private TextMeshProUGUI _label;
 
     private AsyncOperation _loadingSceneOperation;
 
-    public void Init()
+    public void Init(AsyncOperation loadingSceneOperation)
     {
         DontDestroyOnLoad(transform.parent);
+
+        _loadingSceneOperation = loadingSceneOperation;
+        _loadingSceneOperation.completed += CloseLoadingScreen;
+
+        StartCoroutine(CountPercents());
+        StartCoroutine(MoveProgressBar());
     }
 
-    public void CloseLoadingScreen(AsyncOperation operation)
+    private void CloseLoadingScreen(AsyncOperation operation)
     {
-        _loadingSceneOperation = operation;
-
         StartCoroutine(CloseLoadingScreen());
-        StartCoroutine(CountPercents());
     }
 
     private IEnumerator CloseLoadingScreen()
     {
-        _label.gameObject.SetActive(false);
-        _percentage.gameObject.SetActive(false);
+        _background.SetActive(false);
+
         Image screen = GetComponent<Image>();
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 5; i++)
         {
-            screen.color -= new Color(0, 0, 0, 0.1f);
+            screen.color -= new Color(0, 0, 0, 0.2f);
             yield return new WaitForSeconds(0.1f);
         }
 
@@ -44,9 +48,16 @@ public class LoadingScreen : MonoBehaviour
     {
         while (!_loadingSceneOperation.isDone)
         {
-            if (_loadingSceneOperation != null)
-                _percentage.text = $"{Mathf.RoundToInt(_loadingSceneOperation.progress * 100)}%";
+            _percentage.text = $"{Mathf.RoundToInt(_loadingSceneOperation.progress * 100)}%";
+            yield return null;
+        }
+    }
 
+    private IEnumerator MoveProgressBar()
+    {
+        while (!_loadingSceneOperation.isDone)
+        {
+            _progressBar.fillAmount = _loadingSceneOperation.progress;
             yield return null;
         }
     }
