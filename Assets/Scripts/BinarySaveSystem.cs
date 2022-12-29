@@ -5,10 +5,12 @@ using UnityEngine;
 public class BinarySaveSystem : ISaveSystem
 {
     private readonly string _filePath;
+    private readonly SaveDataArguments _defaultArguments;
 
-    public BinarySaveSystem()
+    public BinarySaveSystem(SaveDataArguments defaultArguments)
     {
         _filePath = Application.persistentDataPath + "/Save.dat";
+        _defaultArguments = defaultArguments;
     }
 
     public void Save(PlayerData playerData)
@@ -32,7 +34,7 @@ public class BinarySaveSystem : ISaveSystem
         }
         catch
         {
-            saveData = new PlayerData(0, 1);
+            saveData = new PlayerData(_defaultArguments);
         }
 
         return saveData;
@@ -42,7 +44,7 @@ public class BinarySaveSystem : ISaveSystem
     {
         using (FileStream file = File.Open(_filePath, FileMode.Open))
         {
-            new BinaryFormatter().Serialize(file, new PlayerData(0, 1));
+            new BinaryFormatter().Serialize(file, new PlayerData(_defaultArguments));
         }
     }
 }

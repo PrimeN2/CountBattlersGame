@@ -6,6 +6,11 @@ public class DisplayBalance : MonoBehaviour
     [SerializeField] private TMP_Text _label;
     [SerializeField] private SessionData _sessionData;
 
+    private void Start()
+    {
+        SetScore();
+    }
+
     private void OnEnable() => 
         _sessionData.OnScoreChanged += SetScore;
 

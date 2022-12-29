@@ -14,11 +14,10 @@ public class CharacterSpawner : MonoBehaviour
 
     [SerializeField] private PlayerAlliensHandler _playerAlliensHandler;
     [SerializeField] private SessionData _sessionData; 
+    [SerializeField] private CharacterData _characterData;
 
-    [SerializeField] private Material _playerMaterial;
     [SerializeField] private Material _enemyMaterial;
 
-    [SerializeField] private Dictionary<int, GameObject> _characterPrefabList;
     [SerializeField] private GameObject _bunchPrefab;
     [SerializeField] private Vector3 _bunchOffset;
 
@@ -33,11 +32,6 @@ public class CharacterSpawner : MonoBehaviour
         _charactersPool = new ObjectPool<CharacterKeeper>(CreateCharacter, GetCharacter,
             character => { character.gameObject.SetActive(false); },
             character => { Destroy(character); }, false, 500, 1000);
-        _characterPrefabList = new Dictionary<int, GameObject>()
-        {
-            { 1, Resources.Load("Skins/CharacterRoundSkin") as GameObject},
-            { 2, Resources.Load("Skins/CharacterTallSkin") as GameObject }
-        };
 
         Spawn(1);
     }
@@ -45,7 +39,7 @@ public class CharacterSpawner : MonoBehaviour
     private CharacterKeeper CreateCharacter()
     {
         CharacterKeeper characterKeeper = 
-            Instantiate(_characterPrefabList[_sessionData.CurrentSkin]).GetComponent<CharacterKeeper>();
+            Instantiate(_characterData.CharacterSkinsPrefabs[_sessionData.CurrentSkin]);
         characterKeeper.Init(OnCharacterReleased);
         return characterKeeper;
     }
@@ -68,7 +62,9 @@ public class CharacterSpawner : MonoBehaviour
             Transform transform = character.transform;
             character.gameObject.GetComponent<NavMeshAgent>().Warp(
                 bunch.GetPositionForSpawn() + 
-                new Vector3(UnityEngine.Random.insideUnitCircle.x * 0.1f, 0, UnityEngine.Random.insideUnitCircle.y * 0.1f));
+                new Vector3(UnityEngine.Random.insideUnitCircle.x * 0.1f, 
+                0, 
+                UnityEngine.Random.insideUnitCircle.y * 0.1f));
             character.transform.SetParent(bunch.transform);
             SetCharacter(character, transform);
         }
@@ -100,9 +96,11 @@ public class CharacterSpawner : MonoBehaviour
         for (int i = 0; i < count; ++i)
         {
             var character = _charactersPool.Get();
-            character.SetMaterial(_playerMaterial);
+            character.SetMaterial(
+                _characterData.CharacterChromasMaterials[_sessionData.CurrentPlayerChroma]);
             character.gameObject.GetComponent<NavMeshAgent>().Warp(
-                _playerAlliensHandler.GetPositionForSpawn() + GetOffsetFor(i, _playerAlliensHandler.Characters.Count + 1, 0.1f));
+                _playerAlliensHandler.GetPositionForSpawn() + 
+                GetOffsetFor(i, _playerAlliensHandler.Characters.Count + 1, 0.1f));
             character.transform.SetParent(_playerAlliensHandler.transform);
             _playerAlliensHandler.AddCharacter(character);
         }
